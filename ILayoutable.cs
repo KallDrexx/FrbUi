@@ -15,8 +15,10 @@ namespace FrbUi
     {
         ILayoutableEvent OnSizeChangeHandler { get; set; }
 
-        void AttachTo(PositionedObject obj, bool changeRelative);
         float RelativeX { get; set; }
         float RelativeY { get; set; }
+
+        void Activity();
+        void AttachTo(PositionedObject obj, bool changeRelative);
     }
 }

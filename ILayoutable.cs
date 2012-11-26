@@ -17,8 +17,10 @@ namespace FrbUi
 
         float RelativeX { get; set; }
         float RelativeY { get; set; }
+        Layer Layer { get; }
 
         void Activity();
         void AttachTo(PositionedObject obj, bool changeRelative);
+        void AddToManagers(Layer layer);
     }
 }

@@ -134,13 +134,15 @@ namespace FrbUi.Controls
             Release();
         }
 
-        public void AddToLayer(Layer layer)
+        public void AddToManagers(Layer layer)
         {
-            if (layer == null)
-                throw new ArgumentNullException("layer");
+            if (layer != null)
+            {
+                SpriteManager.AddToLayer(this, layer);
+                TextManager.AddToLayer(_label, layer);
+            }
 
-            SpriteManager.AddToLayer(this, layer);
-            TextManager.AddToLayer(_label, layer);
+            GuiManager.AddWindow(this);
             Layer = layer;
         }
 

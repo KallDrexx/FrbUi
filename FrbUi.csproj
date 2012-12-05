@@ -67,6 +67,11 @@
   <ItemGroup>
     <Compile Include="Controls\UiButton.cs" />
     <Compile Include="ILayoutable.cs" />
+    <Compile Include="LayoutManagers\SimpleLayoutManager.cs" />
+    <Compile Include="Positioning\HorizontalPosition.cs" />
+    <Compile Include="Positioning\LayoutOrigin.cs" />
+    <Compile Include="Positioning\OverallPosition.cs" />
+    <Compile Include="Positioning\VerticalPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

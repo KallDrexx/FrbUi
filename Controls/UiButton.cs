@@ -305,7 +305,7 @@ namespace FrbUi.Controls
         {
             get
             {
-                throw new NotImplementedException();
+                return Position.X;
             }
             set
             {
@@ -317,7 +317,7 @@ namespace FrbUi.Controls
         {
             get
             {
-                throw new NotImplementedException();
+                return Position.Y;
             }
             set
             {
@@ -338,6 +338,9 @@ namespace FrbUi.Controls
 
             if (!cursor.IsOn(Layer))
                 return false;
+
+            if (cursor.IsOn3D(this, Layer))
+                return true;
 
             return false;
         }

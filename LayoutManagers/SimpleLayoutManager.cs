@@ -122,6 +122,16 @@ namespace FrbUi.LayoutManagers
             Layer = layer;
         }
 
+        public void UpdateDependencies(double currentTime)
+        {
+            _backgroundSprite.UpdateDependencies(currentTime);
+        }
+
+        public void ForceUpdateDependencies()
+        {
+            _backgroundSprite.ForceUpdateDependencies();
+        }
+
         public void AddItem(ILayoutable item, HorizontalPosition horizontalPosition, VerticalPosition verticalPosition, LayoutOrigin layoutFrom = LayoutOrigin.Center)
         {
             if (item == null)

@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Controls\UiButton.cs" />
     <Compile Include="ILayoutable.cs" />
+    <Compile Include="LayoutManagers\BoxLayoutManager.cs" />
     <Compile Include="LayoutManagers\SimpleLayoutManager.cs" />
     <Compile Include="Positioning\HorizontalPosition.cs" />
     <Compile Include="Positioning\LayoutOrigin.cs" />

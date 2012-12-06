@@ -132,6 +132,20 @@ namespace FrbUi.LayoutManagers
             _backgroundSprite.ForceUpdateDependencies();
         }
 
+        public void Destroy()
+        {
+            _backgroundSprite.Detach();
+            SpriteManager.RemoveSpriteFrame(_backgroundSprite);
+
+            foreach (var item in _items.Keys)
+            {
+                if (item.Parent == _backgroundSprite)
+                    item.Destroy();
+            }
+
+            _items.Clear();
+        }
+
         protected virtual void PerformLayout()
         {
             // Remove any items that this is no longer the parent of

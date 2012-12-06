@@ -24,5 +24,6 @@ namespace FrbUi
         void AddToManagers(Layer layer);
         void UpdateDependencies(double currentTime);
         void ForceUpdateDependencies();
+        void Destroy();
     }
 }

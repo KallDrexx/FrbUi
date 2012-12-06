@@ -132,6 +132,20 @@ namespace FrbUi.LayoutManagers
             _backgroundSprite.ForceUpdateDependencies();
         }
 
+        public void Destroy()
+        {
+            _backgroundSprite.Detach();
+            SpriteManager.RemoveSpriteFrame(_backgroundSprite);
+
+            foreach (var item in _items.Keys)
+            {
+                if (item.Parent == _backgroundSprite)
+                    item.Destroy();
+            }
+
+            _items.Clear();
+        }
+
         public void AddItem(ILayoutable item, HorizontalPosition horizontalPosition, VerticalPosition verticalPosition, LayoutOrigin layoutFrom = LayoutOrigin.Center)
         {
             if (item == null)

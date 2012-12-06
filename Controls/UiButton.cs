@@ -146,6 +146,13 @@ namespace FrbUi.Controls
             Layer = layer;
         }
 
+        public void Destroy()
+        {
+            this.Detach();
+            GuiManager.RemoveWindow(this);
+            SpriteManager.RemoveSpriteFrame(this);
+        }
+
         #region IWindow Implementation
 
         public bool MovesWhenGrabbed { get; set; }

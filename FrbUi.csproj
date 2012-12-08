@@ -75,6 +75,7 @@
     <Compile Include="Positioning\OverallPosition.cs" />
     <Compile Include="Positioning\VerticalPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UiControlManager.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

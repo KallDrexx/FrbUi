@@ -24,10 +24,10 @@ namespace FrbUi.Controls
         protected bool _paused;
 
         public ILayoutableEvent OnSizeChangeHandler { get; set; }
-        public event ILayoutableEvent OnFocused;
-        public event ILayoutableEvent OnFocusLost;
-        public event ILayoutableEvent OnPushed;
-        public event ILayoutableEvent OnReleased;
+        public ILayoutableEvent OnFocused { get; set; }
+        public ILayoutableEvent OnFocusLost { get; set; }
+        public ILayoutableEvent OnPushed { get; set; }
+        public ILayoutableEvent OnReleased { get; set; }
 
         #region Properties
 

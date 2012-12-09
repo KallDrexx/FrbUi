@@ -66,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Button.cs" />
+    <Compile Include="IClickable.cs" />
+    <Compile Include="IDisableable.cs" />
     <Compile Include="ILayoutable.cs" />
     <Compile Include="LayoutManagers\BoxLayoutManager.cs" />
     <Compile Include="LayoutManagers\CircularLayoutManager.cs" />

@@ -11,17 +11,20 @@ using System.Collections.ObjectModel;
 
 namespace FrbUi.Controls
 {
-    public class Button : ILayoutable, IWindow
+    public class Button : ILayoutable, IWindow, IClickable, IDisableable
     {
         public enum ButtonState { Active, Disabled, Focused, Pushed }
 
         protected SpriteFrame _backgroundSprite;
         protected Layer _layer;
-        protected float _lastScaleX;
-        protected float _lastScaleY;
-        protected bool _pushedWithFocus;
         protected Text _label;
+        protected bool _pushedWithFocus;
         protected bool _paused;
+
+        protected string _standardAnimationChainName;
+        protected string _focusedAnimationChainName;
+        protected string _pushedAnimationChainName;
+        protected string _disabledAnimationChainName;   
 
         #region Events
 
@@ -29,7 +32,7 @@ namespace FrbUi.Controls
         public ILayoutableEvent OnFocused { get; set; }
         public ILayoutableEvent OnFocusLost { get; set; }
         public ILayoutableEvent OnPushed { get; set; }
-        public ILayoutableEvent OnReleased { get; set; }
+        public ILayoutableEvent OnClicked { get; set; }
 
         #endregion
 
@@ -42,21 +45,8 @@ namespace FrbUi.Controls
         public bool IgnoreCursorEvents { get; set; }
         public ButtonState CurrentButtonState { get; protected set; }
 
-        public bool Enabled
-        {
-            get { return CurrentButtonState != ButtonState.Disabled; }
-            set
-            {
-                if (value && !Enabled)
-                    CurrentButtonState = ButtonState.Active;
-                else if (!value)
-                    CurrentButtonState = ButtonState.Disabled;
-            }
-        }
-
         public float Alpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList AnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
-        public string CurrentChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
         public float RelativeY { get { return _backgroundSprite.RelativeY; } set { _backgroundSprite.RelativeY = value; } }
         public float RelativeZ { get { return _backgroundSprite.RelativeZ; } set { _backgroundSprite.RelativeZ = value; } }
@@ -110,6 +100,82 @@ namespace FrbUi.Controls
             }
         }
 
+        public bool Enabled
+        {
+            get { return CurrentButtonState != ButtonState.Disabled; }
+            set
+            {
+                if (value && !Enabled)
+                    CurrentButtonState = ButtonState.Active;
+                else if (!value)
+                    CurrentButtonState = ButtonState.Disabled;
+            }
+        }
+
+        public string StandardAnimationChainName
+        {
+            get { return _standardAnimationChainName; }
+            set
+            {
+                if (!IsValidChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _standardAnimationChainName = value;
+
+                // We we should be displaying this animation chain, activate it
+                if (CurrentButtonState == ButtonState.Active)
+                    _backgroundSprite.CurrentChainName = value;
+            }
+        }
+
+        public string FocusedAnimationChainName
+        {
+            get { return _focusedAnimationChainName; }
+            set
+            {
+                if (!IsValidChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _focusedAnimationChainName = value;
+
+                // We we should be displaying this animation chain, activate it
+                if (CurrentButtonState == ButtonState.Focused)
+                    _backgroundSprite.CurrentChainName = value;
+            }
+        }
+
+        public string PushedAnimationChainName
+        {
+            get { return _pushedAnimationChainName; }
+            set
+            {
+                if (!IsValidChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _pushedAnimationChainName = value;
+
+                // We we should be displaying this animation chain, activate it
+                if (CurrentButtonState == ButtonState.Pushed)
+                    _backgroundSprite.CurrentChainName = value;
+            }
+        }
+
+        public string DisabledAnimationChainName
+        {
+            get { return _disabledAnimationChainName; }
+            set
+            {
+                if (!IsValidChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _disabledAnimationChainName = value;
+
+                // If we are currently in the disabled state, switch to that chain
+                if (CurrentButtonState == ButtonState.Disabled)
+                    _backgroundSprite.CurrentChainName = value;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -130,6 +196,8 @@ namespace FrbUi.Controls
                 return;
 
             CurrentButtonState = ButtonState.Focused;
+            if (_focusedAnimationChainName != null)
+                _backgroundSprite.CurrentChainName = _focusedAnimationChainName;
 
             if (OnFocused != null)
                 OnFocused(this);
@@ -142,6 +210,9 @@ namespace FrbUi.Controls
                 return;
 
             CurrentButtonState = ButtonState.Active;
+            if (_standardAnimationChainName != null)
+                _backgroundSprite.CurrentChainName = _standardAnimationChainName;
+
             if (OnFocusLost != null)
                 OnFocusLost(this);
         }
@@ -154,30 +225,41 @@ namespace FrbUi.Controls
 
             _pushedWithFocus = (CurrentButtonState == ButtonState.Focused);
             CurrentButtonState = ButtonState.Pushed;
+            if (_pushedAnimationChainName != null)
+                _backgroundSprite.CurrentChainName = _pushedAnimationChainName;
+
             if (OnPushed != null)
                 OnPushed(this);
         }
 
-        public void Release()
+        public void Click()
         {
             if (CurrentButtonState != ButtonState.Pushed)
                 return;
 
             if (_pushedWithFocus)
+            {
                 CurrentButtonState = ButtonState.Focused;
+                if (_focusedAnimationChainName != null)
+                    _backgroundSprite.CurrentChainName = _focusedAnimationChainName;
+            }
             else
+            {
                 CurrentButtonState = ButtonState.Active;
+                if (_standardAnimationChainName != null)
+                    _backgroundSprite.CurrentChainName = _standardAnimationChainName;
+            }
 
             _pushedWithFocus = false;
 
-            if (OnReleased != null)
-                OnReleased(this);
+            if (OnClicked != null)
+                OnClicked(this);
         }
 
         public void Press()
         {
             Push();
-            Release();
+            Click();
         }
 
         public void ResizeAroundText(float horizontalMargin, float VerticalMargin)
@@ -202,6 +284,8 @@ namespace FrbUi.Controls
 
         public void AddToManagers(Layer layer)
         {
+            CurrentButtonState = ButtonState.Active;
+
             SpriteManager.AddSpriteFrame(_backgroundSprite);
             GuiManager.AddWindow(this);
             TextManager.AddText(_label);
@@ -227,6 +311,15 @@ namespace FrbUi.Controls
             GuiManager.RemoveWindow(this);
         }
 
+        protected bool IsValidChainName(string chainName)
+        {
+            foreach (var chain in _backgroundSprite.AnimationChains)
+                if (chain.Name == chainName)
+                    return true;
+
+            return false;
+        }
+
         #endregion
 
         #region IWindow Implementation
@@ -247,7 +340,7 @@ namespace FrbUi.Controls
             if (!IgnoreCursorEvents)
             {
                 Push();
-                Release();
+                Click();
             }
         }
 

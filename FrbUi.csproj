@@ -65,7 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\UiButton.cs" />
+    <Compile Include="Controls\Button.cs" />
     <Compile Include="ILayoutable.cs" />
     <Compile Include="LayoutManagers\BoxLayoutManager.cs" />
     <Compile Include="LayoutManagers\CircularLayoutManager.cs" />

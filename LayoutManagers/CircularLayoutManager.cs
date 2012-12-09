@@ -12,8 +12,6 @@ namespace FrbUi.LayoutManagers
 {
     public class CircularLayoutManager : ILayoutable
     {
-        public enum ArrangementMode { Clockwise, EvenlySpaced, Manual, CounterClockwise }
-
         protected const float FULL_CIRCLE = 2 * (float)Math.PI;
 
         protected SpriteFrame _backgroundSprite;
@@ -30,6 +28,9 @@ namespace FrbUi.LayoutManagers
         }
 
         public ILayoutableEvent OnSizeChangeHandler { get; set; }
+
+        #region Properties
+
         public ArrangementMode CurrentArrangementMode { get; set; }
         public float MinDegreeOffset { get; set; }
         public float StartingDegrees { get; set; }
@@ -89,6 +90,10 @@ namespace FrbUi.LayoutManagers
                     OnSizeChangeHandler(this);
             }
         }
+
+        #endregion
+
+        #region Methods
 
         public void Activity()
         {
@@ -288,6 +293,10 @@ namespace FrbUi.LayoutManagers
             ScaleY = (Math.Max(Math.Abs(minY.Value), Math.Abs(maxY.Value))) + Margin;
             _recalculateLayout = false;
         }
+
+        #endregion
+
+        public enum ArrangementMode { Clockwise, EvenlySpaced, Manual, CounterClockwise }
 
         public class CircularPosition
         {

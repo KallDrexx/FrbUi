@@ -28,6 +28,9 @@ namespace FrbUi.LayoutManagers
         }
 
         public ILayoutableEvent OnSizeChangeHandler { get; set; }
+
+        #region Properties
+
         public Direction CurrentDirection { get; set; }
         public float Margin { get; set; }
         public float Spacing { get; set; }
@@ -85,6 +88,10 @@ namespace FrbUi.LayoutManagers
                     OnSizeChangeHandler(this);
             }
         }
+
+        #endregion
+
+        #region Methods
 
         public void Activity()
         {
@@ -335,5 +342,7 @@ namespace FrbUi.LayoutManagers
                 firstItem = false;
             }
         }
+
+        #endregion
     }
 }

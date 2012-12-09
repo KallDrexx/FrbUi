@@ -27,6 +27,8 @@ namespace FrbUi.LayoutManagers
 
         public ILayoutableEvent OnSizeChangeHandler { get; set; }
 
+        #region Properties
+
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public string CurrentBackgroundAnimationChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }
@@ -104,6 +106,10 @@ namespace FrbUi.LayoutManagers
                 }
             }
         }
+
+        #endregion
+
+        #region Methods
 
         public void Activity()
         {
@@ -260,5 +266,7 @@ namespace FrbUi.LayoutManagers
             item.RelativeX = posX;
             item.RelativeY = posY;
         }
+
+        #endregion
     }
 }

@@ -6,6 +6,7 @@ using FlatRedBall.ManagedSpriteGroups;
 using FlatRedBall.Graphics;
 using FlatRedBall;
 using FrbUi.Positioning;
+using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.LayoutManagers
 {
@@ -27,6 +28,8 @@ namespace FrbUi.LayoutManagers
         public ILayoutableEvent OnSizeChangeHandler { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
+        public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
+        public string CurrentBackgroundAnimationChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
         public float RelativeY { get { return _backgroundSprite.RelativeY; } set { _backgroundSprite.RelativeY = value; } }
         public float RelativeZ { get { return _backgroundSprite.RelativeZ; } set { _backgroundSprite.RelativeZ = value; } }

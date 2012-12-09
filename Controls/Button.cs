@@ -43,6 +43,12 @@ namespace FrbUi.Controls
         /// instead of IWindow events
         /// </summary>
         public bool IgnoreCursorEvents { get; set; }
+
+        /// <summary>
+        ///  If true, the button isn't focused when the cursor hovers over the button
+        /// </summary>
+        public bool IgnoreCursorFocus { get; set; }
+
         public ButtonState CurrentButtonState { get; protected set; }
 
         public float Alpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
@@ -352,7 +358,7 @@ namespace FrbUi.Controls
 
         public void CallRollOn()
         {
-            if (!IgnoreCursorEvents)
+            if (!IgnoreCursorEvents && !IgnoreCursorFocus)
                 Focus();
         }
 
@@ -412,38 +418,10 @@ namespace FrbUi.Controls
 
                 if (cursor.PrimaryPush)
                 {
-
                     cursor.WindowPushed = this;
                     Press();
                     cursor.GrabWindow(this);
-
                 }
-
-                //    // both pushing and clicking can occur in one frame because of buffered input
-                //    if (cursor.PrimaryClick) 
-                //    {
-                //        //if (cursor.WindowPushed == this)
-                //        //{
-                //        //    if (Click != null)
-                //        //    {
-                //        //        Click(this);
-                //        //    }
-                //        //    if (cursor.PrimaryClickNoSlide && ClickNoSlide != null)
-                //        //    {
-                //        //        ClickNoSlide(this);
-                //        //    }
-
-                //        //    // if (cursor.PrimaryDoubleClick && DoubleClick != null)
-                //        //    //   DoubleClick(this);
-                //        //}
-                //        //else
-                //        //{
-                //        //    if (SlideOnClick != null)
-                //        //    {
-                //        //        SlideOnClick(this);
-                //        //    }
-                //        //}
-                //    }
             }
         }
 

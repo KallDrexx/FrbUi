@@ -31,6 +31,7 @@ namespace FrbUi.LayoutManagers
 
         #region Properties
 
+        public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public Direction CurrentDirection { get; set; }
         public float Margin { get; set; }
         public float Spacing { get; set; }

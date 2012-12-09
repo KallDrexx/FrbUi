@@ -29,6 +29,7 @@ namespace FrbUi.LayoutManagers
 
         #region Properties
 
+        public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public string CurrentBackgroundAnimationChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }

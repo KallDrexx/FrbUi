@@ -31,6 +31,7 @@ namespace FrbUi.LayoutManagers
 
         #region Properties
 
+        public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public ArrangementMode CurrentArrangementMode { get; set; }
         public float MinDegreeOffset { get; set; }
         public float StartingDegrees { get; set; }

@@ -23,11 +23,15 @@ namespace FrbUi.Controls
         protected Text _label;
         protected bool _paused;
 
+        #region Events
+
         public ILayoutableEvent OnSizeChangeHandler { get; set; }
         public ILayoutableEvent OnFocused { get; set; }
         public ILayoutableEvent OnFocusLost { get; set; }
         public ILayoutableEvent OnPushed { get; set; }
         public ILayoutableEvent OnReleased { get; set; }
+
+        #endregion
 
         #region Properties
 

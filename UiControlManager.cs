@@ -13,11 +13,13 @@ namespace FrbUi
         private static UiControlManager _instance;
 
         private List<ILayoutable> _items;
+        private List<UiSelectableControlGroup> _selectableControlGroups;
         private Layer _uiLayer;
 
         private UiControlManager() 
         {
             _items = new List<ILayoutable>();
+            _selectableControlGroups = new List<UiSelectableControlGroup>();
 
             // Create the 2d layer
             _uiLayer = SpriteManager.AddLayer();
@@ -59,6 +61,31 @@ namespace FrbUi
 
             _items.Remove(item);
             item.Destroy();
+
+            // If the control is selectable and is in a control group, remove it
+            var selectable = item as ISelectable;
+            if (selectable != null)
+            {
+                foreach (var group in _selectableControlGroups)
+                    if (group.Contains(selectable))
+                        group.Remove(selectable);
+            }
+        }
+
+        public UiSelectableControlGroup CreateSelectableControlGroup()
+        {
+            var group = new UiSelectableControlGroup();
+            _selectableControlGroups.Add(group);
+            return group;
+        }
+
+        public void RemoveSelectableControlGroup(UiSelectableControlGroup group)
+        {
+            group.Destroy();
+            if (!_selectableControlGroups.Contains(group))
+                return;
+
+            _selectableControlGroups.Remove(group);
         }
 
         public void RunActivities()

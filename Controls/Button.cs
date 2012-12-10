@@ -240,7 +240,7 @@ namespace FrbUi.Controls
 
         public void Click()
         {
-            if (CurrentButtonState != ButtonState.Pushed)
+            if (CurrentButtonState != ButtonState.Pushed && CurrentButtonState != ButtonState.Focused)
                 return;
 
             if (_pushedWithFocus)

@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 
 namespace FrbUi.Controls
 {
-    public class Button : ILayoutable, IWindow, IClickable, IDisableable
+    public class Button : ILayoutable, IWindow, ISelectable, IDisableable
     {
         public enum ButtonState { Active, Disabled, Focused, Pushed }
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FrbUi
 {
-    public interface IClickable
+    public interface ISelectable
     {
         ILayoutableEvent OnFocused { get; set; }
         ILayoutableEvent OnFocusLost { get; set; }

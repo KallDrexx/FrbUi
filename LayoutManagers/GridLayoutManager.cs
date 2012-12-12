@@ -142,7 +142,8 @@ namespace FrbUi.LayoutManagers
             Layer = layer;
         }
 
-        public void AddItem(ILayoutable item, int columnIndex, int rowIndex)
+        public void AddItem(ILayoutable item, int columnIndex, int rowIndex, 
+                                HorizontalAlignment horizontalAlignment = HorizontalAlignment.Left, VerticalAlignment verticalAlignment = VerticalAlignment.Top)
         {
             if (columnIndex < 0)
                 throw new InvalidOperationException("Item cannot be placed in a column index less than 0");
@@ -174,6 +175,8 @@ namespace FrbUi.LayoutManagers
 
             // Attach the item to the grid item
             gridItem.Item = item;
+            gridItem.HorizontalAlignment = horizontalAlignment;
+            gridItem.VerticalAlignment = verticalAlignment;
 
             // Sort the items first by row then by column for efficient looping
             _items = _items.OrderBy(x => x.Row).ThenBy(x => x.Column).ToList();
@@ -332,6 +335,15 @@ namespace FrbUi.LayoutManagers
                 if (gridItem.Item == null)
                     continue;
 
+                // If we have an item in this cell, there must be a max width or height defined
+                if (!columnMaxWidths.ContainsKey(gridItem.Column))
+                    throw new InvalidOperationException(
+                        string.Format("Grid item exists at {0} but no max width found", gridItem.Column));
+
+                if (!rowMaxHeights.ContainsKey(gridItem.Row))
+                    throw new InvalidOperationException(
+                        string.Format("Grid item exists at {0} but no max height found", gridItem.Row));
+
                 // Offsets begin at the top left
                 float xOffset = (0 - ScaleX + Margin);
                 float yOffset = (ScaleY - Margin);
@@ -358,9 +370,45 @@ namespace FrbUi.LayoutManagers
                         yOffset -= Spacing;
                 }
 
+                // Figure out the alignment offsets
+                float alignmentOffsetX;
+                float alignmentOffsetY;
+
+                switch (gridItem.HorizontalAlignment)
+                {
+                    case HorizontalAlignment.Center:
+                        alignmentOffsetX = (columnMaxWidths[gridItem.Column] / 2) - gridItem.Item.ScaleX;
+                        break;
+
+                    case HorizontalAlignment.Right:
+                        alignmentOffsetX = (columnMaxWidths[gridItem.Column] - gridItem.Item.ScaleX);
+                        break;
+
+                    case HorizontalAlignment.Left:
+                    default:
+                        alignmentOffsetX = 0;
+                        break;
+                }
+
+                switch (gridItem.VerticalAlignment)
+                {
+                    case VerticalAlignment.Center:
+                        alignmentOffsetY = (rowMaxHeights[gridItem.Row] / 2) - gridItem.Item.ScaleY;
+                        break;
+
+                    case VerticalAlignment.Bottom:
+                        alignmentOffsetY = (rowMaxHeights[gridItem.Row] + gridItem.Item.ScaleY);
+                        break;
+
+                    case VerticalAlignment.Top:
+                    default:
+                        alignmentOffsetY = 0;
+                        break;
+                }
+
                 // Position the offsets to account for the center of the object
-                xOffset += gridItem.Item.ScaleX;
-                yOffset -= gridItem.Item.ScaleY;
+                xOffset += gridItem.Item.ScaleX + alignmentOffsetX;
+                yOffset -= gridItem.Item.ScaleY + alignmentOffsetY;
 
                 // Place the item
                 gridItem.Item.RelativeX = xOffset;
@@ -370,11 +418,16 @@ namespace FrbUi.LayoutManagers
 
         #endregion
 
+        public enum HorizontalAlignment { Left, Center, Right }
+        public enum VerticalAlignment { Top, Center, Bottom }
+
         public class GridItem
         {
             public int Column { get; set; }
             public int Row { get; set; }
             public ILayoutable Item { get; set; }
+            public HorizontalAlignment HorizontalAlignment { get; set; }
+            public VerticalAlignment VerticalAlignment { get; set; }
         }
     }
 }

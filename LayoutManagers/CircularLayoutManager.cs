@@ -7,6 +7,7 @@ using FlatRedBall;
 using FlatRedBall.ManagedSpriteGroups;
 using Microsoft.Xna.Framework;
 using FlatRedBall.Graphics.Animation;
+using FlatRedBall.Math.Geometry;
 
 namespace FrbUi.LayoutManagers
 {
@@ -18,6 +19,7 @@ namespace FrbUi.LayoutManagers
         protected Layer _layer;
         protected Dictionary<ILayoutable, CircularPosition> _items;
         protected bool _recalculateLayout;
+        protected AxisAlignedRectangle _border;
 
         public CircularLayoutManager()
         {
@@ -78,6 +80,9 @@ namespace FrbUi.LayoutManagers
                 _backgroundSprite.ScaleX = value;
                 if (OnSizeChangeHandler != null)
                     OnSizeChangeHandler(this);
+
+                if (ShowBorder)
+                    _border.ScaleX = value;
             }
         }
 
@@ -89,6 +94,29 @@ namespace FrbUi.LayoutManagers
                 _backgroundSprite.ScaleY = value;
                 if (OnSizeChangeHandler != null)
                     OnSizeChangeHandler(this);
+
+                if (ShowBorder)
+                    _border.ScaleY = value;
+            }
+        }
+
+        public bool ShowBorder
+        {
+            get { return _border != null; }
+            set
+            {
+                if (_border == null && value)
+                {
+                    _border = ShapeManager.AddAxisAlignedRectangle();
+                    _border.AttachTo(_backgroundSprite, false);
+                    _border.ScaleX = ScaleX;
+                    _border.ScaleY = ScaleY;
+                }
+                else if (_border != null && !value)
+                {
+                    ShapeManager.Remove(_border);
+                    _border = null;
+                }
             }
         }
 

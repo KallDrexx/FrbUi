@@ -17,6 +17,8 @@ namespace FrbUi.LayoutManagers
         protected Layer _layer;
         protected List<GridItem> _items;
         protected bool _recalculateLayout;
+        protected float _margin;
+        protected float _spacing;
         protected AxisAlignedRectangle _border;
 
         public GridLayoutManager()
@@ -32,8 +34,6 @@ namespace FrbUi.LayoutManagers
         #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Select(x => x.Item); } }
-        public float Margin { get; set; }
-        public float Spacing { get; set; }
 
         public int ColumnCount { get; protected set; }
         public int RowCount { get; protected set; }
@@ -115,6 +115,26 @@ namespace FrbUi.LayoutManagers
                     ShapeManager.Remove(_border);
                     _border = null;
                 }
+            }
+        }
+
+        public float Margin
+        {
+            get { return _margin; }
+            set
+            {
+                _margin = value;
+                _recalculateLayout = true;
+            }
+        }
+
+        public float Spacing
+        {
+            get { return _spacing; }
+            set
+            {
+                _spacing = value;
+                _recalculateLayout = true;
             }
         }
 

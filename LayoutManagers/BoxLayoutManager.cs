@@ -18,6 +18,9 @@ namespace FrbUi.LayoutManagers
         protected Layer _layer;
         protected Dictionary<ILayoutable, Alignment> _items;
         protected bool _recalculateLayout;
+        protected float _margin;
+        protected float _spacing;
+        protected Direction _currentDirection;
 
         public BoxLayoutManager()
         {
@@ -32,9 +35,6 @@ namespace FrbUi.LayoutManagers
         #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
-        public Direction CurrentDirection { get; set; }
-        public float Margin { get; set; }
-        public float Spacing { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -87,6 +87,36 @@ namespace FrbUi.LayoutManagers
                 _backgroundSprite.ScaleY = value;
                 if (OnSizeChangeHandler != null)
                     OnSizeChangeHandler(this);
+            }
+        }
+
+        public Direction CurrentDirection
+        {
+            get { return _currentDirection; }
+            set
+            {
+                _currentDirection = value;
+                _recalculateLayout = true;
+            }
+        }
+
+        public float Margin
+        {
+            get { return _margin; }
+            set
+            {
+                _margin = value;
+                _recalculateLayout = true;
+            }
+        }
+
+        public float Spacing
+        {
+            get { return _spacing; }
+            set
+            {
+                _spacing = value;
+                _recalculateLayout = true;
             }
         }
 

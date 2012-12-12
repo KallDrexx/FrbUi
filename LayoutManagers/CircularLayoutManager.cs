@@ -20,6 +20,11 @@ namespace FrbUi.LayoutManagers
         protected Dictionary<ILayoutable, CircularPosition> _items;
         protected bool _recalculateLayout;
         protected AxisAlignedRectangle _border;
+        protected float _margin;
+        protected float _radius;
+        protected float _startingDegrees;
+        protected float _minDegreeOffset;
+        protected ArrangementMode _currentArrangementMode;
 
         public CircularLayoutManager()
         {
@@ -34,11 +39,6 @@ namespace FrbUi.LayoutManagers
         #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
-        public ArrangementMode CurrentArrangementMode { get; set; }
-        public float MinDegreeOffset { get; set; }
-        public float StartingDegrees { get; set; }
-        public float Radius { get; set; }
-        public float Margin { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -117,6 +117,56 @@ namespace FrbUi.LayoutManagers
                     ShapeManager.Remove(_border);
                     _border = null;
                 }
+            }
+        }
+
+        public float MinDegreeOffset
+        {
+            get { return _minDegreeOffset; }
+            set
+            {
+                _minDegreeOffset = value;
+                _recalculateLayout = true;
+            }
+        }
+
+        public float StartingDegrees
+        {
+            get { return _startingDegrees; }
+            set
+            {
+                _startingDegrees = value;
+                _recalculateLayout = true;
+            }
+        }
+
+        public float Radius
+        {
+            get { return _radius; }
+            set
+            {
+                _radius = value;
+                _recalculateLayout = true;
+            }
+        }
+
+        public float Margin
+        {
+            get { return _margin; }
+            set
+            {
+                _margin = value;
+                _recalculateLayout = true;
+            }
+        }
+
+        public ArrangementMode CurrentArrangementMode
+        {
+            get { return _currentArrangementMode; }
+            set
+            {
+                _currentArrangementMode = value;
+                _recalculateLayout = true;
             }
         }
 

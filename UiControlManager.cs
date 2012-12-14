@@ -13,13 +13,13 @@ namespace FrbUi
         private static UiControlManager _instance;
 
         private List<ILayoutable> _items;
-        private List<UiSelectableControlGroup> _selectableControlGroups;
+        private List<SelectableControlGroup> _selectableControlGroups;
         private Layer _uiLayer;
 
         private UiControlManager() 
         {
             _items = new List<ILayoutable>();
-            _selectableControlGroups = new List<UiSelectableControlGroup>();
+            _selectableControlGroups = new List<SelectableControlGroup>();
 
             // Create the 2d layer
             _uiLayer = SpriteManager.AddLayer();
@@ -82,14 +82,14 @@ namespace FrbUi
             }
         }
 
-        public UiSelectableControlGroup CreateSelectableControlGroup()
+        public SelectableControlGroup CreateSelectableControlGroup()
         {
-            var group = new UiSelectableControlGroup();
+            var group = new SelectableControlGroup();
             _selectableControlGroups.Add(group);
             return group;
         }
 
-        public void RemoveSelectableControlGroup(UiSelectableControlGroup group)
+        public void RemoveSelectableControlGroup(SelectableControlGroup group)
         {
             group.Destroy();
             if (!_selectableControlGroups.Contains(group))

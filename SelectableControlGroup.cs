@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace FrbUi
 {
-    public class UiSelectableControlGroup : Collection<ISelectable>
+    public class SelectableControlGroup : Collection<ISelectable>
     {
         protected ISelectable _focusedItem;
         protected bool _destroyed;

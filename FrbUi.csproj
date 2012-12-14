@@ -69,10 +69,10 @@
     <Compile Include="IDisableable.cs" />
     <Compile Include="ILayoutable.cs" />
     <Compile Include="ISelectable.cs" />
-    <Compile Include="LayoutManagers\BoxLayoutManager.cs" />
-    <Compile Include="LayoutManagers\CircularLayoutManager.cs" />
-    <Compile Include="LayoutManagers\GridLayoutManager.cs" />
-    <Compile Include="LayoutManagers\SimpleLayoutManager.cs" />
+    <Compile Include="Layouts\BoxLayout.cs" />
+    <Compile Include="Layouts\CircularLayout.cs" />
+    <Compile Include="Layouts\GridLayout.cs" />
+    <Compile Include="Layouts\SimpleLayout.cs" />
     <Compile Include="Positioning\HorizontalPosition.cs" />
     <Compile Include="Positioning\LayoutOrigin.cs" />
     <Compile Include="Positioning\OverallPosition.cs" />

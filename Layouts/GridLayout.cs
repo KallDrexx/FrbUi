@@ -9,9 +9,9 @@ using FlatRedBall;
 using Microsoft.Xna.Framework;
 using FlatRedBall.Math.Geometry;
 
-namespace FrbUi.LayoutManagers
+namespace FrbUi.Layouts
 {
-    public class GridLayoutManager : ILayoutable
+    public class GridLayout : ILayoutable
     {
         protected SpriteFrame _backgroundSprite;
         protected Layer _layer;
@@ -21,7 +21,7 @@ namespace FrbUi.LayoutManagers
         protected float _spacing;
         protected AxisAlignedRectangle _border;
 
-        public GridLayoutManager()
+        public GridLayout()
         {
             _items = new List<GridItem>();
             _backgroundSprite = new SpriteFrame();

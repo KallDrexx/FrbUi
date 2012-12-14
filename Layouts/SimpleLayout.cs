@@ -8,16 +8,16 @@ using FlatRedBall;
 using FrbUi.Positioning;
 using FlatRedBall.Graphics.Animation;
 
-namespace FrbUi.LayoutManagers
+namespace FrbUi.Layouts
 {
-    public class SimpleLayoutManager : ILayoutable
+    public class SimpleLayout : ILayoutable
     {
         protected SpriteFrame _backgroundSprite;
         protected Layer _layer;
         protected Dictionary<ILayoutable, OverallPosition> _items;
         protected bool _isFullScreen;
 
-        public SimpleLayoutManager()
+        public SimpleLayout()
         {
             _items = new Dictionary<ILayoutable, OverallPosition>();
             _backgroundSprite = new SpriteFrame();

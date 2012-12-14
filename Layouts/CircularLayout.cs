@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework;
 using FlatRedBall.Graphics.Animation;
 using FlatRedBall.Math.Geometry;
 
-namespace FrbUi.LayoutManagers
+namespace FrbUi.Layouts
 {
-    public class CircularLayoutManager : ILayoutable
+    public class CircularLayout : ILayoutable
     {
         protected const float FULL_CIRCLE = 2 * (float)Math.PI;
 
@@ -26,7 +26,7 @@ namespace FrbUi.LayoutManagers
         protected float _minDegreeOffset;
         protected ArrangementMode _currentArrangementMode;
 
-        public CircularLayoutManager()
+        public CircularLayout()
         {
             _items = new Dictionary<ILayoutable, CircularPosition>();
             _backgroundSprite = new SpriteFrame();

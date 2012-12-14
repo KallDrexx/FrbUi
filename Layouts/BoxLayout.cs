@@ -7,9 +7,9 @@ using FlatRedBall.Graphics;
 using FlatRedBall;
 using FlatRedBall.Graphics.Animation;
 
-namespace FrbUi.LayoutManagers
+namespace FrbUi.Layouts
 {
-    public class BoxLayoutManager : ILayoutable
+    public class BoxLayout : ILayoutable
     {
         public enum Alignment { Default, Inverse }
         public enum Direction { Up, Down, Left, Right }
@@ -22,7 +22,7 @@ namespace FrbUi.LayoutManagers
         protected float _spacing;
         protected Direction _currentDirection;
 
-        public BoxLayoutManager()
+        public BoxLayout()
         {
             _items = new Dictionary<ILayoutable, Alignment>();
             _backgroundSprite = new SpriteFrame();

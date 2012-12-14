@@ -54,6 +54,16 @@ namespace FrbUi
             item.AddToManagers(_uiLayer);
         }
 
+        public TResult CreateControl<TResult>() where TResult : ILayoutable
+        {
+            if (typeof(TResult).IsInterface)
+                throw new InvalidOperationException("Cannot create a control from an interface");
+
+            var control = Activator.CreateInstance<TResult>();
+            AddControl(control);
+            return control;
+        }
+
         public void DestroyControl(ILayoutable item)
         {
             if (item == null)

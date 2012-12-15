@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FlatRedBall;
 using FlatRedBall.Graphics;
+using FlatRedBall.Screens;
 
 namespace FrbUi
 {
@@ -15,18 +16,12 @@ namespace FrbUi
         private List<ILayoutable> _items;
         private List<SelectableControlGroup> _selectableControlGroups;
         private Layer _uiLayer;
+        private Screen _lastScreen;
 
         private UiControlManager() 
         {
             _items = new List<ILayoutable>();
             _selectableControlGroups = new List<SelectableControlGroup>();
-
-            // Create the 2d layer
-            _uiLayer = SpriteManager.AddLayer();
-            _uiLayer.LayerCameraSettings = new LayerCameraSettings();
-            _uiLayer.LayerCameraSettings.Orthogonal = true;
-            _uiLayer.LayerCameraSettings.OrthogonalWidth = SpriteManager.Camera.OrthogonalWidth;
-            _uiLayer.LayerCameraSettings.OrthogonalHeight = SpriteManager.Camera.OrthogonalHeight;
         }
 
         public static UiControlManager Instance
@@ -47,6 +42,8 @@ namespace FrbUi
 
         public void AddControl(ILayoutable item)
         {
+            CheckCurrentScreen();
+
             if (item == null || _items.Contains(item))
                 return;
 
@@ -100,14 +97,57 @@ namespace FrbUi
 
         public void RunActivities()
         {
+            CheckCurrentScreen();
+
             foreach (var item in _items)
                 item.Activity();
         }
 
         public void UpdateDependencies()
         {
+            CheckCurrentScreen();
+
             foreach (var item in _items)
                 item.UpdateDependencies(TimeManager.CurrentTime);
+        }
+
+        private void CreateUiLayer()
+        {
+            // Create the 2d layer
+            _uiLayer = SpriteManager.AddLayer();
+            _uiLayer.LayerCameraSettings = new LayerCameraSettings();
+            _uiLayer.LayerCameraSettings.Orthogonal = true;
+            _uiLayer.LayerCameraSettings.OrthogonalWidth = SpriteManager.Camera.OrthogonalWidth;
+            _uiLayer.LayerCameraSettings.OrthogonalHeight = SpriteManager.Camera.OrthogonalHeight;
+        }
+
+        private void CheckCurrentScreen()
+        {
+            if (_lastScreen == ScreenManager.CurrentScreen)
+                return;
+
+            // Since the layer has changed, recreate the UI layer
+            CreateUiLayer();
+
+            // Screen has changed, set it up so all UI controls get destroyed
+            //   when this screen is destroyed
+            if (_lastScreen != null)
+                _lastScreen.OnScreenDestroyed -= PrepareForScreenChange;
+
+            ScreenManager.CurrentScreen.OnScreenDestroyed += PrepareForScreenChange;
+            _lastScreen = ScreenManager.CurrentScreen;
+        }
+
+        private void PrepareForScreenChange()
+        {
+            for (int x = _items.Count - 1; x >= 0; x--)
+            {
+                _items[x].Destroy();
+                _items.RemoveAt(x);
+            }
+
+            // Destroy the layer
+            SpriteManager.RemoveLayer(_uiLayer);
         }
     }
 }

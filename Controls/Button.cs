@@ -314,6 +314,7 @@ namespace FrbUi.Controls
         {
             _backgroundSprite.Detach();
             SpriteManager.RemoveSpriteFrame(_backgroundSprite);
+            TextManager.RemoveText(_label);
             GuiManager.RemoveWindow(this);
         }
 

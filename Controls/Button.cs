@@ -177,7 +177,9 @@ namespace FrbUi.Controls
                 if (_enabled == value)
                     return;
 
+                // Set the _enabled variable and reset the button state to not selected
                 _enabled = value;
+                CurrentSelectableState = SelectableState.NotSelected;
 
                 // Switch to the new state
                 if (value)

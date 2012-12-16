@@ -175,6 +175,7 @@ namespace FrbUi.Controls
 
         public Button()
         {
+            Enabled = true;
             _backgroundSprite = new SpriteFrame();
             _label = new Text();
             _label.AttachTo(_backgroundSprite, false);

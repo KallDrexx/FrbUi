@@ -148,6 +148,7 @@ namespace FrbUi
 
             // Destroy the layer
             SpriteManager.RemoveLayer(_uiLayer);
+            _uiLayer = null;
         }
     }
 }

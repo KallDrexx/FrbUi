@@ -18,6 +18,7 @@ namespace FrbUi.Controls
         protected Text _label;
         protected bool _pushedWithFocus;
         protected bool _paused;
+        protected bool _enabled;
 
         protected string _standardAnimationChainName;
         protected string _focusedAnimationChainName;
@@ -48,8 +49,6 @@ namespace FrbUi.Controls
         public bool IgnoreCursorFocus { get; set; }
 
         public SelectableState CurrentSelectableState { get; protected set; }
-
-        public bool Enabled { get; set; }
         public float Alpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList AnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
@@ -169,13 +168,38 @@ namespace FrbUi.Controls
             }
         }
 
+        public bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                // Don't do anything if the enabled state isn't changing
+                if (_enabled == value)
+                    return;
+
+                _enabled = value;
+
+                // Switch to the new state
+                if (value)
+                {
+                    if (!string.IsNullOrEmpty(_standardAnimationChainName))
+                        _backgroundSprite.CurrentChainName = _standardAnimationChainName;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(_disabledAnimationChainName))
+                        _backgroundSprite.CurrentChainName = _disabledAnimationChainName;
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
 
         public Button()
         {
-            Enabled = true;
+            _enabled = true;
             _backgroundSprite = new SpriteFrame();
             _label = new Text();
             _label.AttachTo(_backgroundSprite, false);
@@ -186,7 +210,7 @@ namespace FrbUi.Controls
         public void Focus()
         {
             // A button can only be focused if it's in an active state
-            if (CurrentSelectableState != SelectableState.NotSelected)
+            if (!Enabled || CurrentSelectableState != SelectableState.NotSelected)
                 return;
 
             CurrentSelectableState = SelectableState.Focused;
@@ -214,7 +238,7 @@ namespace FrbUi.Controls
         public void Push()
         {
             // Button must be focused to be pushed
-            if (CurrentSelectableState != SelectableState.Focused && CurrentSelectableState != SelectableState.NotSelected)
+            if (!Enabled || (CurrentSelectableState != SelectableState.Focused && CurrentSelectableState != SelectableState.NotSelected))
                 return;
 
             _pushedWithFocus = (CurrentSelectableState == SelectableState.Focused);
@@ -228,7 +252,7 @@ namespace FrbUi.Controls
 
         public void Click()
         {
-            if (CurrentSelectableState != SelectableState.Pushed && CurrentSelectableState != SelectableState.Focused)
+            if (!Enabled || CurrentSelectableState != SelectableState.Pushed && CurrentSelectableState != SelectableState.Focused)
                 return;
 
             if (_pushedWithFocus)
@@ -248,12 +272,6 @@ namespace FrbUi.Controls
 
             if (OnClicked != null)
                 OnClicked(this);
-        }
-
-        public void Press()
-        {
-            Push();
-            Click();
         }
 
         public void ResizeAroundText(float horizontalMargin, float VerticalMargin)
@@ -399,7 +417,8 @@ namespace FrbUi.Controls
                 if (cursor.PrimaryPush)
                 {
                     cursor.WindowPushed = this;
-                    Press();
+                    Push();
+                    Click();
                     cursor.GrabWindow(this);
                 }
             }

@@ -132,9 +132,9 @@ namespace FrbUi
             // Screen has changed, set it up so all UI controls get destroyed
             //   when this screen is destroyed
             if (_lastScreen != null)
-                _lastScreen.OnScreenDestroyed -= PrepareForScreenChange;
+                _lastScreen.ScreenDestroy -= PrepareForScreenChange;
 
-            ScreenManager.CurrentScreen.OnScreenDestroyed += PrepareForScreenChange;
+            ScreenManager.CurrentScreen.ScreenDestroy += PrepareForScreenChange;
             _lastScreen = ScreenManager.CurrentScreen;
         }
 

@@ -9,7 +9,7 @@ using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Layouts
 {
-    public class BoxLayout : ILayoutable
+    public class BoxLayout : ILayoutable, ISelectable
     {
         public enum Alignment { Default, Inverse }
         public enum Direction { Up, Down, Left, Right }
@@ -22,6 +22,11 @@ namespace FrbUi.Layouts
         protected float _spacing;
         protected Direction _currentDirection;
 
+        protected string _standardAnimationChainName;
+        protected string _focusedAnimationChainName;
+        protected string _pushedAnimationChainName;
+        protected string _disabledAnimationChainName;
+
         public BoxLayout()
         {
             _items = new Dictionary<ILayoutable, Alignment>();
@@ -31,10 +36,15 @@ namespace FrbUi.Layouts
         }
 
         public ILayoutableEvent OnSizeChangeHandler { get; set; }
+        public ILayoutableEvent OnFocused { get; set; }
+        public ILayoutableEvent OnFocusLost { get; set; }
+        public ILayoutableEvent OnPushed { get; set; }
+        public ILayoutableEvent OnClicked { get; set; }
 
         #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
+        public SelectableState CurrentSelectableState { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -117,6 +127,54 @@ namespace FrbUi.Layouts
             {
                 _spacing = value;
                 _recalculateLayout = true;
+            }
+        }
+
+        public string StandardAnimationChainName
+        {
+            get { return _standardAnimationChainName; }
+            set
+            {
+                if (!_backgroundSprite.ContainsChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _standardAnimationChainName = value;
+
+                // If we should be displaying this animation chain, activate it
+                if (CurrentSelectableState == SelectableState.NotSelected)
+                    _backgroundSprite.CurrentChainName = value;
+            }
+        }
+
+        public string FocusedAnimationChainName
+        {
+            get { return _focusedAnimationChainName; }
+            set
+            {
+                if (!_backgroundSprite.ContainsChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _focusedAnimationChainName = value;
+
+                // If we should be displaying this animation chain, activate it
+                if (CurrentSelectableState == SelectableState.Focused)
+                    _backgroundSprite.CurrentChainName = value;
+            }
+        }
+
+        public string PushedAnimationChainName
+        {
+            get { return _pushedAnimationChainName; }
+            set
+            {
+                if (!_backgroundSprite.ContainsChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _pushedAnimationChainName = value;
+
+                // If we should be displaying this animation chain, activate it
+                if (CurrentSelectableState == SelectableState.Pushed)
+                    _backgroundSprite.CurrentChainName = value;
             }
         }
 
@@ -375,5 +433,26 @@ namespace FrbUi.Layouts
         }
 
         #endregion
+
+
+        public void Focus()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LoseFocus()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Push()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Click()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

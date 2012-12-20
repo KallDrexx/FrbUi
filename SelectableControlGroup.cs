@@ -67,7 +67,7 @@ namespace FrbUi
                 if (_focusedItem != null)
                 {
                     startIndex = this.IndexOf(_focusedItem);
-                    startIndex = (focusNext ? startIndex++ : startIndex--);
+                    startIndex = (focusNext ? startIndex + 1 : startIndex - 1);
 
                     if (startIndex >= Count)
                         startIndex = 0;

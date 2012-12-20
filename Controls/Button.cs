@@ -71,6 +71,8 @@ namespace FrbUi.Controls
         public IVisible Parent { get { return _backgroundSprite.Parent as IVisible; } }
         public string Name { get { return "FrbUi Button"; } set { throw new NotImplementedException(); } }
         public string Text { get { return _label.DisplayText; } set { _label.DisplayText = value; }}
+        public float Pixelsize { get { return _backgroundSprite.PixelSize; } set { _backgroundSprite.PixelSize = value; } }
+        public SpriteFrame.BorderSides Border { get { return _backgroundSprite.Borders; } set { _backgroundSprite.Borders = value; } }
 
         public Layer Layer
         {
@@ -203,6 +205,9 @@ namespace FrbUi.Controls
         {
             _enabled = true;
             _backgroundSprite = new SpriteFrame();
+            _backgroundSprite.PixelSize = 0.75f;
+            _backgroundSprite.Borders = FlatRedBall.ManagedSpriteGroups.SpriteFrame.BorderSides.LeftRight;
+
             _label = new Text();
             _label.AttachTo(_backgroundSprite, false);
             _label.SetPixelPerfectScale(SpriteManager.Camera);

@@ -32,6 +32,15 @@ namespace FrbUi
             _focusedItem.Click();
         }
 
+        public void UnfocusCurrentControl()
+        {
+            if (_focusedItem != null)
+            {
+                _focusedItem.LoseFocus();
+                _focusedItem = null;
+            }
+        }
+
         public void Destroy()
         {
             _destroyed = true;
@@ -120,7 +129,5 @@ namespace FrbUi
             if (_focusedItem != null)
                 _focusedItem.Focus();
         }
-
-        
     }
 }

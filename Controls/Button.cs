@@ -19,6 +19,7 @@ namespace FrbUi.Controls
         protected bool _pushedWithFocus;
         protected bool _paused;
         protected bool _enabled;
+        protected bool _buttonPushed;
 
         protected string _standardAnimationChainName;
         protected string _focusedAnimationChainName;
@@ -31,6 +32,7 @@ namespace FrbUi.Controls
         public ILayoutableEvent OnFocused { get; set; }
         public ILayoutableEvent OnFocusLost { get; set; }
         public ILayoutableEvent OnPushed { get; set; }
+        public ILayoutableEvent OnPushReleased { get; set; }
         public ILayoutableEvent OnClicked { get; set; }
 
         #endregion
@@ -49,7 +51,6 @@ namespace FrbUi.Controls
         public bool IgnoreCursorFocus { get; set; }
 
         public SelectableState CurrentSelectableState { get; protected set; }
-        public float Alpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList AnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
         public float RelativeY { get { return _backgroundSprite.RelativeY; } set { _backgroundSprite.RelativeY = value; } }
@@ -197,6 +198,16 @@ namespace FrbUi.Controls
             }
         }
 
+        public float Alpha 
+        { 
+            get { return _backgroundSprite.Alpha; } 
+            set 
+            { 
+                _backgroundSprite.Alpha = value;
+                _label.Alpha = value;
+            } 
+        }
+
         #endregion
 
         #region Methods
@@ -244,12 +255,13 @@ namespace FrbUi.Controls
 
         public void Push()
         {
-            // Button must be focused to be pushed
+            // Button must be focused or not selected to be pushed
             if (!Enabled || (CurrentSelectableState != SelectableState.Focused && CurrentSelectableState != SelectableState.NotSelected))
                 return;
 
             _pushedWithFocus = (CurrentSelectableState == SelectableState.Focused);
             CurrentSelectableState = SelectableState.Pushed;
+
             if (_pushedAnimationChainName != null)
                 _backgroundSprite.CurrentChainName = _pushedAnimationChainName;
 
@@ -257,9 +269,10 @@ namespace FrbUi.Controls
                 OnPushed(this);
         }
 
-        public void Click()
+        public void ReleasePush()
         {
-            if (!Enabled || CurrentSelectableState != SelectableState.Pushed && CurrentSelectableState != SelectableState.Focused)
+            // Push can only be released if the current state is pushed
+            if (!Enabled || (CurrentSelectableState != SelectableState.Pushed))
                 return;
 
             if (_pushedWithFocus)
@@ -276,7 +289,21 @@ namespace FrbUi.Controls
             }
 
             _pushedWithFocus = false;
+        }
 
+        public void Click()
+        {
+            if (!Enabled || CurrentSelectableState != SelectableState.Pushed && CurrentSelectableState != SelectableState.Focused)
+                return;
+
+            // If the button hasn't been pushed yet, make sure it is
+            if (CurrentSelectableState != SelectableState.Pushed)
+                Push();
+            
+            // Release the push
+            ReleasePush();
+
+            // Call onclick handler
             if (OnClicked != null)
                 OnClicked(this);
         }

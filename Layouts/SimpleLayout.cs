@@ -16,6 +16,7 @@ namespace FrbUi.Layouts
         protected Layer _layer;
         protected Dictionary<ILayoutable, OverallPosition> _items;
         protected bool _isFullScreen;
+        protected float _alpha;
 
         public SimpleLayout()
         {
@@ -29,6 +30,7 @@ namespace FrbUi.Layouts
 
         #region Properties
 
+        public bool KeepBackgroundAlphaSynced { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -108,12 +110,29 @@ namespace FrbUi.Layouts
             }
         }
 
+        public float Alpha
+        {
+            get { return _alpha; }
+            set
+            {
+                _alpha = value;
+
+                if (KeepBackgroundAlphaSynced)
+                    BackgroundAlpha = value;
+
+                // Update the alpha values of all child objects
+                foreach (var item in _items.Keys)
+                    item.Alpha = value;
+            }
+        }
+
         #endregion
 
         #region Methods
 
         public void Activity()
         {
+            _alpha = 1f;
         }
 
         public void AttachTo(PositionedObject obj, bool changeRelative)
@@ -163,6 +182,7 @@ namespace FrbUi.Layouts
 
             var position = new OverallPosition { HorizontalPosition = horizontalPosition, VerticalPosition = verticalPosition };
             _items.Add(item, position);
+            item.Alpha = _alpha;
             item.AttachTo(_backgroundSprite, false);
 
             PositionItem(item, horizontalPosition, verticalPosition, layoutFrom);

@@ -19,6 +19,7 @@ namespace FrbUi.Layouts
         protected bool _recalculateLayout;
         protected float _margin;
         protected float _spacing;
+        protected float _alpha;
         protected AxisAlignedRectangle _border;
 
         public GridLayout()
@@ -37,6 +38,7 @@ namespace FrbUi.Layouts
 
         public int ColumnCount { get; protected set; }
         public int RowCount { get; protected set; }
+        public bool KeepBackgroundAlphaSynced { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -138,12 +140,29 @@ namespace FrbUi.Layouts
             }
         }
 
+        public float Alpha
+        {
+            get { return _alpha; }
+            set
+            {
+                _alpha = value;
+
+                if (KeepBackgroundAlphaSynced)
+                    BackgroundAlpha = value;
+
+                // Update the alpha values of all child objects
+                foreach (var item in _items)
+                    item.Item.Alpha = value;
+            }
+        }
+
         #endregion
 
         #region Methods
 
         public void Activity()
         {
+            _alpha = 1f;
         }
 
         public void AttachTo(PositionedObject obj, bool changeRelative)
@@ -202,6 +221,7 @@ namespace FrbUi.Layouts
             _items = _items.OrderBy(x => x.Row).ThenBy(x => x.Column).ToList();
 
             item.AttachTo(_backgroundSprite, false);
+            item.Alpha = _alpha;
             _recalculateLayout = true;
 
             item.OnSizeChangeHandler = new ILayoutableEvent(delegate(ILayoutable sender)

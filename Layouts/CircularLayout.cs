@@ -24,6 +24,7 @@ namespace FrbUi.Layouts
         protected float _radius;
         protected float _startingDegrees;
         protected float _minDegreeOffset;
+        protected float _alpha;
         protected ArrangementMode _currentArrangementMode;
 
         public CircularLayout()
@@ -39,6 +40,7 @@ namespace FrbUi.Layouts
         #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
+        public bool KeepBackgroundAlphaSynced { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -160,6 +162,22 @@ namespace FrbUi.Layouts
             }
         }
 
+        public float Alpha
+        {
+            get { return _alpha; }
+            set
+            {
+                _alpha = value;
+
+                if (KeepBackgroundAlphaSynced)
+                    BackgroundAlpha = value;
+
+                // Update the alpha values of all child objects
+                foreach (var item in _items.Keys)
+                    item.Alpha = value;
+            }
+        }
+
         public ArrangementMode CurrentArrangementMode
         {
             get { return _currentArrangementMode; }
@@ -176,6 +194,7 @@ namespace FrbUi.Layouts
 
         public void Activity()
         {
+            _alpha = 1f;
         }
 
         public void AttachTo(PositionedObject obj, bool changeRelative)
@@ -204,6 +223,7 @@ namespace FrbUi.Layouts
                 // Add the item to the list
                 _items.Add(item, new CircularPosition());
                 item.AttachTo(_backgroundSprite, false);
+                item.Alpha = _alpha;
             }
 
             // Calculate the item's position

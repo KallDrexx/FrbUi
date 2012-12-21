@@ -12,6 +12,7 @@ namespace FrbUi
         ILayoutableEvent OnFocused { get; set; }
         ILayoutableEvent OnFocusLost { get; set; }
         ILayoutableEvent OnPushed { get; set; }
+        ILayoutableEvent OnPushReleased { get; set; }
         ILayoutableEvent OnClicked { get; set; }
 
         SelectableState CurrentSelectableState { get; }
@@ -22,6 +23,7 @@ namespace FrbUi
         void Focus();
         void LoseFocus();
         void Push();
+        void ReleasePush();
         void Click();
     }
 }

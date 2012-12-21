@@ -17,6 +17,7 @@ namespace FrbUi
 
         float RelativeX { get; set; }
         float RelativeY { get; set; }
+        float Alpha { get; set; }
         Layer Layer { get; }
 
         void Activity();

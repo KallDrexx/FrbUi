@@ -21,6 +21,7 @@ namespace FrbUi.Layouts
         protected float _margin;
         protected float _spacing;
         protected Direction _currentDirection;
+        protected float _alpha;
 
         protected string _standardAnimationChainName;
         protected string _focusedAnimationChainName;
@@ -39,12 +40,14 @@ namespace FrbUi.Layouts
         public ILayoutableEvent OnFocused { get; set; }
         public ILayoutableEvent OnFocusLost { get; set; }
         public ILayoutableEvent OnPushed { get; set; }
+        public ILayoutableEvent OnPushReleased { get; set; }
         public ILayoutableEvent OnClicked { get; set; }
 
         #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public SelectableState CurrentSelectableState { get; set; }
+        public bool KeepBackgroundAlphaSynced { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -97,6 +100,22 @@ namespace FrbUi.Layouts
                 _backgroundSprite.ScaleY = value;
                 if (OnSizeChangeHandler != null)
                     OnSizeChangeHandler(this);
+            }
+        }
+
+        public float Alpha
+        {
+            get { return _alpha; }
+            set
+            {
+                _alpha = value;
+
+                if (KeepBackgroundAlphaSynced)
+                    BackgroundAlpha = value;
+
+                // Update the alpha values of all child objects
+                foreach (var item in _items.Keys)
+                    item.Alpha = value;
             }
         }
 
@@ -184,6 +203,8 @@ namespace FrbUi.Layouts
 
         public void Activity()
         {
+            _alpha = 1f;
+            KeepBackgroundAlphaSynced = true;
         }
 
         public void AttachTo(PositionedObject obj, bool changeRelative)
@@ -210,6 +231,7 @@ namespace FrbUi.Layouts
             var alignment = (inverseAlignment ? Alignment.Inverse : Alignment.Default);
             _items.Add(item, alignment);
             item.AttachTo(_backgroundSprite, false);
+            item.Alpha = _alpha;
             _recalculateLayout = true;
             PerformLayout();
 
@@ -434,7 +456,6 @@ namespace FrbUi.Layouts
 
         #endregion
 
-
         public void Focus()
         {
             throw new NotImplementedException();
@@ -451,6 +472,11 @@ namespace FrbUi.Layouts
         }
 
         public void Click()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReleasePush()
         {
             throw new NotImplementedException();
         }

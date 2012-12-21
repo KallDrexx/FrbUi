@@ -12,6 +12,7 @@ namespace FrbUi
         protected bool _destroyed;
 
         public bool Destroyed { get { return _destroyed; } }
+        public bool LoopFocus { get; set; }
 
         public void FocusNextControl()
         {
@@ -63,34 +64,27 @@ namespace FrbUi
                 // Figure out what index to start at
                 //   If we have a currently focused item start from there
                 //   Otherwise start at the beginning
-                int startIndex = 0;
+                int startIndex = -1;
                 if (_focusedItem != null)
-                {
                     startIndex = this.IndexOf(_focusedItem);
-                    startIndex = (focusNext ? startIndex + 1 : startIndex - 1);
 
-                    if (startIndex >= Count)
-                        startIndex = 0;
-
-                    if (startIndex < 0)
-                        startIndex = (Count - 1);
+                // If we are on the first (or last if not focusing next) element
+                //  stop iterating
+                if (focusNext)
+                {
+                    if (startIndex >= (Count - 1) && !LoopFocus)
+                        return;
+                }
+                else
+                {
+                    if (startIndex <= 0 && !LoopFocus)
+                        return;
                 }
 
                 int curIndex = startIndex;
                 do
                 {
-                    nextFocusableItem = this[curIndex];
-                    if (nextFocusableItem != null)
-                    {
-                        // If the control is disableable, only focus on it if it's enabled
-                        var disableable = nextFocusableItem as IDisableable;
-                        if (disableable == null | disableable.Enabled)
-                            break;
-
-                        // The control is disabled so ignore it
-                        nextFocusableItem = null;
-                    }
-
+                    // Move onto the next sequential control
                     if (focusNext)
                     {
                         curIndex++;
@@ -103,6 +97,18 @@ namespace FrbUi
                         if (curIndex < 0)
                             curIndex = (Count - 1);
                     }
+
+                    nextFocusableItem = this[curIndex];
+                    if (nextFocusableItem != null)
+                    {
+                        // If the control is disableable, only focus on it if it's enabled
+                        var disableable = nextFocusableItem as IDisableable;
+                        if (disableable == null | disableable.Enabled)
+                            break;
+
+                        // The control is disabled so ignore it
+                        nextFocusableItem = null;
+                    }
                 } while (curIndex != startIndex);
             }
 
@@ -114,5 +120,7 @@ namespace FrbUi
             if (_focusedItem != null)
                 _focusedItem.Focus();
         }
+
+        
     }
 }

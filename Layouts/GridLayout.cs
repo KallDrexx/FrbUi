@@ -221,6 +221,7 @@ namespace FrbUi.Layouts
             _items = _items.OrderBy(x => x.Row).ThenBy(x => x.Column).ToList();
 
             item.AttachTo(_backgroundSprite, false);
+            item.RelativeZ = 0.1f;
             item.Alpha = _alpha;
             _recalculateLayout = true;
 

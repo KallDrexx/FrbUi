@@ -184,6 +184,7 @@ namespace FrbUi.Layouts
             _items.Add(item, position);
             item.Alpha = _alpha;
             item.AttachTo(_backgroundSprite, false);
+            item.RelativeZ = 0.1f;
 
             PositionItem(item, horizontalPosition, verticalPosition, layoutFrom);
 

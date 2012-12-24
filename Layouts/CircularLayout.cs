@@ -13,7 +13,7 @@ namespace FrbUi.Layouts
 {
     public class CircularLayout : ILayoutable
     {
-        protected const float FULL_CIRCLE = 2 * (float)Math.PI;
+        private const float FULL_CIRCLE = 2 * (float)Math.PI;
 
         protected SpriteFrame _backgroundSprite;
         protected Layer _layer;
@@ -223,6 +223,7 @@ namespace FrbUi.Layouts
                 // Add the item to the list
                 _items.Add(item, new CircularPosition());
                 item.AttachTo(_backgroundSprite, false);
+                item.RelativeZ = 0.1f;
                 item.Alpha = _alpha;
             }
 

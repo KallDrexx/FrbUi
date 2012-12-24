@@ -157,6 +157,24 @@ namespace FrbUi.Controls
             set { _text.Z = value; }
         }
 
+        public float Red
+        {
+            get { return _text.Red; }
+            set { _text.Red = value; }
+        }
+
+        public float Green
+        {
+            get { return _text.Green; }
+            set { _text.Green = value; }
+        }
+
+        public float Blue
+        {
+            get { return _text.Blue; }
+            set { _text.Blue = value; }
+        }
+
         #endregion
 
         #region Methods

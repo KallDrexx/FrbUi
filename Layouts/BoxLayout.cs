@@ -14,32 +14,19 @@ namespace FrbUi.Layouts
         public enum Alignment { Default, Inverse }
         public enum Direction { Up, Down, Left, Right }
 
-        protected SpriteFrame _backgroundSprite;
-        protected Layer _layer;
-        protected Dictionary<ILayoutable, Alignment> _items;
-        protected bool _recalculateLayout;
-        protected float _margin;
-        protected float _spacing;
-        protected Direction _currentDirection;
-        protected float _alpha;
+        private readonly SpriteFrame _backgroundSprite;
+        private Layer _layer;
+        private Dictionary<ILayoutable, Alignment> _items;
+        private bool _recalculateLayout;
+        private float _margin;
+        private float _spacing;
+        private Direction _currentDirection;
+        private float _alpha;
         private AxisAlignedRectangle _border;
 
-        protected string _standardAnimationChainName;
-        protected string _focusedAnimationChainName;
-        protected string _pushedAnimationChainName;
-
-        public BoxLayout()
-        {
-            _alpha = 1;
-            _items = new Dictionary<ILayoutable, Alignment>();
-            _backgroundSprite = new SpriteFrame();
-            _backgroundSprite.PixelSize = 0.5f;
-            _backgroundSprite.Borders = SpriteFrame.BorderSides.All;
-            _backgroundSprite.TextureBorderWidth = 1;
-            _backgroundSprite.SpriteBorderWidth = 1;
-            _backgroundSprite.RelativeZ = -0.1f;
-            _backgroundSprite.Alpha = (_backgroundSprite.Texture == null ? 0 : _alpha);
-        }
+        private string _standardAnimationChainName;
+        private string _focusedAnimationChainName;
+        private string _pushedAnimationChainName;
 
         public ILayoutableEvent OnSizeChangeHandler { get; set; }
         public ILayoutableEvent OnFocused { get; set; }
@@ -51,11 +38,10 @@ namespace FrbUi.Layouts
         #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
-        public SelectableState CurrentSelectableState { get; private set; }
+        public SelectableState CurrentSelectableState { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
-        public string CurrentBackgroundAnimationChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
         public float RelativeY { get { return _backgroundSprite.RelativeY; } set { _backgroundSprite.RelativeY = value; } }
         public float RelativeZ { get { return _backgroundSprite.RelativeZ; } set { _backgroundSprite.RelativeZ = value; } }
@@ -74,6 +60,16 @@ namespace FrbUi.Layouts
         public float YVelocity { get { return _backgroundSprite.YVelocity; } set { _backgroundSprite.YVelocity = value; } }
         public float ZVelocity { get { return _backgroundSprite.ZVelocity; } set { _backgroundSprite.ZVelocity = value; } }
         public IVisible Parent { get { return _backgroundSprite.Parent as IVisible; } }
+
+        public string CurrentBackgroundAnimationChainName
+        {
+            get { return _backgroundSprite.CurrentChainName; } 
+            set
+            {
+                _backgroundSprite.CurrentChainName = value;
+                _backgroundSprite.Alpha = _alpha;
+            }
+        }
 
         public Layer Layer
         {
@@ -234,6 +230,20 @@ namespace FrbUi.Layouts
         #endregion
 
         #region Methods
+
+        public BoxLayout()
+        {
+            _alpha = 1;
+
+            _items = new Dictionary<ILayoutable, Alignment>();
+            _backgroundSprite = new SpriteFrame();
+            _backgroundSprite.PixelSize = 0.5f;
+            _backgroundSprite.Borders = SpriteFrame.BorderSides.All;
+            _backgroundSprite.TextureBorderWidth = 1;
+            _backgroundSprite.SpriteBorderWidth = 1;
+            _backgroundSprite.RelativeZ = -0.1f;
+            _backgroundSprite.Alpha = (_backgroundSprite.Texture == null ? 0 : _alpha);
+        }
 
         public void Activity()
         {

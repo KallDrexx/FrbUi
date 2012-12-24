@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Button.cs" />
+    <Compile Include="Controls\LayoutableText.cs" />
     <Compile Include="IDisableable.cs" />
     <Compile Include="ILayoutable.cs" />
     <Compile Include="ISelectable.cs" />

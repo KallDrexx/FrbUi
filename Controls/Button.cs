@@ -221,6 +221,7 @@ namespace FrbUi.Controls
 
             _label = new Text();
             _label.AttachTo(_backgroundSprite, false);
+            _label.RelativeZ = 0.1f;
             _label.SetPixelPerfectScale(SpriteManager.Camera);
             _label.HorizontalAlignment = HorizontalAlignment.Center;
         }

@@ -47,6 +47,12 @@ namespace FrbUi.Controls
             set { _sprite.RelativeY = value; }
         }
 
+        public float RelativeZ
+        {
+            get { return _sprite.RelativeZ; }
+            set { _sprite.RelativeZ = value; }
+        }
+
         public float Alpha
         {
             get { return _sprite.Alpha; }

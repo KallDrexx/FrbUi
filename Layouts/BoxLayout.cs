@@ -273,7 +273,8 @@ namespace FrbUi.Layouts
             var alignment = (inverseAlignment ? Alignment.Inverse : Alignment.Default);
             _items.Add(item, alignment);
             item.AttachTo(_backgroundSprite, false);
-            //item.Alpha = _alpha;
+            item.RelativeZ = 0.1f;
+            item.Alpha = _alpha;
             _recalculateLayout = true;
             PerformLayout();
 

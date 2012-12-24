@@ -39,6 +39,12 @@ namespace FrbUi.Controls
             set { _text.RelativeY = value; }
         }
 
+        public float RelativeZ
+        {
+            get { return _text.RelativeZ; }
+            set { _text.RelativeZ = value; }
+        }
+
         public float Alpha
         {
             get { return _text.Alpha; }

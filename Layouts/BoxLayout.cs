@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FlatRedBall.ManagedSpriteGroups;
 using FlatRedBall.Graphics;
 using FlatRedBall;
 using FlatRedBall.Graphics.Animation;
+using FlatRedBall.Math.Geometry;
 
 namespace FrbUi.Layouts
 {
@@ -22,18 +22,23 @@ namespace FrbUi.Layouts
         protected float _spacing;
         protected Direction _currentDirection;
         protected float _alpha;
+        private AxisAlignedRectangle _border;
 
         protected string _standardAnimationChainName;
         protected string _focusedAnimationChainName;
         protected string _pushedAnimationChainName;
-        protected string _disabledAnimationChainName;
 
         public BoxLayout()
         {
+            _alpha = 1;
             _items = new Dictionary<ILayoutable, Alignment>();
             _backgroundSprite = new SpriteFrame();
             _backgroundSprite.PixelSize = 0.5f;
-            _backgroundSprite.Alpha = 0f;
+            _backgroundSprite.Borders = SpriteFrame.BorderSides.All;
+            _backgroundSprite.TextureBorderWidth = 1;
+            _backgroundSprite.SpriteBorderWidth = 1;
+            _backgroundSprite.RelativeZ = -0.1f;
+            _backgroundSprite.Alpha = (_backgroundSprite.Texture == null ? 0 : _alpha);
         }
 
         public ILayoutableEvent OnSizeChangeHandler { get; set; }
@@ -46,8 +51,7 @@ namespace FrbUi.Layouts
         #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
-        public SelectableState CurrentSelectableState { get; set; }
-        public bool KeepBackgroundAlphaSynced { get; set; }
+        public SelectableState CurrentSelectableState { get; private set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -89,6 +93,9 @@ namespace FrbUi.Layouts
                 _backgroundSprite.ScaleX = value;
                 if (OnSizeChangeHandler != null)
                     OnSizeChangeHandler(this);
+
+                if (ShowBorder)
+                    _border.ScaleX = value;
             }
         }
 
@@ -100,6 +107,9 @@ namespace FrbUi.Layouts
                 _backgroundSprite.ScaleY = value;
                 if (OnSizeChangeHandler != null)
                     OnSizeChangeHandler(this);
+
+                if (ShowBorder)
+                    _border.ScaleY = value;
             }
         }
 
@@ -110,7 +120,7 @@ namespace FrbUi.Layouts
             {
                 _alpha = value;
 
-                if (KeepBackgroundAlphaSynced)
+                if (_backgroundSprite != null)
                     BackgroundAlpha = value;
 
                 // Update the alpha values of all child objects
@@ -197,14 +207,36 @@ namespace FrbUi.Layouts
             }
         }
 
+        public bool ShowBorder
+        {
+            get { return _border != null; }
+            set
+            {
+                // Only do something if the border status is changing
+                if (ShowBorder == value)
+                    return;
+
+                if (value)
+                {
+                    _border = ShapeManager.AddAxisAlignedRectangle();
+                    _border.ScaleX = ScaleX;
+                    _border.ScaleY = ScaleY;
+                    _border.AttachTo(_backgroundSprite, false);
+                }
+                else
+                {
+                    ShapeManager.Remove(_border);
+                    _border = null;
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
 
         public void Activity()
         {
-            _alpha = 1f;
-            KeepBackgroundAlphaSynced = true;
         }
 
         public void AttachTo(PositionedObject obj, bool changeRelative)
@@ -231,7 +263,7 @@ namespace FrbUi.Layouts
             var alignment = (inverseAlignment ? Alignment.Inverse : Alignment.Default);
             _items.Add(item, alignment);
             item.AttachTo(_backgroundSprite, false);
-            item.Alpha = _alpha;
+            //item.Alpha = _alpha;
             _recalculateLayout = true;
             PerformLayout();
 

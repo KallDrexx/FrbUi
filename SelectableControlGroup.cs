@@ -8,8 +8,8 @@ namespace FrbUi
 {
     public class SelectableControlGroup : Collection<ISelectable>
     {
-        protected ISelectable _focusedItem;
-        protected bool _destroyed;
+        private ISelectable _focusedItem;
+        private bool _destroyed;
 
         public bool Destroyed { get { return _destroyed; } }
         public bool LoopFocus { get; set; }

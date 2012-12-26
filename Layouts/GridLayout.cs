@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FlatRedBall.Graphics;
 using FlatRedBall.ManagedSpriteGroups;
 using FlatRedBall.Graphics.Animation;
 using FlatRedBall;
-using Microsoft.Xna.Framework;
 using FlatRedBall.Math.Geometry;
 
 namespace FrbUi.Layouts
 {
     public class GridLayout : ILayoutable
     {
-        protected SpriteFrame _backgroundSprite;
-        protected Layer _layer;
-        protected List<GridItem> _items;
-        protected bool _recalculateLayout;
-        protected float _margin;
-        protected float _spacing;
-        protected float _alpha;
-        protected AxisAlignedRectangle _border;
+        private readonly SpriteFrame _backgroundSprite;
+        private Layer _layer;
+        private List<GridItem> _items;
+        private bool _recalculateLayout;
+        private float _margin;
+        private float _spacing;
+        private float _alpha;
+        private AxisAlignedRectangle _border;
 
         public GridLayout()
         {
@@ -30,7 +28,7 @@ namespace FrbUi.Layouts
             _backgroundSprite.Alpha = 0f;
         }
 
-        public ILayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnSizeChangeHandler { get; set; }
 
         #region Properties
 
@@ -39,6 +37,7 @@ namespace FrbUi.Layouts
         public int ColumnCount { get; protected set; }
         public int RowCount { get; protected set; }
         public bool KeepBackgroundAlphaSynced { get; set; }
+        public ILayoutable ParentLayout { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -223,9 +222,10 @@ namespace FrbUi.Layouts
             item.AttachTo(_backgroundSprite, false);
             item.RelativeZ = 0.1f;
             item.Alpha = _alpha;
+            item.ParentLayout = this;
             _recalculateLayout = true;
 
-            item.OnSizeChangeHandler = new ILayoutableEvent(delegate(ILayoutable sender)
+            item.OnSizeChangeHandler = new LayoutableEvent(delegate(ILayoutable sender)
             {
                 _recalculateLayout = true;
             });

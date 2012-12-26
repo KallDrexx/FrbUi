@@ -13,27 +13,26 @@ namespace FrbUi.Controls
 {
     public class Button : ILayoutable, IWindow, ISelectable, IDisableable
     {
-        protected SpriteFrame _backgroundSprite;
-        protected Layer _layer;
-        protected Text _label;
-        protected bool _pushedWithFocus;
-        protected bool _paused;
-        protected bool _enabled;
-        protected bool _buttonPushed;
+        private readonly SpriteFrame _backgroundSprite;
+        private Layer _layer;
+        private readonly Text _label;
+        private bool _pushedWithFocus;
+        private bool _paused;
+        private bool _enabled;
 
-        protected string _standardAnimationChainName;
-        protected string _focusedAnimationChainName;
-        protected string _pushedAnimationChainName;
-        protected string _disabledAnimationChainName;   
+        private string _standardAnimationChainName;
+        private string _focusedAnimationChainName;
+        private string _pushedAnimationChainName;
+        private string _disabledAnimationChainName;   
 
         #region Events
 
-        public ILayoutableEvent OnSizeChangeHandler { get; set; }
-        public ILayoutableEvent OnFocused { get; set; }
-        public ILayoutableEvent OnFocusLost { get; set; }
-        public ILayoutableEvent OnPushed { get; set; }
-        public ILayoutableEvent OnPushReleased { get; set; }
-        public ILayoutableEvent OnClicked { get; set; }
+        public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnFocused { get; set; }
+        public LayoutableEvent OnFocusLost { get; set; }
+        public LayoutableEvent OnPushed { get; set; }
+        public LayoutableEvent OnPushReleased { get; set; }
+        public LayoutableEvent OnClicked { get; set; }
 
         #endregion
 
@@ -50,6 +49,7 @@ namespace FrbUi.Controls
         /// </summary>
         public bool IgnoreCursorFocus { get; set; }
 
+        public ILayoutable ParentLayout { get; set; }
         public SelectableState CurrentSelectableState { get; protected set; }
         public AnimationChainList AnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
@@ -214,6 +214,7 @@ namespace FrbUi.Controls
 
         public Button()
         {
+            _paused = false;
             _enabled = true;
             _backgroundSprite = new SpriteFrame();
             _backgroundSprite.PixelSize = 0.75f;

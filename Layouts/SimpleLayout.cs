@@ -12,11 +12,11 @@ namespace FrbUi.Layouts
 {
     public class SimpleLayout : ILayoutable
     {
-        protected SpriteFrame _backgroundSprite;
-        protected Layer _layer;
-        protected Dictionary<ILayoutable, OverallPosition> _items;
-        protected bool _isFullScreen;
-        protected float _alpha;
+        private readonly SpriteFrame _backgroundSprite;
+        private Layer _layer;
+        private Dictionary<ILayoutable, OverallPosition> _items;
+        private float _alpha;
+        private bool _isFullScreen;
 
         public SimpleLayout()
         {
@@ -24,12 +24,14 @@ namespace FrbUi.Layouts
             _backgroundSprite = new SpriteFrame();
             _backgroundSprite.PixelSize = 0.5f;
             _backgroundSprite.Alpha = 0f;
+            _alpha = 1f;
         }
 
-        public ILayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnSizeChangeHandler { get; set; }
 
         #region Properties
 
+        public ILayoutable ParentLayout { get; set; }
         public bool KeepBackgroundAlphaSynced { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
@@ -107,6 +109,8 @@ namespace FrbUi.Layouts
                 {
                     Detach();
                 }
+
+                _isFullScreen = value;
             }
         }
 
@@ -132,7 +136,6 @@ namespace FrbUi.Layouts
 
         public void Activity()
         {
-            _alpha = 1f;
         }
 
         public void AttachTo(PositionedObject obj, bool changeRelative)
@@ -185,11 +188,12 @@ namespace FrbUi.Layouts
             item.Alpha = _alpha;
             item.AttachTo(_backgroundSprite, false);
             item.RelativeZ = 0.1f;
+            item.ParentLayout = this;
 
             PositionItem(item, horizontalPosition, verticalPosition, layoutFrom);
 
             // When the size changes, make sure to reposition the item so it's still in the same spot
-            item.OnSizeChangeHandler = new ILayoutableEvent(delegate(ILayoutable sender) { PositionItem(item, horizontalPosition, verticalPosition, layoutFrom); });
+            item.OnSizeChangeHandler = new LayoutableEvent(delegate(ILayoutable sender) { PositionItem(item, horizontalPosition, verticalPosition, layoutFrom); });
         }
 
         private void PositionItem(ILayoutable item, HorizontalPosition horizontalPosition, VerticalPosition verticalPosition, LayoutOrigin layoutFrom)

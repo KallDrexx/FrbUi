@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FlatRedBall.Graphics;
 using FlatRedBall;
 using FlatRedBall.ManagedSpriteGroups;
@@ -15,17 +14,17 @@ namespace FrbUi.Layouts
     {
         private const float FULL_CIRCLE = 2 * (float)Math.PI;
 
-        protected SpriteFrame _backgroundSprite;
-        protected Layer _layer;
-        protected Dictionary<ILayoutable, CircularPosition> _items;
-        protected bool _recalculateLayout;
-        protected AxisAlignedRectangle _border;
-        protected float _margin;
-        protected float _radius;
-        protected float _startingDegrees;
-        protected float _minDegreeOffset;
-        protected float _alpha;
-        protected ArrangementMode _currentArrangementMode;
+        private readonly SpriteFrame _backgroundSprite;
+        private Layer _layer;
+        private readonly Dictionary<ILayoutable, CircularPosition> _items;
+        private bool _recalculateLayout;
+        private AxisAlignedRectangle _border;
+        private float _margin;
+        private float _radius;
+        private float _startingDegrees;
+        private float _minDegreeOffset;
+        private float _alpha;
+        private ArrangementMode _currentArrangementMode;
 
         public CircularLayout()
         {
@@ -35,10 +34,11 @@ namespace FrbUi.Layouts
             _backgroundSprite.Alpha = 0f;
         }
 
-        public ILayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnSizeChangeHandler { get; set; }
 
         #region Properties
 
+        public ILayoutable ParentLayout { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public bool KeepBackgroundAlphaSynced { get; set; }
 
@@ -225,6 +225,7 @@ namespace FrbUi.Layouts
                 item.AttachTo(_backgroundSprite, false);
                 item.RelativeZ = 0.1f;
                 item.Alpha = _alpha;
+                item.ParentLayout = this;
             }
 
             // Calculate the item's position
@@ -235,7 +236,7 @@ namespace FrbUi.Layouts
             _recalculateLayout = true;
 
             // Set the size to realculate when a control changes 
-            item.OnSizeChangeHandler = new ILayoutableEvent(delegate(ILayoutable sender) { _recalculateLayout = true; });
+            item.OnSizeChangeHandler = sender => _recalculateLayout = true;
         }
 
         public void UpdateDependencies(double currentTime)
@@ -263,7 +264,7 @@ namespace FrbUi.Layouts
             _items.Clear();
         }
 
-        protected void PositionItem(ILayoutable item, ILayoutable lastItem = null)
+        private void PositionItem(ILayoutable item, ILayoutable lastItem = null)
         {
             var position = _items[item];
             var lastPosition = (lastItem != null ? _items[lastItem] : (CircularPosition)null);
@@ -341,7 +342,7 @@ namespace FrbUi.Layouts
             return absoluteRadians;
         }
 
-        protected void RecalculateLayout()
+        private void RecalculateLayout()
         {
             if (!_recalculateLayout)
                 return;
@@ -398,7 +399,7 @@ namespace FrbUi.Layouts
 
         public enum ArrangementMode { Clockwise, EvenlySpaced, Manual, CounterClockwise }
 
-        public class CircularPosition
+        protected class CircularPosition
         {
             public float RadianOffset { get; set; }
             public float RadiusOffset { get; set; }

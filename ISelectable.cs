@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FrbUi
+﻿namespace FrbUi
 {
     public enum SelectableState { NotSelected, Focused, Pushed }
 
     public interface ISelectable
     {
-        ILayoutableEvent OnFocused { get; set; }
-        ILayoutableEvent OnFocusLost { get; set; }
-        ILayoutableEvent OnPushed { get; set; }
-        ILayoutableEvent OnPushReleased { get; set; }
-        ILayoutableEvent OnClicked { get; set; }
+        LayoutableEvent OnFocused { get; set; }
+        LayoutableEvent OnFocusLost { get; set; }
+        LayoutableEvent OnPushed { get; set; }
+        LayoutableEvent OnPushReleased { get; set; }
+        LayoutableEvent OnClicked { get; set; }
 
         SelectableState CurrentSelectableState { get; }
         string StandardAnimationChainName { get; set; }

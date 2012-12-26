@@ -72,6 +72,7 @@
     <Compile Include="IDisableable.cs" />
     <Compile Include="ILayoutable.cs" />
     <Compile Include="ISelectable.cs" />
+    <Compile Include="LayoutableEvent.cs" />
     <Compile Include="Layouts\BoxLayout.cs" />
     <Compile Include="Layouts\CircularLayout.cs" />
     <Compile Include="Layouts\GridLayout.cs" />

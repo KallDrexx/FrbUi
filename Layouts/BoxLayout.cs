@@ -15,30 +15,32 @@ namespace FrbUi.Layouts
         public enum Direction { Up, Down, Left, Right }
 
         private readonly SpriteFrame _backgroundSprite;
+        private readonly Dictionary<ILayoutable, Alignment> _items;
         private Layer _layer;
-        private Dictionary<ILayoutable, Alignment> _items;
         private bool _recalculateLayout;
         private float _margin;
         private float _spacing;
         private Direction _currentDirection;
         private float _alpha;
         private AxisAlignedRectangle _border;
+        private double _lastLayoutFrame;
 
         private string _standardAnimationChainName;
         private string _focusedAnimationChainName;
         private string _pushedAnimationChainName;
 
-        public ILayoutableEvent OnSizeChangeHandler { get; set; }
-        public ILayoutableEvent OnFocused { get; set; }
-        public ILayoutableEvent OnFocusLost { get; set; }
-        public ILayoutableEvent OnPushed { get; set; }
-        public ILayoutableEvent OnPushReleased { get; set; }
-        public ILayoutableEvent OnClicked { get; set; }
+        public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnFocused { get; set; }
+        public LayoutableEvent OnFocusLost { get; set; }
+        public LayoutableEvent OnPushed { get; set; }
+        public LayoutableEvent OnPushReleased { get; set; }
+        public LayoutableEvent OnClicked { get; set; }
 
         #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public SelectableState CurrentSelectableState { get; set; }
+        public ILayoutable ParentLayout { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -275,12 +277,17 @@ namespace FrbUi.Layouts
             item.AttachTo(_backgroundSprite, false);
             item.RelativeZ = 0.1f;
             item.Alpha = _alpha;
+            item.ParentLayout = this;
             _recalculateLayout = true;
             PerformLayout();
 
-            item.OnSizeChangeHandler = new ILayoutableEvent(delegate(ILayoutable sender)
+            item.OnSizeChangeHandler = new LayoutableEvent(delegate(ILayoutable sender)
             {
                 _recalculateLayout = true;
+                
+                // If a recalculation already happened this frame, manually trigger a new one
+                if (Math.Abs(_lastLayoutFrame - TimeManager.CurrentTime) < double.Epsilon)
+                    ForceUpdateDependencies();
             });
         }
 
@@ -348,6 +355,9 @@ namespace FrbUi.Layouts
                     PerformHorizontalLayout(true);
                     break;
             }
+
+            // Mark this frame as having had a recalculation performed
+            _lastLayoutFrame = TimeManager.CurrentTime;
         }
 
         protected virtual void PerformVerticalLayout(bool increasing)

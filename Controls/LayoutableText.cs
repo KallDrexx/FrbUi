@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FlatRedBall.Graphics;
+﻿using FlatRedBall.Graphics;
 using FlatRedBall;
 
 namespace FrbUi.Controls

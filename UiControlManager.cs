@@ -107,7 +107,9 @@ namespace FrbUi
         {
             CheckCurrentScreen();
 
-            foreach (var item in _items)
+            // Update all ui controls that do not have a parent
+            //  Layout managers *should* cascade the updates downward
+            foreach (var item in _items.Where(x => x.ParentLayout == null))
                 item.UpdateDependencies(TimeManager.CurrentTime);
         }
 

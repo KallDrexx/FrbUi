@@ -71,6 +71,7 @@
     <Compile Include="Controls\LayoutableText.cs" />
     <Compile Include="IDisableable.cs" />
     <Compile Include="ILayoutable.cs" />
+    <Compile Include="ILayoutManager.cs" />
     <Compile Include="ISelectable.cs" />
     <Compile Include="LayoutableEvent.cs" />
     <Compile Include="Layouts\BoxLayout.cs" />

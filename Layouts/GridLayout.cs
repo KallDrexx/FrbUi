@@ -9,7 +9,7 @@ using FlatRedBall.Math.Geometry;
 
 namespace FrbUi.Layouts
 {
-    public class GridLayout : ILayoutable
+    public class GridLayout : ILayoutManager
     {
         private readonly SpriteFrame _backgroundSprite;
         private Layer _layer;
@@ -233,12 +233,20 @@ namespace FrbUi.Layouts
 
         public void UpdateDependencies(double currentTime)
         {
+            // Update the dependencies on all children
+            foreach (var layoutable in Items )
+                layoutable.UpdateDependencies(currentTime);
+
             PerformLayout();
             _backgroundSprite.UpdateDependencies(currentTime);
         }
 
         public void ForceUpdateDependencies()
         {
+            // Force all dependencies to be updated for all children
+            foreach (var layoutable in Items)
+                layoutable.ForceUpdateDependencies();
+
             PerformLayout();
             _backgroundSprite.ForceUpdateDependencies();
         }

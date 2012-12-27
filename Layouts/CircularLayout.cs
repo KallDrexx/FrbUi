@@ -10,7 +10,7 @@ using FlatRedBall.Math.Geometry;
 
 namespace FrbUi.Layouts
 {
-    public class CircularLayout : ILayoutable
+    public class CircularLayout : ILayoutManager
     {
         private const float FULL_CIRCLE = 2 * (float)Math.PI;
 
@@ -241,11 +241,20 @@ namespace FrbUi.Layouts
 
         public void UpdateDependencies(double currentTime)
         {
+            // Update the dependencies on all children
+            foreach (var layoutable in Items)
+                layoutable.UpdateDependencies(currentTime);
+
             RecalculateLayout();
+            _backgroundSprite.UpdateDependencies(currentTime);
         }
 
         public void ForceUpdateDependencies()
         {
+            // Force all dependencies to be updated for all children
+            foreach (var layoutable in Items)
+                layoutable.ForceUpdateDependencies();
+
             RecalculateLayout();
             _backgroundSprite.ForceUpdateDependencies();
         }

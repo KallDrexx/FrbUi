@@ -10,7 +10,7 @@ using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Layouts
 {
-    public class SimpleLayout : ILayoutable
+    public class SimpleLayout : ILayoutManager
     {
         private readonly SpriteFrame _backgroundSprite;
         private Layer _layer;
@@ -156,11 +156,19 @@ namespace FrbUi.Layouts
 
         public void UpdateDependencies(double currentTime)
         {
+            // Update the dependencies on all children
+            foreach (var layoutable in Items)
+                layoutable.UpdateDependencies(currentTime);
+
             _backgroundSprite.UpdateDependencies(currentTime);
         }
 
         public void ForceUpdateDependencies()
         {
+            // Force all dependencies to be updated for all children
+            foreach (var layoutable in Items)
+                layoutable.ForceUpdateDependencies();
+
             _backgroundSprite.ForceUpdateDependencies();
         }
 

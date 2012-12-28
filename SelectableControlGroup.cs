@@ -64,7 +64,7 @@ namespace FrbUi
                 FocusNextControl();
         }
 
-        protected void FocusSequentialControl(bool focusNext)
+        private void FocusSequentialControl(bool focusNext)
         {
             var nextFocusableItem = (ISelectable)null;
 

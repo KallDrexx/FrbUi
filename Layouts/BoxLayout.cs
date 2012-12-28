@@ -11,7 +11,7 @@ namespace FrbUi.Layouts
 {
     public class BoxLayout : ISelectable, ILayoutManager
     {
-        public enum Alignment { Default, Inverse }
+        public enum Alignment { Default, Inverse, Centered }
         public enum Direction { Up, Down, Left, Right }
 
         private readonly SpriteFrame _backgroundSprite;
@@ -267,12 +267,11 @@ namespace FrbUi.Layouts
             Layer = layer;
         }
 
-        public void AddItem(ILayoutable item, bool inverseAlignment = false)
+        public void AddItem(ILayoutable item, Alignment alignment = Alignment.Default)
         {
             if (_items.ContainsKey(item))
                 return;
 
-            var alignment = (inverseAlignment ? Alignment.Inverse : Alignment.Default);
             _items.Add(item, alignment);
             item.AttachTo(_backgroundSprite, false);
             item.RelativeZ = 0.1f;
@@ -281,14 +280,14 @@ namespace FrbUi.Layouts
             _recalculateLayout = true;
             PerformLayout();
 
-            item.OnSizeChangeHandler = new LayoutableEvent(delegate(ILayoutable sender)
+            item.OnSizeChangeHandler = sender =>
             {
                 _recalculateLayout = true;
-                
+
                 // If a recalculation already happened this frame, manually trigger a new one
                 if (Math.Abs(_lastLayoutFrame - TimeManager.CurrentTime) < double.Epsilon)
                     ForceUpdateDependencies();
-            });
+            };
         }
 
         public void UpdateDependencies(double currentTime)
@@ -358,7 +357,6 @@ namespace FrbUi.Layouts
                     PerformHorizontalLayout(false);
                     break;
 
-                case Direction.Right:
                 default:
                     PerformHorizontalLayout(true);
                     break;
@@ -419,20 +417,36 @@ namespace FrbUi.Layouts
                 // Since the x/y position will point to the center, we need to account for that
                 if (increasing)
                 {
-                    if (_items[item] == Alignment.Inverse)
-                        item.RelativeX = (currentX * -1) - item.ScaleX;
-                    else
-                        item.RelativeX = currentX + item.ScaleX;
+                    switch (_items[item])
+                    {
+                        case Alignment.Inverse:
+                            item.RelativeX = (currentX * -1) - item.ScaleX;
+                            break;
+                        case Alignment.Centered:
+                            item.RelativeX = 0;
+                            break;
+                        default:
+                            item.RelativeX = currentX + item.ScaleX;
+                            break;
+                    }
 
                     item.RelativeY = currentY + item.ScaleY;
                     currentY += (item.ScaleY * 2);
                 }
                 else
                 {
-                    if (_items[item] == Alignment.Inverse)
-                        item.RelativeX = (currentX * -1) - item.ScaleX;
-                    else
-                        item.RelativeX = currentX + item.ScaleX;
+                    switch (_items[item])
+                    {
+                        case Alignment.Inverse:
+                            item.RelativeX = (currentX * -1) - item.ScaleX;
+                            break;
+                        case Alignment.Centered:
+                            item.RelativeX = 0;
+                            break;
+                        default:
+                            item.RelativeX = currentX + item.ScaleX;
+                            break;
+                    }
 
                     item.RelativeY = currentY - item.ScaleY;
                     currentY -= (item.ScaleY * 2);
@@ -492,20 +506,40 @@ namespace FrbUi.Layouts
                 // Since the x/y position will point to the center, we need to account for that
                 if (increasing)
                 {
-                    if (_items[item] == Alignment.Inverse)
-                        item.RelativeY = (currentY * -1) + item.ScaleY;
-                    else
-                        item.RelativeY = currentY - item.ScaleY;
+                    switch (_items[item])
+                    {
+                        case Alignment.Inverse:
+                            item.RelativeY = (currentY * -1) + item.ScaleY;
+                            break;
+
+                        case Alignment.Centered:
+                            item.RelativeY = 0;
+                            break;
+
+                        default:
+                            item.RelativeY = currentY - item.ScaleY;
+                            break;
+                    }
 
                     item.RelativeX = currentX + item.ScaleX;
                     currentX += (item.ScaleX * 2);
                 }
                 else
                 {
-                    if (_items[item] == Alignment.Inverse)
-                        item.RelativeY = (currentY * -1) + item.ScaleY;
-                    else
-                        item.RelativeY = currentY - item.ScaleY;
+                    switch (_items[item])
+                    {
+                        case Alignment.Inverse:
+                            item.RelativeY = (currentY * -1) + item.ScaleY;
+                            break;
+
+                        case Alignment.Centered:
+                            item.RelativeY = 0;
+                            break;
+
+                        default:
+                            item.RelativeY = currentY - item.ScaleY;
+                            break;
+                    }
 
                     item.RelativeX = currentX - item.ScaleX;
                     currentX -= (item.ScaleX * 2);

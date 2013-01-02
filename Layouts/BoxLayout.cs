@@ -239,7 +239,7 @@ namespace FrbUi.Layouts
 
             _items = new Dictionary<ILayoutable, Alignment>();
             _backgroundSprite = new SpriteFrame();
-            _backgroundSprite.PixelSize = 0.5f;
+            _backgroundSprite.PixelSize = 1f;
             _backgroundSprite.Borders = SpriteFrame.BorderSides.All;
             _backgroundSprite.TextureBorderWidth = 1;
             _backgroundSprite.SpriteBorderWidth = 1;
@@ -381,7 +381,7 @@ namespace FrbUi.Layouts
 
             // Add the margins and spacings
             width += Margin;
-            height += (Margin + ((Spacing / 2) * _items.Count - 1));
+            height += (Margin + ((Spacing / 2) * (_items.Count - 1)));
 
             // Set the scales
             ScaleX = (width);
@@ -469,7 +469,7 @@ namespace FrbUi.Layouts
             }
 
             // Add the margins
-            halfWidth += (Margin + ((Spacing / 2) * _items.Count - 1));
+            halfWidth += (Margin + ((Spacing / 2) * (_items.Count - 1)));
             halfHeight += Margin;
 
             // Set the manager's Scale properties

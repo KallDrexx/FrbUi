@@ -239,10 +239,9 @@ namespace FrbUi.Layouts
 
             _items = new Dictionary<ILayoutable, Alignment>();
             _backgroundSprite = new SpriteFrame();
-            _backgroundSprite.PixelSize = 1f;
+            _backgroundSprite.TextureBorderWidth = 0.5f;
+            _backgroundSprite.PixelSize = 0.5f;
             _backgroundSprite.Borders = SpriteFrame.BorderSides.All;
-            _backgroundSprite.TextureBorderWidth = 1;
-            _backgroundSprite.SpriteBorderWidth = 1;
             _backgroundSprite.RelativeZ = -0.1f;
             _backgroundSprite.Alpha = (_backgroundSprite.Texture == null ? 0 : _alpha);
         }

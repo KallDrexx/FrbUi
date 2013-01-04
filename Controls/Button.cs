@@ -218,8 +218,8 @@ namespace FrbUi.Controls
             _paused = false;
             _enabled = true;
             _backgroundSprite = new SpriteFrame();
-            _backgroundSprite.PixelSize = 0.75f;
-            _backgroundSprite.Borders = FlatRedBall.ManagedSpriteGroups.SpriteFrame.BorderSides.LeftRight;
+            _backgroundSprite.PixelSize = 0.5f;
+            _backgroundSprite.Borders = SpriteFrame.BorderSides.All;
 
             _label = new Text();
             _label.AttachTo(_backgroundSprite, false);
@@ -289,16 +289,16 @@ namespace FrbUi.Controls
         public ReadOnlyCollection<IWindow> FloatingChildren { get { return null; } }
         IWindow IWindow.Parent { get { return null; } set { throw new NotImplementedException(); } }
 
-        public void Activity(FlatRedBall.Camera camera)
-        {
-        }
-
         public void CallClick()
         {
             if (!IgnoreCursorEvents)
             {
                 this.Click();
             }
+        }
+
+        public void Activity(Camera camera)
+        {
         }
 
         public void CallRollOff()

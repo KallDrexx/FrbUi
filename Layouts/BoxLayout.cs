@@ -9,7 +9,7 @@ using FlatRedBall.Math.Geometry;
 
 namespace FrbUi.Layouts
 {
-    public class BoxLayout : ILayoutManager
+    public class BoxLayout : ILayoutManager, ISelectable
     {
         public enum Alignment { Default, Inverse, Centered }
         public enum Direction { Up, Down, Left, Right }
@@ -62,6 +62,12 @@ namespace FrbUi.Layouts
         public float YVelocity { get { return _backgroundSprite.YVelocity; } set { _backgroundSprite.YVelocity = value; } }
         public float ZVelocity { get { return _backgroundSprite.ZVelocity; } set { _backgroundSprite.ZVelocity = value; } }
         public IVisible Parent { get { return _backgroundSprite.Parent as IVisible; } }
+
+        public string CurrentAnimationChainName 
+        {
+            get { return _backgroundSprite.CurrentChainName; }
+            set { _backgroundSprite.CurrentChainName = value; }
+        }
 
         public string CurrentBackgroundAnimationChainName
         {
@@ -204,6 +210,8 @@ namespace FrbUi.Layouts
                     _backgroundSprite.CurrentChainName = value;
             }
         }
+
+        public bool PushedWithFocus { get; set; }
 
         public bool ShowBorder
         {

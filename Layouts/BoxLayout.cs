@@ -9,7 +9,7 @@ using FlatRedBall.Math.Geometry;
 
 namespace FrbUi.Layouts
 {
-    public class BoxLayout : ISelectable, ILayoutManager
+    public class BoxLayout : ILayoutManager
     {
         public enum Alignment { Default, Inverse, Centered }
         public enum Direction { Up, Down, Left, Right }
@@ -549,30 +549,5 @@ namespace FrbUi.Layouts
         }
 
         #endregion
-
-        public void Focus()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LoseFocus()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Push()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Click()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ReleasePush()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

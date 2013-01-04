@@ -16,7 +16,6 @@ namespace FrbUi.Controls
         private readonly SpriteFrame _backgroundSprite;
         private Layer _layer;
         private readonly Text _label;
-        private bool _pushedWithFocus;
         private bool _paused;
         private bool _enabled;
 
@@ -49,8 +48,9 @@ namespace FrbUi.Controls
         /// </summary>
         public bool IgnoreCursorFocus { get; set; }
 
+        public bool PushedWithFocus { get; set; }
         public ILayoutable ParentLayout { get; set; }
-        public SelectableState CurrentSelectableState { get; protected set; }
+        public SelectableState CurrentSelectableState { get; set; }
         public AnimationChainList AnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
         public float RelativeY { get { return _backgroundSprite.RelativeY; } set { _backgroundSprite.RelativeY = value; } }
@@ -74,6 +74,7 @@ namespace FrbUi.Controls
         public string Text { get { return _label.DisplayText; } set { _label.DisplayText = value; }}
         public float Pixelsize { get { return _backgroundSprite.PixelSize; } set { _backgroundSprite.PixelSize = value; } }
         public SpriteFrame.BorderSides Border { get { return _backgroundSprite.Borders; } set { _backgroundSprite.Borders = value; } }
+        public string CurrentAnimationChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }
 
         public Layer Layer
         {
@@ -227,93 +228,10 @@ namespace FrbUi.Controls
             _label.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
-        public void Focus()
-        {
-            // A button can only be focused if it's in an active state
-            if (!Enabled || CurrentSelectableState != SelectableState.NotSelected)
-                return;
-
-            CurrentSelectableState = SelectableState.Focused;
-            if (_focusedAnimationChainName != null)
-                _backgroundSprite.CurrentChainName = _focusedAnimationChainName;
-
-            if (OnFocused != null)
-                OnFocused(this);
-        }
-
-        public void LoseFocus()
-        {
-            // Focus can only be lost if we are not disabled or active
-            if (!Enabled || CurrentSelectableState == SelectableState.NotSelected)
-                return;
-
-            CurrentSelectableState = SelectableState.NotSelected;
-            if (_standardAnimationChainName != null)
-                _backgroundSprite.CurrentChainName = _standardAnimationChainName;
-
-            if (OnFocusLost != null)
-                OnFocusLost(this);
-        }
-
-        public void Push()
-        {
-            // Button must be focused or not selected to be pushed
-            if (!Enabled || (CurrentSelectableState != SelectableState.Focused && CurrentSelectableState != SelectableState.NotSelected))
-                return;
-
-            _pushedWithFocus = (CurrentSelectableState == SelectableState.Focused);
-            CurrentSelectableState = SelectableState.Pushed;
-
-            if (_pushedAnimationChainName != null)
-                _backgroundSprite.CurrentChainName = _pushedAnimationChainName;
-
-            if (OnPushed != null)
-                OnPushed(this);
-        }
-
-        public void ReleasePush()
-        {
-            // Push can only be released if the current state is pushed
-            if (!Enabled || (CurrentSelectableState != SelectableState.Pushed))
-                return;
-
-            if (_pushedWithFocus)
-            {
-                CurrentSelectableState = SelectableState.Focused;
-                if (_focusedAnimationChainName != null)
-                    _backgroundSprite.CurrentChainName = _focusedAnimationChainName;
-            }
-            else
-            {
-                CurrentSelectableState = SelectableState.NotSelected;
-                if (_standardAnimationChainName != null)
-                    _backgroundSprite.CurrentChainName = _standardAnimationChainName;
-            }
-
-            _pushedWithFocus = false;
-        }
-
-        public void Click()
-        {
-            if (!Enabled || CurrentSelectableState != SelectableState.Pushed && CurrentSelectableState != SelectableState.Focused)
-                return;
-
-            // If the button hasn't been pushed yet, make sure it is
-            if (CurrentSelectableState != SelectableState.Pushed)
-                Push();
-            
-            // Release the push
-            ReleasePush();
-
-            // Call onclick handler
-            if (OnClicked != null)
-                OnClicked(this);
-        }
-
-        public void ResizeAroundText(float horizontalMargin, float VerticalMargin)
+        public void ResizeAroundText(float horizontalMargin, float verticalMargin)
         {
             ScaleX = _label.ScaleX + horizontalMargin;
-            ScaleY = _label.ScaleY + VerticalMargin;
+            ScaleY = _label.ScaleY + verticalMargin;
         }
 
         public void Activity()
@@ -379,21 +297,20 @@ namespace FrbUi.Controls
         {
             if (!IgnoreCursorEvents)
             {
-                Push();
-                Click();
+                this.Click();
             }
         }
 
         public void CallRollOff()
         {
             if (!IgnoreCursorEvents)
-                LoseFocus();
+                this.LoseFocus();
         }
 
         public void CallRollOn()
         {
             if (!IgnoreCursorEvents && !IgnoreCursorFocus)
-                Focus();
+                this.Focus();
         }
 
         public void OnDragging()
@@ -453,8 +370,7 @@ namespace FrbUi.Controls
                 if (cursor.PrimaryPush)
                 {
                     cursor.WindowPushed = this;
-                    Push();
-                    Click();
+                    this.Click();
                     cursor.GrabWindow(this);
                 }
             }

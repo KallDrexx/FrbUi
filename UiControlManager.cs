@@ -1,39 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FlatRedBall;
 using FlatRedBall.Graphics;
 using FlatRedBall.Screens;
+using FrbUi.SelectableGroupings;
 
 namespace FrbUi
 {
     public class UiControlManager
     {
-        private static readonly object _padlock = new Object();
+        private static readonly object Padlock = new Object();
         private static UiControlManager _instance;
 
-        private List<ILayoutable> _items;
-        private List<SelectableControlGroup> _selectableControlGroups;
+        private readonly List<ILayoutable> _items;
+        private readonly List<ISelectableControlGroup> _selectableControlGroups;
         private Layer _uiLayer;
         private Screen _lastScreen;
 
         private UiControlManager() 
         {
             _items = new List<ILayoutable>();
-            _selectableControlGroups = new List<SelectableControlGroup>();
+            _selectableControlGroups = new List<ISelectableControlGroup>();
         }
 
         public static UiControlManager Instance
         {
             get
             {
-                lock (_padlock)
+                lock (Padlock)
                 {
-                    if (_instance == null)
-                        _instance = new UiControlManager();
-
-                    return _instance;
+                    return _instance ?? (_instance = new UiControlManager());
                 }
             }
         }
@@ -79,20 +76,21 @@ namespace FrbUi
             }
         }
 
-        public SelectableControlGroup CreateSelectableControlGroup()
+        public TResult CreateSelectableControlGroup<TResult>() where TResult : ISelectableControlGroup
         {
-            var group = new SelectableControlGroup();
+            if (typeof(TResult).IsInterface)
+                throw new InvalidOperationException("Cannot create a selectable control group from an interface");
+
+            var group = Activator.CreateInstance<TResult>();
             _selectableControlGroups.Add(group);
             return group;
         }
 
-        public void RemoveSelectableControlGroup(SelectableControlGroup group)
+        public void RemoveSelectableControlGroup(ISelectableControlGroup group)
         {
             group.Destroy();
-            if (!_selectableControlGroups.Contains(group))
-                return;
-
-            _selectableControlGroups.Remove(group);
+            if (_selectableControlGroups.Contains(group))
+                _selectableControlGroups.Remove(group);
         }
 
         public void RunActivities()

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
-namespace FrbUi
+namespace FrbUi.SelectableGroupings
 {
-    public class SelectableControlGroup : Collection<ISelectable>
+    public class SequentialSelectableGroup : Collection<ISelectable>, ISelectableControlGroup
     {
         private ISelectable _focusedItem;
-        private bool _destroyed;
 
-        public bool Destroyed { get { return _destroyed; } }
+        public bool Destroyed { get; private set; }
         public bool LoopFocus { get; set; }
 
         public void FocusNextControl()
@@ -43,13 +38,13 @@ namespace FrbUi
 
         public void Destroy()
         {
-            _destroyed = true;
+            Destroyed = true;
             Clear();
         }
 
         protected override void InsertItem(int index, ISelectable item)
         {
-            if (_destroyed)
+            if (Destroyed)
                 return;
 
             base.InsertItem(index, item);

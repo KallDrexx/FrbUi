@@ -73,6 +73,7 @@
     <Compile Include="ILayoutable.cs" />
     <Compile Include="ILayoutManager.cs" />
     <Compile Include="ISelectable.cs" />
+    <Compile Include="ISelectableControlGroup.cs" />
     <Compile Include="LayoutableEvent.cs" />
     <Compile Include="Layouts\BoxLayout.cs" />
     <Compile Include="Layouts\CircularLayout.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="Positioning\OverallPosition.cs" />
     <Compile Include="Positioning\VerticalPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectableControlGroup.cs" />
+    <Compile Include="SelectableGroupings\SequentialSelectableGroup.cs" />
     <Compile Include="UiControlManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -360,7 +360,7 @@ namespace FrbUi.Controls
 
         public void TestCollision(Cursor cursor)
         {
-            if (HasCursorOver(cursor))
+            if (HasCursorOver(cursor) && !IgnoreCursorEvents)
             {
                 cursor.WindowOver = this;
 

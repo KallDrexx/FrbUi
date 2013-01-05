@@ -9,8 +9,10 @@ using FlatRedBall.Math.Geometry;
 
 namespace FrbUi.Layouts
 {
-    public class GridLayout : ILayoutManager
+    public class GridLayout : ILayoutManager, ISelectable
     {
+        #region Fields
+
         private readonly SpriteFrame _backgroundSprite;
         private Layer _layer;
         private List<GridItem> _items;
@@ -19,19 +21,24 @@ namespace FrbUi.Layouts
         private float _spacing;
         private float _alpha;
         private AxisAlignedRectangle _border;
+        private string _standardAnimationChainName;
+        private string _focusedAnimationChainName;
+        private string _pushedAnimationChainName;
 
-        public GridLayout()
-        {
-            _items = new List<GridItem>();
-            _backgroundSprite = new SpriteFrame();
-            _backgroundSprite.PixelSize = 0.5f;
-            _backgroundSprite.Alpha = 0f;
-        }
-
-        public LayoutableEvent OnSizeChangeHandler { get; set; }
+        #endregion
 
         #region Properties
 
+        public LayoutableEvent OnFocused { get; set; }
+        public LayoutableEvent OnFocusLost { get; set; }
+        public LayoutableEvent OnPushed { get; set; }
+        public LayoutableEvent OnPushReleased { get; set; }
+        public LayoutableEvent OnClicked { get; set; }
+        public SelectableState CurrentSelectableState { get; set; }        
+        public LayoutableEvent OnSizeChangeHandler { get; set; }
+
+        public bool PushedWithFocus { get; set; }
+        public string CurrentAnimationChainName { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Select(x => x.Item); } }
 
         public int ColumnCount { get; protected set; }
@@ -155,9 +162,65 @@ namespace FrbUi.Layouts
             }
         }
 
+        public string StandardAnimationChainName
+        {
+            get { return _standardAnimationChainName; }
+            set
+            {
+                if (!_backgroundSprite.ContainsChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _standardAnimationChainName = value;
+
+                // If we should be displaying this animation chain, activate it
+                if (CurrentSelectableState == SelectableState.NotSelected)
+                    _backgroundSprite.CurrentChainName = value;
+            }
+        }
+
+        public string FocusedAnimationChainName
+        {
+            get { return _focusedAnimationChainName; }
+            set
+            {
+                if (!_backgroundSprite.ContainsChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _focusedAnimationChainName = value;
+
+                // If we should be displaying this animation chain, activate it
+                if (CurrentSelectableState == SelectableState.Focused)
+                    _backgroundSprite.CurrentChainName = value;
+            }
+        }
+
+        public string PushedAnimationChainName
+        {
+            get { return _pushedAnimationChainName; }
+            set
+            {
+                if (!_backgroundSprite.ContainsChainName(value))
+                    throw new InvalidOperationException("The animation chain list does not contain a chain with the name of " + value);
+
+                _pushedAnimationChainName = value;
+
+                // If we should be displaying this animation chain, activate it
+                if (CurrentSelectableState == SelectableState.Pushed)
+                    _backgroundSprite.CurrentChainName = value;
+            }
+        }
+
         #endregion
 
         #region Methods
+
+        public GridLayout()
+        {
+            _items = new List<GridItem>();
+            _backgroundSprite = new SpriteFrame();
+            _backgroundSprite.PixelSize = 0.5f;
+            _backgroundSprite.Alpha = 0f;
+        }
 
         public void Activity()
         {
@@ -470,13 +533,13 @@ namespace FrbUi.Layouts
         public enum HorizontalAlignment { Left, Center, Right }
         public enum VerticalAlignment { Top, Center, Bottom }
 
-        public class GridItem
+        private class GridItem
         {
             public int Column { get; set; }
             public int Row { get; set; }
             public ILayoutable Item { get; set; }
             public HorizontalAlignment HorizontalAlignment { get; set; }
             public VerticalAlignment VerticalAlignment { get; set; }
-        }
+        }       
     }
 }

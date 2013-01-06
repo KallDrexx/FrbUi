@@ -69,6 +69,7 @@
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\LayoutableSprite.cs" />
     <Compile Include="Controls\LayoutableText.cs" />
+    <Compile Include="Data\DataGrid.cs" />
     <Compile Include="IDisableable.cs" />
     <Compile Include="ILayoutable.cs" />
     <Compile Include="ILayoutManager.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Positioning\OverallPosition.cs" />
     <Compile Include="Positioning\VerticalPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectableGroupings\GridSelectableGroup.cs" />
     <Compile Include="SelectableGroupings\SequentialSelectableGroup.cs" />
     <Compile Include="UiControlManager.cs" />
   </ItemGroup>

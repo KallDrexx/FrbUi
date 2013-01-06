@@ -15,7 +15,6 @@ namespace FrbUi
 
         private readonly List<ILayoutable> _items;
         private readonly List<ISelectableControlGroup> _selectableControlGroups;
-        private Layer _uiLayer;
         private Screen _lastScreen;
 
         private UiControlManager() 
@@ -35,7 +34,7 @@ namespace FrbUi
             }
         }
 
-        public Layer Layer { get { return _uiLayer; } }
+        public Layer Layer { get; private set; }
 
         public void AddControl(ILayoutable item)
         {
@@ -45,7 +44,7 @@ namespace FrbUi
                 return;
 
             _items.Add(item);
-            item.AddToManagers(_uiLayer);
+            item.AddToManagers(Layer);
         }
 
         public TResult CreateControl<TResult>() where TResult : ILayoutable
@@ -114,11 +113,11 @@ namespace FrbUi
         private void CreateUiLayer()
         {
             // Create the 2d layer
-            _uiLayer = SpriteManager.AddLayer();
-            _uiLayer.LayerCameraSettings = new LayerCameraSettings();
-            _uiLayer.LayerCameraSettings.Orthogonal = true;
-            _uiLayer.LayerCameraSettings.OrthogonalWidth = SpriteManager.Camera.OrthogonalWidth;
-            _uiLayer.LayerCameraSettings.OrthogonalHeight = SpriteManager.Camera.OrthogonalHeight;
+            Layer = SpriteManager.AddLayer();
+            Layer.LayerCameraSettings = new LayerCameraSettings();
+            Layer.LayerCameraSettings.Orthogonal = true;
+            Layer.LayerCameraSettings.OrthogonalWidth = SpriteManager.Camera.OrthogonalWidth;
+            Layer.LayerCameraSettings.OrthogonalHeight = SpriteManager.Camera.OrthogonalHeight;
         }
 
         private void CheckCurrentScreen()
@@ -147,8 +146,8 @@ namespace FrbUi
             }
 
             // Destroy the layer
-            SpriteManager.RemoveLayer(_uiLayer);
-            _uiLayer = null;
+            SpriteManager.RemoveLayer(Layer);
+            Layer = null;
         }
     }
 }

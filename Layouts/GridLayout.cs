@@ -6,6 +6,7 @@ using FlatRedBall.ManagedSpriteGroups;
 using FlatRedBall.Graphics.Animation;
 using FlatRedBall;
 using FlatRedBall.Math.Geometry;
+using FrbUi.Data;
 
 namespace FrbUi.Layouts
 {
@@ -14,8 +15,8 @@ namespace FrbUi.Layouts
         #region Fields
 
         private readonly SpriteFrame _backgroundSprite;
+        private readonly DataGrid<ILayoutable, GridAlignment> _items;
         private Layer _layer;
-        private List<GridItem> _items;
         private bool _recalculateLayout;
         private float _margin;
         private float _spacing;
@@ -39,7 +40,7 @@ namespace FrbUi.Layouts
 
         public bool PushedWithFocus { get; set; }
         public string CurrentAnimationChainName { get; set; }
-        public IEnumerable<ILayoutable> Items { get { return _items.Select(x => x.Item); } }
+        public IEnumerable<ILayoutable> Items { get { return _items.Items; } }
 
         public int ColumnCount { get; protected set; }
         public int RowCount { get; protected set; }
@@ -157,8 +158,8 @@ namespace FrbUi.Layouts
                     BackgroundAlpha = value;
 
                 // Update the alpha values of all child objects
-                foreach (var item in _items)
-                    item.Item.Alpha = value;
+                foreach (var item in _items.Items)
+                    item.Alpha = value;
             }
         }
 
@@ -216,7 +217,7 @@ namespace FrbUi.Layouts
 
         public GridLayout()
         {
-            _items = new List<GridItem>();
+            _items = new DataGrid<ILayoutable, GridAlignment>();
             _backgroundSprite = new SpriteFrame();
             _backgroundSprite.PixelSize = 0.5f;
             _backgroundSprite.Alpha = 0f;
@@ -258,40 +259,30 @@ namespace FrbUi.Layouts
 
             // If this item is already tracked, remove it from the current position 
             //   and place the item in the new position
-            var currentPosition = _items.FirstOrDefault(x => x.Item == item);
-            if (currentPosition != null)
-                currentPosition.Item = null;
+            if (_items.Contains(item))
+                _items.Remove(item);
 
-            // Find the specified row and column if one exists
-            var gridItem = _items.FirstOrDefault(x => x.Row == rowIndex && x.Column == columnIndex);
-            if (gridItem == null)
-            {
-                gridItem = new GridItem { Row = rowIndex, Column = columnIndex };
-                _items.Add(gridItem);
-            }
-
-            if (gridItem.Item != null && gridItem.Item != item)
+            // Add the item to the grid collection
+            if (_items[rowIndex, columnIndex] != null)
                 throw new InvalidOperationException(
                     string.Format("An item already exists for this grid at row {0} column {1}", rowIndex, columnIndex));
 
-            // Attach the item to the grid item
-            gridItem.Item = item;
-            gridItem.HorizontalAlignment = horizontalAlignment;
-            gridItem.VerticalAlignment = verticalAlignment;
+            var alignment = new GridAlignment
+            {
+                HorizontalAlignment = horizontalAlignment,
+                VerticalAlignment = verticalAlignment
+            };
 
-            // Sort the items first by row then by column for efficient looping
-            _items = _items.OrderBy(x => x.Row).ThenBy(x => x.Column).ToList();
+            _items.Add(item, alignment, rowIndex, columnIndex);
 
+            // Attach the item to the background sprite
             item.AttachTo(_backgroundSprite, false);
             item.RelativeZ = 0.1f;
             item.Alpha = _alpha;
             item.ParentLayout = this;
             _recalculateLayout = true;
 
-            item.OnSizeChangeHandler = new LayoutableEvent(delegate(ILayoutable sender)
-            {
-                _recalculateLayout = true;
-            });
+            item.OnSizeChangeHandler = sender => _recalculateLayout = true;
         }
 
         public void UpdateDependencies(double currentTime)
@@ -319,13 +310,14 @@ namespace FrbUi.Layouts
             _backgroundSprite.Detach();
             SpriteManager.RemoveSpriteFrame(_backgroundSprite);
 
-            foreach (var item in _items)
+            // Remove all the items from the datagrid
+            var items = _items.Items.ToArray();
+            for (int x = items.Length - 1; x >= 0; x--)
             {
-                if (item.Item == null)
-                    continue;
+                var item = items[x];
 
-                if (item.Item.Parent == _backgroundSprite)
-                    item.Item.Destroy();
+                if (item.Parent == _backgroundSprite)
+                    item.Destroy();
             }
 
             _items.Clear();
@@ -334,22 +326,21 @@ namespace FrbUi.Layouts
         protected virtual void PerformLayout()
         {
             // Remove any items that this is no longer the parent of
-            foreach (var gridItem in _items)
+            var allItems = _items.Items.ToArray();
+            foreach (var gridItem in allItems)
             {
-                if (gridItem.Item == null)
-                    continue;
-
-                if (gridItem.Item.Parent != _backgroundSprite)
+                if (gridItem.Parent != _backgroundSprite)
                 {
-                    gridItem.Item = null;
                     _recalculateLayout = true;
+                    _items.Remove(gridItem);
                 }
             }
 
+            // If we aren't flagged to redo the layout, don't bother
             if (!_recalculateLayout)
-                return; // Not flagged to actually reset the layout
+                return; 
 
-            // Reset the flag so we don't reset the layout again
+            // Reset the flag so we don't reset the layout again until something changes
             _recalculateLayout = false;
 
             // First recalculate the scaleX and scaleY so we know the offset positions
@@ -361,7 +352,7 @@ namespace FrbUi.Layouts
             ExecuteLayout(columnMaxWidths, rowMaxHeights);
         }
 
-        protected void RecalculateScales(out Dictionary<int, float> columnMaxWidths, out Dictionary<int, float> rowMaxHeights)
+        protected virtual void RecalculateScales(out Dictionary<int, float> columnMaxWidths, out Dictionary<int, float> rowMaxHeights)
         {
             RowCount = 0;
             ColumnCount = 0;
@@ -369,34 +360,36 @@ namespace FrbUi.Layouts
             columnMaxWidths = new Dictionary<int, float>();
             rowMaxHeights = new Dictionary<int, float>();
 
-            for (int x = 0; x < _items.Count; x++)
+            for (int row = 0; row < _items.RowCount; row++)
             {
-                if (_items[x].Item == null)
-                    continue;
+                for (int col = 0; col < _items.ColumnCount; col++)
+                {
+                    var item = _items[row, col];
+                    if (item == null)
+                        continue;
 
-                var gridItem = _items[x];
+                    var itemWidth = item.ScaleX * 2;
+                    var itemHeight = item.ScaleY * 2;
 
-                float itemWidth = gridItem.Item.ScaleX * 2;
-                float itemHeight = gridItem.Item.ScaleY * 2;
+                    // Check if this is the widest item in the column so far
+                    if (!columnMaxWidths.ContainsKey(col))
+                        columnMaxWidths.Add(col, itemWidth);
+                    else if (columnMaxWidths[col] < itemWidth)
+                        columnMaxWidths[col] = itemWidth;
 
-                // Check if this is the widest item in the column so far
-                if (!columnMaxWidths.ContainsKey(gridItem.Column))
-                    columnMaxWidths.Add(gridItem.Column, itemWidth);
-                else if (columnMaxWidths[gridItem.Column] < itemWidth)
-                    columnMaxWidths[gridItem.Column] = itemWidth;
+                    // Check if this is the tallist item in the row so far
+                    if (!rowMaxHeights.ContainsKey(row))
+                        rowMaxHeights.Add(row, itemHeight);
+                    else if (rowMaxHeights[row] < itemHeight)
+                        rowMaxHeights[row] = itemHeight;
 
-                // Check if this is the tallist item in the column so far
-                if (!rowMaxHeights.ContainsKey(gridItem.Row))
-                    rowMaxHeights.Add(gridItem.Row, itemHeight);
-                else if (rowMaxHeights[gridItem.Row] < itemHeight)
-                    rowMaxHeights[gridItem.Row] = itemHeight;
+                    // update max indices
+                    if (ColumnCount < col)
+                        ColumnCount = col;
 
-                // update max indices
-                if (ColumnCount < gridItem.Column)
-                    ColumnCount = gridItem.Column;
-
-                if (RowCount < gridItem.Row)
-                    RowCount = gridItem.Row;
+                    if (RowCount < row)
+                        RowCount = row;
+                }
             }
 
             // Change the row/column counts from indices to conts
@@ -438,93 +431,97 @@ namespace FrbUi.Layouts
             ScaleY = (height / 2);
         }
 
-        protected void ExecuteLayout(Dictionary<int, float> columnMaxWidths, Dictionary<int, float> rowMaxHeights)
+        protected virtual void ExecuteLayout(Dictionary<int, float> columnMaxWidths, Dictionary<int, float> rowMaxHeights)
         {
             // Loop through all the items and place them
-            for (int x = 0; x < _items.Count; x++)
+            for (int row = 0; row < _items.RowCount; row++)
             {
-                var gridItem = _items[x];
-                if (gridItem.Item == null)
-                    continue;
-
-                // If we have an item in this cell, there must be a max width or height defined
-                if (!columnMaxWidths.ContainsKey(gridItem.Column))
-                    throw new InvalidOperationException(
-                        string.Format("Grid item exists at {0} but no max width found", gridItem.Column));
-
-                if (!rowMaxHeights.ContainsKey(gridItem.Row))
-                    throw new InvalidOperationException(
-                        string.Format("Grid item exists at {0} but no max height found", gridItem.Row));
-
-                // Offsets begin at the top left
-                float xOffset = (0 - ScaleX + Margin);
-                float yOffset = (ScaleY - Margin);
-
-                // Calculate the x offset based on the max widths up to this point
-                //  increase x offset as items head to the right
-                for (int i = 0; i < gridItem.Column; i++)
+                for (int col = 0; col < _items.ColumnCount; col++)
                 {
-                    if (columnMaxWidths.ContainsKey(i))
-                        xOffset += columnMaxWidths[i];
+                    var gridItem = _items[row, col];
+                    if (gridItem == null)
+                        continue;
 
-                    if (i < (ColumnCount - 1))
-                        xOffset += Spacing;
+                    // If we have an item in this cell, there must be a max width or height defined
+                    if (!columnMaxWidths.ContainsKey(col))
+                        throw new InvalidOperationException(
+                            string.Format("Grid item exists at {0} but no max width found", col));
+
+                    if (!rowMaxHeights.ContainsKey(row))
+                        throw new InvalidOperationException(
+                            string.Format("Grid item exists at {0} but no max height found", row));
+
+                    // Offsets begin at the top left
+                    float xOffset = (0 - ScaleX + Margin);
+                    float yOffset = (ScaleY - Margin);
+
+                    // Calculate the x offset based on the max widths up to this point
+                    //  increase x offset as items head to the right
+                    for (int i = 0; i < col; i++)
+                    {
+                        if (columnMaxWidths.ContainsKey(i))
+                            xOffset += columnMaxWidths[i];
+
+                        if (i < (ColumnCount - 1))
+                            xOffset += Spacing;
+                    }
+
+                    // Calculate the y offset based on the max heights
+                    //  Decrease the y offset as items head downward
+                    for (int i = 0; i < row; i++)
+                    {
+                        if (rowMaxHeights.ContainsKey(i))
+                            yOffset -= rowMaxHeights[i];
+
+                        if (i < (RowCount - 1))
+                            yOffset -= Spacing;
+                    }
+
+                    // Figure out the alignment offsets
+                    var alignment = _items.GetItemMetadata(gridItem);
+                    float alignmentOffsetX;
+                    float alignmentOffsetY;
+
+                    switch (alignment.HorizontalAlignment)
+                    {
+                        case HorizontalAlignment.Center:
+                            alignmentOffsetX = (columnMaxWidths[col] / 2) - gridItem.ScaleX;
+                            break;
+
+                        case HorizontalAlignment.Right:
+                            alignmentOffsetX = (columnMaxWidths[col] - gridItem.ScaleX);
+                            break;
+
+                        case HorizontalAlignment.Left:
+                        default:
+                            alignmentOffsetX = 0;
+                            break;
+                    }
+
+                    switch (alignment.VerticalAlignment)
+                    {
+                        case VerticalAlignment.Center:
+                            alignmentOffsetY = (rowMaxHeights[row] / 2) - gridItem.ScaleY;
+                            break;
+
+                        case VerticalAlignment.Bottom:
+                            alignmentOffsetY = (rowMaxHeights[row] + gridItem.ScaleY);
+                            break;
+
+                        case VerticalAlignment.Top:
+                        default:
+                            alignmentOffsetY = 0;
+                            break;
+                    }
+
+                    // Position the offsets to account for the center of the object
+                    xOffset += gridItem.ScaleX + alignmentOffsetX;
+                    yOffset -= gridItem.ScaleY + alignmentOffsetY;
+
+                    // Place the item
+                    gridItem.RelativeX = xOffset;
+                    gridItem.RelativeY = yOffset;
                 }
-
-                // Calculate the y offset based on the max heights
-                //  Decrease the y offset as items head downward
-                for (int i = 0; i < gridItem.Row; i++)
-                {
-                    if (rowMaxHeights.ContainsKey(i))
-                        yOffset -= rowMaxHeights[i];
-
-                    if (i < (RowCount - 1))
-                        yOffset -= Spacing;
-                }
-
-                // Figure out the alignment offsets
-                float alignmentOffsetX;
-                float alignmentOffsetY;
-
-                switch (gridItem.HorizontalAlignment)
-                {
-                    case HorizontalAlignment.Center:
-                        alignmentOffsetX = (columnMaxWidths[gridItem.Column] / 2) - gridItem.Item.ScaleX;
-                        break;
-
-                    case HorizontalAlignment.Right:
-                        alignmentOffsetX = (columnMaxWidths[gridItem.Column] - gridItem.Item.ScaleX);
-                        break;
-
-                    case HorizontalAlignment.Left:
-                    default:
-                        alignmentOffsetX = 0;
-                        break;
-                }
-
-                switch (gridItem.VerticalAlignment)
-                {
-                    case VerticalAlignment.Center:
-                        alignmentOffsetY = (rowMaxHeights[gridItem.Row] / 2) - gridItem.Item.ScaleY;
-                        break;
-
-                    case VerticalAlignment.Bottom:
-                        alignmentOffsetY = (rowMaxHeights[gridItem.Row] + gridItem.Item.ScaleY);
-                        break;
-
-                    case VerticalAlignment.Top:
-                    default:
-                        alignmentOffsetY = 0;
-                        break;
-                }
-
-                // Position the offsets to account for the center of the object
-                xOffset += gridItem.Item.ScaleX + alignmentOffsetX;
-                yOffset -= gridItem.Item.ScaleY + alignmentOffsetY;
-
-                // Place the item
-                gridItem.Item.RelativeX = xOffset;
-                gridItem.Item.RelativeY = yOffset;
             }
         }
 
@@ -533,11 +530,8 @@ namespace FrbUi.Layouts
         public enum HorizontalAlignment { Left, Center, Right }
         public enum VerticalAlignment { Top, Center, Bottom }
 
-        private class GridItem
+        private class GridAlignment
         {
-            public int Column { get; set; }
-            public int Row { get; set; }
-            public ILayoutable Item { get; set; }
             public HorizontalAlignment HorizontalAlignment { get; set; }
             public VerticalAlignment VerticalAlignment { get; set; }
         }       

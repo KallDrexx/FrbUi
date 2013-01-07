@@ -45,25 +45,25 @@ namespace FrbUi.SelectableGroupings
 
         public void FocusNextControlInRow()
         {
-            var direction = DataGrid<ISelectable, object>.GridSearchDirection.NextInRow;
+            const DataGrid<ISelectable, object>.GridSearchDirection direction = DataGrid<ISelectable, object>.GridSearchDirection.NextInRow;
             FindAndFocusControl(direction);
         }
 
         public void FocusPreviousControlInRow()
         {
-            var direction = DataGrid<ISelectable, object>.GridSearchDirection.PrevInRow;
+            const DataGrid<ISelectable, object>.GridSearchDirection direction = DataGrid<ISelectable, object>.GridSearchDirection.PrevInRow;
             FindAndFocusControl(direction);
         }
 
         public void FocusNextControlInColumn()
         {
-            var direction = DataGrid<ISelectable, object>.GridSearchDirection.NextInColumn;
+            const DataGrid<ISelectable, object>.GridSearchDirection direction = DataGrid<ISelectable, object>.GridSearchDirection.NextInColumn;
             FindAndFocusControl(direction);
         }
 
         public void FocusPreviousControlInColumn()
         {
-            var direction = DataGrid<ISelectable, object>.GridSearchDirection.PrevInColumn;
+            const DataGrid<ISelectable, object>.GridSearchDirection direction = DataGrid<ISelectable, object>.GridSearchDirection.PrevInColumn;
             FindAndFocusControl(direction);
         }
 

@@ -150,9 +150,8 @@ namespace FrbUi.Data
 
         public TData FindClosestItem(TData referenceItem, GridSearchDirection direction)
         {
-            // If no reference item was passed in, assume starting at 0-0
-            int startRow = 0;
-            int startColumn = 0;
+            int? startRow = null;
+            int? startColumn = null;
 
             if (referenceItem != null)
             {
@@ -171,56 +170,120 @@ namespace FrbUi.Data
             switch (direction)
             {
                 case GridSearchDirection.NextInRow:
-                    row = _itemPositions[startRow];
-                    for (int x = startColumn + 1; x < row.Count; x++)
-                    {
-                        if (row[x] != null)
-                        {
-                            foundItem = row[x];
-                            break;
-                        }
-                    }
+                    foundItem = FindNextInRow(startRow, startColumn);
                     break;
 
                 case GridSearchDirection.PrevInRow:
-                    row = _itemPositions[startRow];
-                    for (int x = startColumn - 1; x >= 0; x--)
-                    {
-                        if (row[x] != null)
-                        {
-                            foundItem = row[x];
-                            break;
-                        }
-                    }
+                    foundItem = FindPrevInRow(startRow, startColumn);
                     break;
 
                 case GridSearchDirection.NextInColumn:
-                    for (int x = startRow + 1; x < _rowCount; x++)
-                    {
-                        if (_itemPositions[x].Count - 1 >= startColumn)
-                        {
-                            if (_itemPositions[x][startColumn] != null)
-                            {
-                                foundItem = _itemPositions[x][startColumn];
-                                break;
-                            }
-                        }
-                    }
+                    foundItem = FindNextInColumn(startRow, startColumn);
                     break;
 
                 case GridSearchDirection.PrevInColumn:
-                    for (int x = startRow - 1; x >= 0; x--)
-                    {
-                        if (_itemPositions[x].Count - 1 >= startColumn)
-                        {
-                            if (_itemPositions[x][startColumn] != null)
-                            {
-                                foundItem = _itemPositions[x][startColumn];
-                                break;
-                            }
-                        }
-                    }
+                    foundItem = FindPrevInColumn(startRow, startColumn);
                     break;
+            }
+
+            return foundItem;
+        }
+
+        private TData FindPrevInColumn(int? startRow, int? startColumn)
+        {
+            TData foundItem = null;
+
+            // If no start row/column was given, start at the bottom left of the grid
+            if (startRow == null || startColumn == null)
+            {
+                startRow = _rowCount;
+                startColumn = 0;
+            }
+
+            for (int x = startRow.Value - 1; x >= 0; x--)
+            {
+                if (_itemPositions[x].Count - 1 >= startColumn)
+                {
+                    if (_itemPositions[x][startColumn.Value] != null)
+                    {
+                        foundItem = _itemPositions[x][startColumn.Value];
+                        break;
+                    }
+                }
+            }
+
+            return foundItem;
+        }
+
+        private TData FindNextInColumn(int? startRow, int? startColumn)
+        {
+            TData foundItem = null;
+
+            // If no start row/column was given, start at the top left of the grid
+            if (startRow == null || startColumn == null)
+            {
+                startRow = -1;
+                startColumn = 0;
+            }
+
+            for (int x = startRow.Value + 1; x < _rowCount; x++)
+            {
+                if (_itemPositions[x].Count - 1 >= startColumn)
+                {
+                    if (_itemPositions[x][startColumn.Value] != null)
+                    {
+                        foundItem = _itemPositions[x][startColumn.Value];
+                        break;
+                    }
+                }
+            }
+
+            return foundItem;
+        }
+
+        private TData FindPrevInRow(int? startRow, int? startColumn)
+        {
+            TData foundItem = null;
+
+            // If no start row/column was given, start at the top right of the grid
+            if (startRow == null || startColumn == null)
+            {
+                startRow = 0;
+                startColumn = _columnCount;
+            }
+
+            var row = _itemPositions[startRow.Value];
+            for (int x = startColumn.Value - 1; x >= 0; x--)
+            {
+                if (row[x] != null)
+                {
+                    foundItem = row[x];
+                    break;
+                }
+            }
+
+            return foundItem;
+        }
+
+        private TData FindNextInRow(int? startRow, int? startColumn)
+        {
+            TData foundItem = null;
+
+            // If no start row/column was given, start at the top left of the grid
+            if (startRow == null || startColumn == null)
+            {
+                startRow = 0;
+                startColumn = -1;
+            }
+
+            var row = _itemPositions[startRow.Value];
+            for (int x = startColumn.Value + 1; x < row.Count; x++)
+            {
+                if (row[x] != null)
+                {
+                    foundItem = row[x];
+                    break;
+                }
             }
 
             return foundItem;

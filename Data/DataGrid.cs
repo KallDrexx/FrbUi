@@ -148,6 +148,84 @@ namespace FrbUi.Data
             _knownItems[item].Metadata = metadata;
         }
 
+        public TData FindClosestItem(TData referenceItem, GridSearchDirection direction)
+        {
+            // If no reference item was passed in, assume starting at 0-0
+            int startRow = 0;
+            int startColumn = 0;
+
+            if (referenceItem != null)
+            {
+                GridPosition position;
+                if (!_knownItems.TryGetValue(referenceItem, out position))
+                    throw new InvalidOperationException("The reference item does not exist in the grid");
+
+                startColumn = position.Column;
+                startRow = position.Row;
+            }
+
+            // Search the grid for the next item
+            TData foundItem = null;
+            List<TData> row;
+
+            switch (direction)
+            {
+                case GridSearchDirection.NextInRow:
+                    row = _itemPositions[startRow];
+                    for (int x = startColumn + 1; x < row.Count; x++)
+                    {
+                        if (row[x] != null)
+                        {
+                            foundItem = row[x];
+                            break;
+                        }
+                    }
+                    break;
+
+                case GridSearchDirection.PrevInRow:
+                    row = _itemPositions[startRow];
+                    for (int x = startColumn - 1; x >= 0; x--)
+                    {
+                        if (row[x] != null)
+                        {
+                            foundItem = row[x];
+                            break;
+                        }
+                    }
+                    break;
+
+                case GridSearchDirection.NextInColumn:
+                    for (int x = startRow + 1; x < _rowCount; x++)
+                    {
+                        if (_itemPositions[x].Count - 1 >= startColumn)
+                        {
+                            if (_itemPositions[x][startColumn] != null)
+                            {
+                                foundItem = _itemPositions[x][startColumn];
+                                break;
+                            }
+                        }
+                    }
+                    break;
+
+                case GridSearchDirection.PrevInColumn:
+                    for (int x = startRow - 1; x >= 0; x--)
+                    {
+                        if (_itemPositions[x].Count - 1 >= startColumn)
+                        {
+                            if (_itemPositions[x][startColumn] != null)
+                            {
+                                foundItem = _itemPositions[x][startColumn];
+                                break;
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            return foundItem;
+        }
+
         private bool IndexExists(int rowIndex, int columnIndex)
         {
             if (rowIndex < 0 || columnIndex < 0)
@@ -194,5 +272,7 @@ namespace FrbUi.Data
                 Metadata = metadata;
             }
         }
+
+        public enum GridSearchDirection { NextInColumn, PrevInColumn, NextInRow, PrevInRow }
     }
 }

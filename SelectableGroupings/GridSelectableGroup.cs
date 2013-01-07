@@ -45,34 +45,26 @@ namespace FrbUi.SelectableGroupings
 
         public void FocusNextControlInRow()
         {
-            var nextItem = _items.FindClosestItem(_focusedItem,
-                                                  DataGrid<ISelectable, object>.GridSearchDirection.NextInRow);
-
-            FocusItem(nextItem);
+            var direction = DataGrid<ISelectable, object>.GridSearchDirection.NextInRow;
+            FindAndFocusControl(direction);
         }
 
         public void FocusPreviousControlInRow()
         {
-            var nextItem = _items.FindClosestItem(_focusedItem,
-                                                  DataGrid<ISelectable, object>.GridSearchDirection.PrevInRow);
-
-            FocusItem(nextItem);
+            var direction = DataGrid<ISelectable, object>.GridSearchDirection.PrevInRow;
+            FindAndFocusControl(direction);
         }
 
         public void FocusNextControlInColumn()
         {
-            var nextItem = _items.FindClosestItem(_focusedItem,
-                                                  DataGrid<ISelectable, object>.GridSearchDirection.NextInColumn);
-
-            FocusItem(nextItem);
+            var direction = DataGrid<ISelectable, object>.GridSearchDirection.NextInColumn;
+            FindAndFocusControl(direction);
         }
 
         public void FocusPreviousControlInColumn()
         {
-            var nextItem = _items.FindClosestItem(_focusedItem,
-                                                  DataGrid<ISelectable, object>.GridSearchDirection.PrevInColumn);
-
-            FocusItem(nextItem);
+            var direction = DataGrid<ISelectable, object>.GridSearchDirection.PrevInColumn;
+            FindAndFocusControl(direction);
         }
 
         public void ClickFocusedControl()
@@ -114,6 +106,35 @@ namespace FrbUi.SelectableGroupings
 
             _focusedItem = item;
             _focusedItem.Focus();
+        }
+
+        private void FindAndFocusControl(DataGrid<ISelectable, object>.GridSearchDirection direction)
+        {
+            var currentItem = _focusedItem;
+            ISelectable nextItem;
+
+            // Keep getting the next item until no item is returned (no item in the direction)
+            //   or a non-disabled item is returne
+            while (true)
+            {
+                nextItem = _items.FindClosestItem(currentItem, direction);
+
+                // If the found item is disabled, go to the next
+                var disablable = nextItem as IDisableable;
+                if (disablable != null)
+                {
+                    if (!disablable.Enabled)
+                    {
+                        currentItem = nextItem;
+                        continue;
+                    }
+                }
+
+                // If we got here we got an acceptable result
+                break;
+            }
+
+            FocusItem(nextItem);
         }
     }
 }

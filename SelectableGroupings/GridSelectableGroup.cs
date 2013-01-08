@@ -117,7 +117,7 @@ namespace FrbUi.SelectableGroupings
             //   or a non-disabled item is returne
             while (true)
             {
-                nextItem = _items.FindClosestItem(currentItem, direction);
+                nextItem = _items.FindClosestItem(currentItem, direction, LoopFocus);
 
                 // If the found item is disabled, go to the next
                 var disablable = nextItem as IDisableable;

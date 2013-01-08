@@ -148,7 +148,7 @@ namespace FrbUi.Data
             _knownItems[item].Metadata = metadata;
         }
 
-        public TData FindClosestItem(TData referenceItem, GridSearchDirection direction)
+        public TData FindClosestItem(TData referenceItem, GridSearchDirection direction, bool loopfocus = false)
         {
             int? startRow = null;
             int? startColumn = null;
@@ -170,26 +170,26 @@ namespace FrbUi.Data
             switch (direction)
             {
                 case GridSearchDirection.NextInRow:
-                    foundItem = FindNextInRow(startRow, startColumn);
+                    foundItem = FindNextInRow(startRow, startColumn, loopfocus);
                     break;
 
                 case GridSearchDirection.PrevInRow:
-                    foundItem = FindPrevInRow(startRow, startColumn);
+                    foundItem = FindPrevInRow(startRow, startColumn, loopfocus);
                     break;
 
                 case GridSearchDirection.NextInColumn:
-                    foundItem = FindNextInColumn(startRow, startColumn);
+                    foundItem = FindNextInColumn(startRow, startColumn, loopfocus);
                     break;
 
                 case GridSearchDirection.PrevInColumn:
-                    foundItem = FindPrevInColumn(startRow, startColumn);
+                    foundItem = FindPrevInColumn(startRow, startColumn, loopfocus);
                     break;
             }
 
             return foundItem;
         }
 
-        private TData FindPrevInColumn(int? startRow, int? startColumn)
+        private TData FindPrevInColumn(int? startRow, int? startColumn, bool loopfocus)
         {
             TData foundItem = null;
 
@@ -200,22 +200,38 @@ namespace FrbUi.Data
                 startColumn = 0;
             }
 
-            for (int x = startRow.Value - 1; x >= 0; x--)
+            var rowIndex = (startRow == 0 && loopfocus)
+                               ? _itemPositions.Count - 1
+                               : startRow.Value - 1;
+
+            while (rowIndex >= 0)
             {
-                if (_itemPositions[x].Count - 1 >= startColumn)
+                if (_itemPositions[rowIndex].Count - 1 >= startColumn)
                 {
-                    if (_itemPositions[x][startColumn.Value] != null)
+                    if (_itemPositions[rowIndex][startColumn.Value] != null)
                     {
-                        foundItem = _itemPositions[x][startColumn.Value];
+                        foundItem = _itemPositions[rowIndex][startColumn.Value];
                         break;
                     }
+                }
+
+                rowIndex--;
+
+                // If focus is looping, loop around if less than zero or break out if we are on the original row
+                if (loopfocus)
+                {
+                    if (rowIndex < 0)
+                        rowIndex = _itemPositions.Count - 1;
+
+                    if (rowIndex == startRow.Value)
+                        break;
                 }
             }
 
             return foundItem;
         }
 
-        private TData FindNextInColumn(int? startRow, int? startColumn)
+        private TData FindNextInColumn(int? startRow, int? startColumn, bool loopfocus)
         {
             TData foundItem = null;
 
@@ -226,22 +242,38 @@ namespace FrbUi.Data
                 startColumn = 0;
             }
 
-            for (int x = startRow.Value + 1; x < _rowCount; x++)
+            var rowIndex = (startRow == _itemPositions.Count - 1 && loopfocus)
+                               ? 0
+                               : startRow.Value + 1;
+
+            while (rowIndex < _itemPositions.Count)
             {
-                if (_itemPositions[x].Count - 1 >= startColumn)
+                if (_itemPositions[rowIndex].Count - 1 >= startColumn)
                 {
-                    if (_itemPositions[x][startColumn.Value] != null)
+                    if (_itemPositions[rowIndex][startColumn.Value] != null)
                     {
-                        foundItem = _itemPositions[x][startColumn.Value];
+                        foundItem = _itemPositions[rowIndex][startColumn.Value];
                         break;
                     }
+                }
+
+                rowIndex++;
+
+                // If focus is looping, loop around if less than zero or break out if we are on the original row
+                if (loopfocus)
+                {
+                    if (rowIndex >= _itemPositions.Count)
+                        rowIndex = 0;
+
+                    if (rowIndex == startRow.Value)
+                        break;
                 }
             }
 
             return foundItem;
         }
 
-        private TData FindPrevInRow(int? startRow, int? startColumn)
+        private TData FindPrevInRow(int? startRow, int? startColumn, bool loopfocus)
         {
             TData foundItem = null;
 
@@ -253,19 +285,35 @@ namespace FrbUi.Data
             }
 
             var row = _itemPositions[startRow.Value];
-            for (int x = startColumn.Value - 1; x >= 0; x--)
+            var columnIndex = (startColumn == 0 && loopfocus)
+                                  ? row.Count - 1
+                                  : (int)startColumn - 1;
+
+            while (columnIndex >= 0)
             {
-                if (row[x] != null)
+                if (row[columnIndex] != null)
                 {
-                    foundItem = row[x];
+                    foundItem = row[columnIndex];
                     break;
+                }
+
+                columnIndex--;
+
+                // If we are before the beginning and we are looping focus, loop around
+                if (loopfocus)
+                {
+                    if (columnIndex < 0)
+                        columnIndex = row.Count - 1;
+
+                    if (columnIndex == startColumn)
+                        break;
                 }
             }
 
             return foundItem;
         }
 
-        private TData FindNextInRow(int? startRow, int? startColumn)
+        private TData FindNextInRow(int? startRow, int? startColumn, bool loopfocus)
         {
             TData foundItem = null;
 
@@ -277,12 +325,28 @@ namespace FrbUi.Data
             }
 
             var row = _itemPositions[startRow.Value];
-            for (int x = startColumn.Value + 1; x < row.Count; x++)
+            var columnIndex = (startColumn == (row.Count - 1) && loopfocus)
+                                  ? 0
+                                  : (int)startColumn + 1;
+
+            while (columnIndex < row.Count)
             {
-                if (row[x] != null)
+                if (row[columnIndex] != null)
                 {
-                    foundItem = row[x];
+                    foundItem = row[columnIndex];
                     break;
+                }
+
+                columnIndex++;
+
+                // If we are before the beginning and we are looping focus, loop around
+                if (loopfocus)
+                {
+                    if (columnIndex > row.Count)
+                        columnIndex = 0;
+
+                    if (columnIndex == startColumn)
+                        break;
                 }
             }
 

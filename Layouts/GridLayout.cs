@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FlatRedBall.Graphics;
-using FlatRedBall.ManagedSpriteGroups;
-using FlatRedBall.Graphics.Animation;
 using FlatRedBall;
+using FlatRedBall.Graphics;
+using FlatRedBall.Graphics.Animation;
+using FlatRedBall.ManagedSpriteGroups;
 using FlatRedBall.Math.Geometry;
 using FrbUi.Data;
 
@@ -244,8 +244,7 @@ namespace FrbUi.Layouts
             Layer = layer;
         }
 
-        public void AddItem(ILayoutable item, int columnIndex, int rowIndex, 
-                                HorizontalAlignment horizontalAlignment = HorizontalAlignment.Left, VerticalAlignment verticalAlignment = VerticalAlignment.Top)
+        public void AddItem(ILayoutable item, int rowIndex, int columnIndex, HorizontalAlignment horizontalAlignment = HorizontalAlignment.Left, VerticalAlignment verticalAlignment = VerticalAlignment.Top)
         {
             if (columnIndex < 0)
                 throw new InvalidOperationException("Item cannot be placed in a column index less than 0");

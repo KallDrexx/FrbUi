@@ -4,10 +4,9 @@ namespace FrbUi.SelectableGroupings
 {
     public class SequentialSelectableGroup : Collection<ISelectable>, ISelectableControlGroup
     {
-        private ISelectable _focusedItem;
-
         public bool Destroyed { get; private set; }
         public bool LoopFocus { get; set; }
+        public ISelectable CurrentlyFocusedItem { get; private set; }
 
         public void FocusNextControl()
         {
@@ -21,18 +20,18 @@ namespace FrbUi.SelectableGroupings
 
         public void ClickFocusedControl()
         {
-            if (_focusedItem == null)
+            if (CurrentlyFocusedItem == null)
                 return;
 
-            _focusedItem.Click();
+            CurrentlyFocusedItem.Click();
         }
 
         public void UnfocusCurrentControl()
         {
-            if (_focusedItem != null)
+            if (CurrentlyFocusedItem != null)
             {
-                _focusedItem.LoseFocus();
-                _focusedItem = null;
+                CurrentlyFocusedItem.LoseFocus();
+                CurrentlyFocusedItem = null;
             }
         }
 
@@ -55,7 +54,7 @@ namespace FrbUi.SelectableGroupings
             var removedItem = this[index];
             base.RemoveItem(index);
 
-            if (removedItem == _focusedItem)
+            if (removedItem == CurrentlyFocusedItem)
                 FocusNextControl();
         }
 
@@ -69,8 +68,8 @@ namespace FrbUi.SelectableGroupings
                 //   If we have a currently focused item start from there
                 //   Otherwise start at the beginning
                 int startIndex = -1;
-                if (_focusedItem != null)
-                    startIndex = this.IndexOf(_focusedItem);
+                if (CurrentlyFocusedItem != null)
+                    startIndex = this.IndexOf(CurrentlyFocusedItem);
 
                 // If we are on the first (or last if not focusing next) element
                 //  stop iterating
@@ -107,7 +106,7 @@ namespace FrbUi.SelectableGroupings
                     {
                         // If the control is disableable, only focus on it if it's enabled
                         var disableable = nextFocusableItem as IDisableable;
-                        if (disableable == null | disableable.Enabled)
+                        if ((disableable != null && !disableable.Enabled) || disableable == null)
                             break;
 
                         // The control is disabled so ignore it
@@ -117,12 +116,12 @@ namespace FrbUi.SelectableGroupings
             }
 
             // Unfocus the previous item and focus the next one
-            if (_focusedItem != null)
-                _focusedItem.LoseFocus();
+            if (CurrentlyFocusedItem != null)
+                CurrentlyFocusedItem.LoseFocus();
 
-            _focusedItem = nextFocusableItem;
-            if (_focusedItem != null)
-                _focusedItem.Focus();
+            CurrentlyFocusedItem = nextFocusableItem;
+            if (CurrentlyFocusedItem != null)
+                CurrentlyFocusedItem.Focus();
         }
     }
 }

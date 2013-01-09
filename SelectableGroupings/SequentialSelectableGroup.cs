@@ -106,7 +106,7 @@ namespace FrbUi.SelectableGroupings
                     {
                         // If the control is disableable, only focus on it if it's enabled
                         var disableable = nextFocusableItem as IDisableable;
-                        if ((disableable != null && !disableable.Enabled) || disableable == null)
+                        if (disableable == null || disableable.Enabled)
                             break;
 
                         // The control is disabled so ignore it

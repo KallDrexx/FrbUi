@@ -6,10 +6,10 @@ namespace FrbUi.SelectableGroupings
     public class GridSelectableGroup : ISelectableControlGroup
     {
         private readonly DataGrid<ISelectable, object> _items;
-        private ISelectable _focusedItem;
 
         public bool Destroyed { get; private set; }
         public bool LoopFocus { get; set; }
+        public ISelectable CurrentlyFocusedItem { get; private set; }
 
         public GridSelectableGroup()
         {
@@ -69,19 +69,19 @@ namespace FrbUi.SelectableGroupings
 
         public void ClickFocusedControl()
         {
-            if (_focusedItem == null)
+            if (CurrentlyFocusedItem == null)
                 return;
 
-            _focusedItem.Click();
+            CurrentlyFocusedItem.Click();
         }
 
         public void UnfocusCurrentControl()
         {
-            if (_focusedItem == null)
+            if (CurrentlyFocusedItem == null)
                 return;
 
-            _focusedItem.LoseFocus();
-            _focusedItem = null;
+            CurrentlyFocusedItem.LoseFocus();
+            CurrentlyFocusedItem = null;
         }
 
         public bool Contains(ISelectable selectable)
@@ -108,16 +108,16 @@ namespace FrbUi.SelectableGroupings
             if (item == null)
                 return;
 
-            if (_focusedItem != null)
-                _focusedItem.LoseFocus();
+            if (CurrentlyFocusedItem != null)
+                CurrentlyFocusedItem.LoseFocus();
 
-            _focusedItem = item;
-            _focusedItem.Focus();
+            CurrentlyFocusedItem = item;
+            CurrentlyFocusedItem.Focus();
         }
 
         private void FindAndFocusControl(DataGrid<ISelectable, object>.GridSearchDirection direction)
         {
-            var currentItem = _focusedItem;
+            var currentItem = CurrentlyFocusedItem;
             ISelectable nextItem;
 
             // Keep getting the next item until no item is returned (no item in the direction)

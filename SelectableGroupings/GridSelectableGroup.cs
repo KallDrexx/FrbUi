@@ -69,12 +69,19 @@ namespace FrbUi.SelectableGroupings
 
         public void ClickFocusedControl()
         {
-            throw new NotImplementedException();
+            if (_focusedItem == null)
+                return;
+
+            _focusedItem.Click();
         }
 
         public void UnfocusCurrentControl()
         {
-            throw new NotImplementedException();
+            if (_focusedItem == null)
+                return;
+
+            _focusedItem.LoseFocus();
+            _focusedItem = null;
         }
 
         public bool Contains(ISelectable selectable)

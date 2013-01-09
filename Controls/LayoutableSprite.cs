@@ -182,8 +182,11 @@ namespace FrbUi.Controls
 
         public LayoutableSprite()
         {
-            _sprite = new Sprite();
-            _sprite.PixelSize = 0.5f;
+            _sprite = new Sprite
+            {
+                PixelSize = 0.5f, 
+                UseAnimationRelativePosition = false
+            };
         }
 
         public void Activity()

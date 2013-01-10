@@ -5,5 +5,6 @@ namespace FrbUi
     public interface ILayoutManager : ILayoutable
     {
         IEnumerable<ILayoutable> Items { get; }
+        void RemoveItem(ILayoutable item);
     }
 }

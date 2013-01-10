@@ -18,6 +18,7 @@ namespace FrbUi
 
         void Activity();
         void AttachTo(PositionedObject obj, bool changeRelative);
+        void Detach();
         void AddToManagers(Layer layer);
         void UpdateDependencies(double currentTime);
         void ForceUpdateDependencies();

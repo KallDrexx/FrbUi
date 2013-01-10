@@ -199,6 +199,11 @@ namespace FrbUi.Controls
             _text.AttachTo(obj, changeRelative);
         }
 
+        public void Detach()
+        {
+            _text.Detach();
+        }
+
         public void AddToManagers(Layer layer)
         {
             TextManager.AddToLayer(_text, layer);

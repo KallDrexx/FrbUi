@@ -204,6 +204,21 @@ namespace FrbUi.Layouts
             item.OnSizeChangeHandler = new LayoutableEvent(delegate(ILayoutable sender) { PositionItem(item, horizontalPosition, verticalPosition, layoutFrom); });
         }
 
+        public void RemoveItem(ILayoutable item)
+        {
+            if (!_items.ContainsKey(item))
+                return;
+
+            _items.Remove(item);
+
+            // Only detach it if the item is still attached to this
+            if (item.Parent == _backgroundSprite)
+            {
+                item.Detach();
+                item.OnSizeChangeHandler = null;
+            }
+        }
+
         private void PositionItem(ILayoutable item, HorizontalPosition horizontalPosition, VerticalPosition verticalPosition, LayoutOrigin layoutFrom)
         {
             // Make sure this is still the item's parent

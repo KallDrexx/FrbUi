@@ -198,6 +198,11 @@ namespace FrbUi.Controls
             _sprite.AttachTo(obj, changeRelative);
         }
 
+        public void Detach()
+        {
+            _sprite.Detach();
+        }
+
         public void AddToManagers(Layer layer)
         {
             SpriteManager.AddToLayer(_sprite, layer);

@@ -239,6 +239,21 @@ namespace FrbUi.Layouts
             item.OnSizeChangeHandler = sender => _recalculateLayout = true;
         }
 
+        public void RemoveItem(ILayoutable item)
+        {
+            if (!_items.ContainsKey(item))
+                return;
+
+            _items.Remove(item);
+
+            // Only detach it if the item is still attached to this
+            if (item.Parent == _backgroundSprite)
+            {
+                item.Detach();
+                item.OnSizeChangeHandler = null;
+            }
+        }
+
         public void UpdateDependencies(double currentTime)
         {
             // Update the dependencies on all children

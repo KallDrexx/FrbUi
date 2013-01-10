@@ -292,7 +292,7 @@ namespace FrbUi.Layouts
                 _recalculateLayout = true;
 
                 // If a recalculation already happened this frame, manually trigger a new one
-                if (Math.Abs(_lastLayoutFrame - TimeManager.CurrentTime) < double.Epsilon)
+                if (Math.Abs(_lastLayoutFrame - TimeManager.CurrentTime) > double.Epsilon)
                     ForceUpdateDependencies();
             };
         }

@@ -124,7 +124,7 @@ namespace FrbUi.Layouts
             {
                 _alpha = value;
 
-                if (_backgroundSprite != null)
+                if (_backgroundSprite.Texture != null)
                     BackgroundAlpha = value;
 
                 // Update the alpha values of all child objects

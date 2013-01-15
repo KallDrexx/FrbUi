@@ -48,32 +48,32 @@ namespace FrbUi.Positioning
             };
         }
 
-        public static VerticalPosition OffsetFromTop(float pct)
+        public static VerticalPosition OffsetFromTop(float pixels)
         {
             return new VerticalPosition
             {
                 Alignment = PositionAlignment.Top,
-                Offset = pct,
+                Offset = pixels,
                 OffsetIsPercentage = false
             };
         }
 
-        public static VerticalPosition OffsetFromCenter(float pct)
+        public static VerticalPosition OffsetFromCenter(float pixels)
         {
             return new VerticalPosition
             {
                 Alignment = PositionAlignment.Center,
-                Offset = pct,
+                Offset = pixels,
                 OffsetIsPercentage = false
             };
         }
 
-        public static VerticalPosition OffsetFromBottom(float pct)
+        public static VerticalPosition OffsetFromBottom(float pixels)
         {
             return new VerticalPosition
             {
                 Alignment = PositionAlignment.Bottom,
-                Offset = pct,
+                Offset = pixels,
                 OffsetIsPercentage = false
             };
         }

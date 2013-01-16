@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FlatRedBall.ManagedSpriteGroups;
 using FlatRedBall.Graphics;
 using FlatRedBall;
@@ -18,25 +17,13 @@ namespace FrbUi.Layouts
         private float _alpha;
         private bool _isFullScreen;
 
-        public SimpleLayout()
-        {
-            _items = new Dictionary<ILayoutable, OverallPosition>();
-            _backgroundSprite = new SpriteFrame();
-            _backgroundSprite.PixelSize = 0.5f;
-            _backgroundSprite.Alpha = 0f;
-            _alpha = 1f;
-        }
-
         public LayoutableEvent OnSizeChangeHandler { get; set; }
 
         #region Properties
 
         public ILayoutable ParentLayout { get; set; }
-        public bool KeepBackgroundAlphaSynced { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
-        public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
-        public string CurrentBackgroundAnimationChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
         public float RelativeY { get { return _backgroundSprite.RelativeY; } set { _backgroundSprite.RelativeY = value; } }
         public float RelativeZ { get { return _backgroundSprite.RelativeZ; } set { _backgroundSprite.RelativeZ = value; } }
@@ -121,7 +108,7 @@ namespace FrbUi.Layouts
             {
                 _alpha = value;
 
-                if (KeepBackgroundAlphaSynced)
+                if (_backgroundSprite.Texture != null)
                     BackgroundAlpha = value;
 
                 // Update the alpha values of all child objects
@@ -130,9 +117,32 @@ namespace FrbUi.Layouts
             }
         }
 
+        public string CurrentAnimationChainName
+        {
+            get { return _backgroundSprite.CurrentChainName; }
+            set
+            {
+                _backgroundSprite.CurrentChainName = value;
+                _backgroundSprite.Alpha = _backgroundSprite.Texture == null
+                                              ? 0
+                                              : _alpha;
+            }
+        }
+
         #endregion
 
         #region Methods
+
+        public SimpleLayout()
+        {
+            _alpha = 1f;
+            _items = new Dictionary<ILayoutable, OverallPosition>();
+            _backgroundSprite = new SpriteFrame
+            {
+                PixelSize = 0.5f,
+                Alpha = 0f
+            };
+        }
 
         public void Activity()
         {

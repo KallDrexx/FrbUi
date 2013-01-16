@@ -40,11 +40,9 @@ namespace FrbUi.Layouts
 
         public ILayoutable ParentLayout { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
-        public bool KeepBackgroundAlphaSynced { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
-        public string CurrentBackgroundAnimationChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
         public float RelativeY { get { return _backgroundSprite.RelativeY; } set { _backgroundSprite.RelativeY = value; } }
         public float RelativeZ { get { return _backgroundSprite.RelativeZ; } set { _backgroundSprite.RelativeZ = value; } }
@@ -169,12 +167,24 @@ namespace FrbUi.Layouts
             {
                 _alpha = value;
 
-                if (KeepBackgroundAlphaSynced)
+                if (_backgroundSprite.Texture != null)
                     BackgroundAlpha = value;
 
                 // Update the alpha values of all child objects
                 foreach (var item in _items.Keys)
                     item.Alpha = value;
+            }
+        }
+
+        public string CurrentAnimationChainName
+        {
+            get { return _backgroundSprite.CurrentChainName; }
+            set
+            {
+                _backgroundSprite.CurrentChainName = value;
+                _backgroundSprite.Alpha = _backgroundSprite.Texture == null
+                                              ? 0
+                                              : _alpha;
             }
         }
 

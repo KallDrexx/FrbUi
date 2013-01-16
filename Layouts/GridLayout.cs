@@ -310,6 +310,24 @@ namespace FrbUi.Layouts
             }
         }
 
+        public bool TryGetItemPosition(ILayoutable item, out int rowIndex , out int columnIndex)
+        {
+            if (!_items.Contains(item))
+            {
+                rowIndex = 0;
+                columnIndex = 0;
+                return false;
+            }
+
+            _items.ItemPosition(item, out rowIndex, out columnIndex);
+            return true;
+        }
+
+        public ILayoutable GetItemAt(int rowIndex, int colIndex)
+        {
+            return _items[rowIndex, colIndex];
+        }
+
         public void UpdateDependencies(double currentTime)
         {
             // Update the dependencies on all children

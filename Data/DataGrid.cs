@@ -127,6 +127,16 @@ namespace FrbUi.Data
             _columnCount = 0;
         }
 
+        public void ItemPosition(TData item, out int rowIndex, out int columnIndex)
+        {
+            GridPosition position;
+            if (!_knownItems.TryGetValue(item, out position))
+                throw new InvalidOperationException("The datagrid does not contain the specified item");
+
+            rowIndex = position.Row;
+            columnIndex = position.Column;
+        }
+
         public bool Contains(TData item)
         {
             return _knownItems.ContainsKey(item);

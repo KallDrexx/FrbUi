@@ -214,9 +214,13 @@ namespace FrbUi.Controls
         {
             _paused = false;
             _enabled = true;
-            _backgroundSprite = new SpriteFrame();
-            _backgroundSprite.PixelSize = 0.5f;
-            _backgroundSprite.Borders = SpriteFrame.BorderSides.All;
+            _backgroundSprite = new SpriteFrame
+            {
+                PixelSize = 0.5f, 
+                Borders = SpriteFrame.BorderSides.All,
+                ScaleX = 20f,
+                ScaleY = 20f
+            };
 
             _label = new Text();
             _label.AttachTo(_backgroundSprite, false);

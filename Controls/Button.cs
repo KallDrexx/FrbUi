@@ -68,10 +68,21 @@ namespace FrbUi.Controls
         public float ZVelocity { get { return _backgroundSprite.ZVelocity; } set { _backgroundSprite.ZVelocity = value; } }
         public IVisible Parent { get { return _backgroundSprite.Parent as IVisible; } }
         public string Name { get { return "FrbUi Button"; } set { throw new NotImplementedException(); } }
-        public string Text { get { return _label.DisplayText; } set { _label.DisplayText = value; }}
         public float Pixelsize { get { return _backgroundSprite.PixelSize; } set { _backgroundSprite.PixelSize = value; } }
         public SpriteFrame.BorderSides Border { get { return _backgroundSprite.Borders; } set { _backgroundSprite.Borders = value; } }
         public string CurrentAnimationChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }
+
+        public string Text
+        {
+            get { return _label.DisplayText; } 
+            set 
+            { 
+                _label.DisplayText = value; 
+
+                // Reset the scaling
+                _label.SetPixelPerfectScale(Layer);
+            }
+        }
 
         public Layer Layer
         {
@@ -225,7 +236,6 @@ namespace FrbUi.Controls
             _label = new Text();
             _label.AttachTo(_backgroundSprite, false);
             _label.RelativeZ = 0.1f;
-            _label.SetPixelPerfectScale(SpriteManager.Camera);
             _label.HorizontalAlignment = HorizontalAlignment.Center;
         }
 

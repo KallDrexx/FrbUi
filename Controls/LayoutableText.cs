@@ -21,6 +21,9 @@ namespace FrbUi.Controls
                 _text.DisplayText = value;
                 if (OnSizeChangeHandler != null)
                     OnSizeChangeHandler(this);
+
+                // Reset the scaling
+                _text.SetPixelPerfectScale(Layer);
             }
         }
 

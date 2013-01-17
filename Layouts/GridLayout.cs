@@ -363,6 +363,9 @@ namespace FrbUi.Layouts
             }
 
             _items.Clear();
+
+            if (_border != null)
+                ShapeManager.Remove(_border);
         }
 
         protected virtual void PerformLayout()

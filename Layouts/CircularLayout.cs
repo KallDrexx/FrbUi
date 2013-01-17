@@ -296,6 +296,9 @@ namespace FrbUi.Layouts
             }
 
             _items.Clear();
+
+            if (_border != null)
+                ShapeManager.Remove(_border);
         }
 
         private void PositionItem(ILayoutable item, ILayoutable lastItem = null)

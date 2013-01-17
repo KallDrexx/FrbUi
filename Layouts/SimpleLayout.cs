@@ -5,7 +5,6 @@ using FlatRedBall.ManagedSpriteGroups;
 using FlatRedBall.Graphics;
 using FlatRedBall;
 using FrbUi.Positioning;
-using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Layouts
 {

@@ -285,7 +285,7 @@ namespace FrbUi.Layouts
             _items.Add(item, alignment, rowIndex, columnIndex);
 
             // Attach the item to the background sprite
-            item.AttachTo(_backgroundSprite, false);
+            item.AttachTo(_backgroundSprite, true);
             item.RelativeZ = 0.1f;
             item.Alpha = _alpha;
             item.ParentLayout = this;

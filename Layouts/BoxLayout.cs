@@ -280,7 +280,7 @@ namespace FrbUi.Layouts
                 return;
 
             _items.Add(item, alignment);
-            item.AttachTo(_backgroundSprite, false);
+            item.AttachTo(_backgroundSprite, true);
             item.RelativeZ = 0.1f;
             item.Alpha = _alpha;
             item.ParentLayout = this;

@@ -204,7 +204,7 @@ namespace FrbUi.Layouts
             var position = new OverallPosition { HorizontalPosition = horizontalPosition, VerticalPosition = verticalPosition };
             _items.Add(item, position);
             item.Alpha = _alpha;
-            item.AttachTo(_backgroundSprite, false);
+            item.AttachTo(_backgroundSprite, true);
             item.RelativeZ = 0.1f;
             item.ParentLayout = this;
 

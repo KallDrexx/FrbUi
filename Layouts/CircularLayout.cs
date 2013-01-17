@@ -232,7 +232,7 @@ namespace FrbUi.Layouts
             {
                 // Add the item to the list
                 _items.Add(item, new CircularPosition());
-                item.AttachTo(_backgroundSprite, false);
+                item.AttachTo(_backgroundSprite, true);
                 item.RelativeZ = 0.1f;
                 item.Alpha = _alpha;
                 item.ParentLayout = this;

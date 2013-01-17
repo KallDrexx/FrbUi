@@ -236,7 +236,6 @@ namespace FrbUi.Layouts
 
         public void Activity()
         {
-            _alpha = 1f;
         }
 
         public void AttachTo(PositionedObject obj, bool changeRelative)

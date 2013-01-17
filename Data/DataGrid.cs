@@ -14,17 +14,8 @@ namespace FrbUi.Data
         private int _columnCount;
 
         public int ItemCount { get { return _knownItems.Count;  } }
-        public int RowCount { get { return _itemPositions.Count; } }
-        public int ColumnCount
-        {
-            get
-            {
-                if (_itemPositions.Count > 0)
-                    return _itemPositions[0].Count;
-
-                return 0;
-            }
-        }
+        public int RowCount { get { return _rowCount; } }
+        public int ColumnCount { get { return _columnCount; } }
 
         public TData this[int rowIndex, int columnIndex]
         {

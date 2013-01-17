@@ -15,6 +15,7 @@ namespace FrbUi.Controls
         private readonly Text _label;
         private bool _paused;
         private bool _enabled;
+        private float _alpha;
 
         private string _standardAnimationChainName;
         private string _focusedAnimationChainName;
@@ -70,7 +71,15 @@ namespace FrbUi.Controls
         public string Name { get { return "FrbUi Button"; } set { throw new NotImplementedException(); } }
         public float Pixelsize { get { return _backgroundSprite.PixelSize; } set { _backgroundSprite.PixelSize = value; } }
         public SpriteFrame.BorderSides Border { get { return _backgroundSprite.Borders; } set { _backgroundSprite.Borders = value; } }
-        public string CurrentAnimationChainName { get { return _backgroundSprite.CurrentChainName; } set { _backgroundSprite.CurrentChainName = value; } }
+        public string CurrentAnimationChainName
+        {
+            get { return _backgroundSprite.CurrentChainName; } 
+            set
+            {
+                _backgroundSprite.CurrentChainName = value;
+                _backgroundSprite.Alpha = _backgroundSprite.Texture == null ? 0 : _alpha;
+            }
+        }
 
         public string Text
         {
@@ -209,11 +218,15 @@ namespace FrbUi.Controls
 
         public float Alpha 
         { 
-            get { return _backgroundSprite.Alpha; } 
+            get { return _alpha; } 
             set 
-            { 
-                _backgroundSprite.Alpha = value;
+            {
+                _alpha = value;
                 _label.Alpha = value;
+
+                _backgroundSprite.Alpha = _backgroundSprite.Texture == null 
+                    ? 0 
+                    : value;
             } 
         }
 
@@ -225,12 +238,14 @@ namespace FrbUi.Controls
         {
             _paused = false;
             _enabled = true;
+            _alpha = 0;
             _backgroundSprite = new SpriteFrame
             {
                 PixelSize = 0.5f, 
                 Borders = SpriteFrame.BorderSides.All,
                 ScaleX = 20f,
-                ScaleY = 20f
+                ScaleY = 20f,
+                Alpha = 0f
             };
 
             _label = new Text();

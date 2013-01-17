@@ -4,7 +4,6 @@ using System.Linq;
 using FlatRedBall;
 using FlatRedBall.Graphics;
 using FlatRedBall.Screens;
-using FrbUi.SelectableGroupings;
 
 namespace FrbUi
 {
@@ -16,11 +15,13 @@ namespace FrbUi
         private readonly List<ILayoutable> _items;
         private readonly List<ISelectableControlGroup> _selectableControlGroups;
         private Screen _lastScreen;
+        private int _nextControlId;
 
         private UiControlManager() 
         {
             _items = new List<ILayoutable>();
             _selectableControlGroups = new List<ISelectableControlGroup>();
+            _nextControlId = 1;
         }
 
         public static UiControlManager Instance
@@ -43,6 +44,7 @@ namespace FrbUi
             if (item == null || _items.Contains(item))
                 return;
 
+            item.DebugId = (++_nextControlId);
             _items.Add(item);
             item.AddToManagers(Layer);
         }
@@ -53,6 +55,7 @@ namespace FrbUi
                 throw new InvalidOperationException("Cannot create a control from an interface");
 
             var control = Activator.CreateInstance<TResult>();
+            control.DebugId = (++_nextControlId);
             AddControl(control);
             return control;
         }

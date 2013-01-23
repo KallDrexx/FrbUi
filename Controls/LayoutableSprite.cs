@@ -198,6 +198,21 @@ namespace FrbUi.Controls
             _sprite.AttachTo(obj, changeRelative);
         }
 
+        public void AttachObject(PositionedObject obj, bool changeRelative)
+        {
+            obj.AttachTo(_sprite, changeRelative);
+        }
+
+        public void AttachTo(ILayoutable obj, bool changeRelative)
+        {
+            obj.AttachObject(_sprite, changeRelative);
+        }
+
+        public void AttachObject(ILayoutable obj, bool changeRelatative)
+        {
+            obj.AttachTo(_sprite, changeRelatative);
+        }
+
         public void Detach()
         {
             _sprite.Detach();

@@ -202,6 +202,21 @@ namespace FrbUi.Controls
             _text.AttachTo(obj, changeRelative);
         }
 
+        public void AttachObject(PositionedObject obj, bool changeRelative)
+        {
+            obj.AttachTo(_text, changeRelative);
+        }
+
+        public void AttachTo(ILayoutable obj, bool changeRelative)
+        {
+            obj.AttachObject(_text, changeRelative);
+        }
+
+        public void AttachObject(ILayoutable obj, bool changeRelatative)
+        {
+            obj.AttachTo(_text, changeRelatative);
+        }
+
         public void Detach()
         {
             _text.Detach();

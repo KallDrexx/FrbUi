@@ -269,6 +269,21 @@ namespace FrbUi.Controls
             _backgroundSprite.AttachTo(obj, changeRelative);
         }
 
+        public void AttachObject(PositionedObject obj, bool changeRelative)
+        {
+            obj.AttachTo(_backgroundSprite, changeRelative);
+        }
+
+        public void AttachTo(ILayoutable obj, bool changeRelative)
+        {
+            obj.AttachObject(_backgroundSprite, changeRelative);
+        }
+
+        public void AttachObject(ILayoutable obj, bool changeRelatative)
+        {
+            obj.AttachTo(_backgroundSprite, changeRelatative);
+        }
+
         public void Detach()
         {
             _backgroundSprite.Detach();

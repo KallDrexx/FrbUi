@@ -14,6 +14,8 @@ namespace FrbUi.Layouts
         public enum Alignment { Default, Inverse, Centered }
         public enum Direction { Up, Down, Left, Right }
 
+        #region Variables
+
         private readonly SpriteFrame _backgroundSprite;
         private readonly Dictionary<ILayoutable, Alignment> _items;
         private Layer _layer;
@@ -29,14 +31,16 @@ namespace FrbUi.Layouts
         private string _focusedAnimationChainName;
         private string _pushedAnimationChainName;
 
+        #endregion
+
+        #region Properties
+
         public LayoutableEvent OnSizeChangeHandler { get; set; }
         public LayoutableEvent OnFocused { get; set; }
         public LayoutableEvent OnFocusLost { get; set; }
         public LayoutableEvent OnPushed { get; set; }
         public LayoutableEvent OnPushReleased { get; set; }
         public LayoutableEvent OnClicked { get; set; }
-
-        #region Properties
 
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public SelectableState CurrentSelectableState { get; set; }
@@ -261,6 +265,21 @@ namespace FrbUi.Layouts
         public void AttachTo(PositionedObject obj, bool changeRelative)
         {
             _backgroundSprite.AttachTo(obj, changeRelative);
+        }
+
+        public void AttachObject(PositionedObject obj, bool changeRelative)
+        {
+            obj.AttachTo(_backgroundSprite, changeRelative);
+        }
+
+        public void AttachTo(ILayoutable obj, bool changeRelative)
+        {
+            obj.AttachObject(_backgroundSprite, changeRelative);
+        }
+
+        public void AttachObject(ILayoutable obj, bool changeRelatative)
+        {
+            obj.AttachTo(_backgroundSprite, changeRelatative);
         }
 
         public void Detach()

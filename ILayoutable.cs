@@ -1,4 +1,5 @@
-﻿using FlatRedBall.Graphics;
+﻿using System;
+using FlatRedBall.Graphics;
 using FlatRedBall.Math.Geometry;
 using FlatRedBall.Math;
 using FlatRedBall;
@@ -18,6 +19,9 @@ namespace FrbUi
 
         void Activity();
         void AttachTo(PositionedObject obj, bool changeRelative);
+        void AttachObject(PositionedObject obj, bool changeRelative);
+        void AttachTo(ILayoutable obj, bool changeRelative);
+        void AttachObject(ILayoutable obj, bool changeRelative);
         void Detach();
         void AddToManagers(Layer layer);
         void UpdateDependencies(double currentTime);

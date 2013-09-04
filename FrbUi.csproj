@@ -88,6 +88,12 @@
     <Compile Include="SelectableGroupings\GridSelectableGroup.cs" />
     <Compile Include="SelectableGroupings\SequentialSelectableGroup.cs" />
     <Compile Include="UiControlManager.cs" />
+    <Compile Include="Xml\Models\AssetBase.cs" />
+    <Compile Include="Xml\Models\AssetCollection.cs" />
+    <Compile Include="Xml\Models\BoxLayout.cs" />
+    <Compile Include="Xml\Models\BoxLayoutChild.cs" />
+    <Compile Include="Xml\Models\Button.cs" />
+    <Compile Include="Xml\Models\LayoutableChildBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

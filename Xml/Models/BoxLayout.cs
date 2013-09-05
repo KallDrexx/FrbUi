@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using FlatRedBall;
+using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models
 {
-    public class BoxLayout : AssetBase
+    public class BoxLayout : SelectableAssetBase
     {
         [XmlAttribute] public float Spacing { get; set; }
         [XmlAttribute] public float Margin { get; set; }
         [XmlAttribute] public LayoutDirection CurrentDirection { get; set; }
         [XmlAttribute] public float BackgroundAlpha { get; set; }
-        [XmlAttribute] public string BackgroundAnimationChains { get; set; }
-        [XmlAttribute] public string InitialBackgroundAnimationChainName { get; set; }
+        [XmlAttribute] public string BackgroundAchxFile { get; set; }
 
         [XmlArray] public List<BoxLayoutChild> Children { get; set; }
 
@@ -30,15 +31,15 @@ namespace FrbUi.Xml.Models
             BackgroundAlpha = 1f;
         }
 
-        public override ILayoutable GenerateILayoutable()
+        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
         {
             var layout = UiControlManager.Instance.CreateControl<Layouts.BoxLayout>();
-            SetBaseILayoutableProperties(layout);
+            SetBaseILayoutableProperties(layout, namedControls);
             layout.Spacing = Spacing;
             layout.Margin = Margin;
             layout.BackgroundAlpha = BackgroundAlpha;
-
-            // TODO: Add animation chains somehow
+            layout.BackgroundAnimationChains = FlatRedBallServices.Load<AnimationChainList>(BackgroundAchxFile, contentManagerName);
+            SetupSelectableProperties(layout);
 
             foreach (var child in Children)
             {
@@ -58,7 +59,7 @@ namespace FrbUi.Xml.Models
                         break;
                 }
 
-                var childLayoutable = child.Item.GenerateILayoutable();
+                var childLayoutable = child.Item.GenerateILayoutable(contentManagerName, namedControls);
                 layout.AddItem(childLayoutable, childAlignment);
             }
 

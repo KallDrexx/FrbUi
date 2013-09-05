@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="UserInterfacePackage" nillable="true" type="AssetCollection" />
+  <xs:complexType name="AssetCollection">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice1" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfChoice1">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element minOccurs="1" maxOccurs="1" name="Button" nillable="true" type="Button" />
+      <xs:element minOccurs="1" maxOccurs="1" name="BoxLayout" nillable="true" type="BoxLayout" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="Button">
+    <xs:complexContent mixed="false">
+      <xs:extension base="SelectableAssetBase">
+        <xs:attribute name="AchxFile" type="xs:string" />
+        <xs:attribute name="DisabledAnimationChainName" type="xs:string" />
+        <xs:attribute name="Text" type="xs:string" />
+        <xs:attribute name="IgnoreCursorEvents" type="xs:boolean" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SelectableAssetBase" abstract="true">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AssetBase">
+        <xs:attribute name="StandardAnimationChainName" type="xs:string" />
+        <xs:attribute name="FocusedAnimationChainName" type="xs:string" />
+        <xs:attribute name="PushedAnimationChainName" type="xs:string" />
+        <xs:attribute name="PushedWithFocus" type="xs:boolean" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AssetBase" abstract="true">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="RelativeX" nillable="true" type="xs:float" />
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" />
+    <xs:attribute name="RelativeY" type="xs:float" use="required" />
+    <xs:attribute name="RelativeZ" type="xs:float" use="required" />
+    <xs:attribute name="ScaleX" type="xs:float" use="required" />
+    <xs:attribute name="ScaleY" type="xs:float" use="required" />
+    <xs:attribute name="Visible" type="xs:boolean" use="required" />
+  </xs:complexType>
+  <xs:complexType name="BoxLayout">
+    <xs:complexContent mixed="false">
+      <xs:extension base="SelectableAssetBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Children" type="ArrayOfBoxLayoutChild" />
+        </xs:sequence>
+        <xs:attribute name="Spacing" type="xs:float" use="required" />
+        <xs:attribute name="Margin" type="xs:float" use="required" />
+        <xs:attribute name="CurrentDirection" type="LayoutDirection" use="required" />
+        <xs:attribute name="BackgroundAlpha" type="xs:float" use="required" />
+        <xs:attribute name="BackgroundAchxFile" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfBoxLayoutChild">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BoxLayoutChild" nillable="true" type="BoxLayoutChild" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BoxLayoutChild">
+    <xs:complexContent mixed="false">
+      <xs:extension base="LayoutableChildBase">
+        <xs:attribute name="ItemAlignment" type="Alignment" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LayoutableChildBase" abstract="true">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:simpleType name="Alignment">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Inverse" />
+      <xs:enumeration value="Centered" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="LayoutDirection">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Up" />
+      <xs:enumeration value="Down" />
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

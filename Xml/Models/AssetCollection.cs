@@ -6,12 +6,12 @@ using System.Xml.Serialization;
 
 namespace FrbUi.Xml.Models
 {
-    [XmlRoot("Assets")]
+    [XmlRoot("UserInterfacePackage")]
     public class AssetCollection
     {
         [XmlArray]
         [XmlArrayItem("BoxLayout", typeof(BoxLayout))]
         [XmlArrayItem("Button", typeof(Button))]
-        public List<AssetBase> Assets { get; set; } 
+        public List<AssetBase> Controls { get; set; } 
     }
 }

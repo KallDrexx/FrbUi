@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using FlatRedBall;
 using FlatRedBall.Graphics.Animation;
 
-namespace FrbUi.Xml.Models
+namespace FrbUi.Xml.Models.Layouts
 {
     public class BoxLayout : SelectableAssetBase
     {
@@ -88,7 +85,7 @@ namespace FrbUi.Xml.Models
 
         public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
         {
-            var layout = UiControlManager.Instance.CreateControl<Layouts.BoxLayout>();
+            var layout = UiControlManager.Instance.CreateControl<FrbUi.Layouts.BoxLayout>();
             SetBaseILayoutableProperties(layout, namedControls);
             layout.Spacing = Spacing ?? 0f;
             layout.Margin = Margin ?? 0f;
@@ -99,37 +96,37 @@ namespace FrbUi.Xml.Models
             switch (CurrentDirection)
             {
                 case LayoutDirection.Up:
-                    layout.CurrentDirection = Layouts.BoxLayout.Direction.Up;
+                    layout.CurrentDirection = FrbUi.Layouts.BoxLayout.Direction.Up;
                     break;
 
                 case LayoutDirection.Down:
-                    layout.CurrentDirection = Layouts.BoxLayout.Direction.Down;
+                    layout.CurrentDirection = FrbUi.Layouts.BoxLayout.Direction.Down;
                     break;
 
                 case LayoutDirection.Left:
-                    layout.CurrentDirection = Layouts.BoxLayout.Direction.Left;
+                    layout.CurrentDirection = FrbUi.Layouts.BoxLayout.Direction.Left;
                     break;
 
                 case LayoutDirection.Right:
-                    layout.CurrentDirection = Layouts.BoxLayout.Direction.Right;
+                    layout.CurrentDirection = FrbUi.Layouts.BoxLayout.Direction.Right;
                     break;
             }
 
             foreach (var child in Children)
             {
-                Layouts.BoxLayout.Alignment childAlignment;
+                FrbUi.Layouts.BoxLayout.Alignment childAlignment;
                 switch (child.ItemAlignment)
                 {
                     case BoxLayoutChild.Alignment.Centered:
-                        childAlignment = Layouts.BoxLayout.Alignment.Centered;
+                        childAlignment = FrbUi.Layouts.BoxLayout.Alignment.Centered;
                         break;
 
                     case BoxLayoutChild.Alignment.Inverse:
-                        childAlignment = Layouts.BoxLayout.Alignment.Inverse;
+                        childAlignment = FrbUi.Layouts.BoxLayout.Alignment.Inverse;
                         break;
 
                     default:
-                        childAlignment = Layouts.BoxLayout.Alignment.Default;
+                        childAlignment = FrbUi.Layouts.BoxLayout.Alignment.Default;
                         break;
                 }
 

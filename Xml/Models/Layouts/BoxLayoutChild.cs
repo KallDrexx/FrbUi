@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
-namespace FrbUi.Xml.Models
+namespace FrbUi.Xml.Models.Layouts
 {
     public class BoxLayoutChild : LayoutableChildBase
     {

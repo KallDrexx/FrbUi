@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using FlatRedBall;
 using FlatRedBall.Graphics.Animation;
 
-namespace FrbUi.Xml.Models
+namespace FrbUi.Xml.Models.Controls
 {
     public class Button : SelectableAssetBase
     {
@@ -38,7 +35,7 @@ namespace FrbUi.Xml.Models
 
         public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
         {
-            var button = UiControlManager.Instance.CreateControl<Controls.Button>();
+            var button = UiControlManager.Instance.CreateControl<FrbUi.Controls.Button>();
             SetBaseILayoutableProperties(button, namedControls);
 
             button.AnimationChains = FlatRedBallServices.Load<AnimationChainList>(AchxFile, contentManagerName);

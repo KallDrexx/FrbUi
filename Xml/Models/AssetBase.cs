@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace FrbUi.Xml.Models
@@ -22,53 +24,14 @@ namespace FrbUi.Xml.Models
         [XmlAttribute]
         public bool Visible { get; set; }
 
-        [XmlIgnore]
-        public float? RelativeX { get; set; }
+        [XmlAttribute]
+        public float RelativeX { get; set; }
 
-        [XmlIgnore]
-        public bool RelativeXValueSpecified
-        {
-            get { return RelativeX.HasValue; }
-        }
+        [XmlAttribute]
+        public float RelativeY { get; set; }
 
-        [XmlIgnore]
-        public float? RelativeY { get; set; }
-
-        [XmlIgnore]
-        public bool RelativeYValueSpecified
-        {
-            get { return RelativeY.HasValue; }
-        }
-
-        [XmlIgnore]
-        public float? RelativeZ { get; set; }
-
-        [XmlIgnore]
-        public bool RelativeZValueSpecified
-        {
-            get { return RelativeZ.HasValue; }
-        }
-
-        [XmlAttribute("RelativeX")]
-        public float RelativeXValue
-        {
-            get { return RelativeX ?? default(float); }
-            set { RelativeX = value; }
-        }
-
-        [XmlAttribute("RelativeY")]
-        public float RelativeYValue
-        {
-            get { return RelativeY ?? default(float); }
-            set { RelativeY = value; }
-        }
-
-        [XmlAttribute("RelativeZ")]
-        public float RelativeZValue
-        {
-            get { return RelativeZ ?? default(float); }
-            set { RelativeZ = value; }
-        }
+        [XmlAttribute]
+        public float RelativeZ { get; set; }
 
         #endregion
         
@@ -90,9 +53,9 @@ namespace FrbUi.Xml.Models
             layoutable.ScaleX = ScaleX;
             layoutable.ScaleY = ScaleY;
             layoutable.Visible = Visible;
-            layoutable.RelativeX = RelativeXValue;
-            layoutable.RelativeY = RelativeYValue;
-            layoutable.RelativeZ = RelativeZValue;
+            layoutable.RelativeX = RelativeX;
+            layoutable.RelativeY = RelativeY;
+            layoutable.RelativeZ = RelativeZ;
 
             if (!string.IsNullOrWhiteSpace(Name))
             {

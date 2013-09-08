@@ -37,9 +37,9 @@
     <xs:attribute name="ScaleX" type="xs:float" use="required" />
     <xs:attribute name="ScaleY" type="xs:float" use="required" />
     <xs:attribute name="Visible" type="xs:boolean" use="required" />
-    <xs:attribute name="RelativeX" type="xs:float" />
-    <xs:attribute name="RelativeY" type="xs:float" />
-    <xs:attribute name="RelativeZ" type="xs:float" />
+    <xs:attribute name="RelativeX" type="xs:float" use="required" />
+    <xs:attribute name="RelativeY" type="xs:float" use="required" />
+    <xs:attribute name="RelativeZ" type="xs:float" use="required" />
   </xs:complexType>
   <xs:complexType name="BoxLayout">
     <xs:complexContent mixed="false">
@@ -70,8 +70,8 @@
   <xs:complexType name="LayoutableChildBase" abstract="true">
     <xs:sequence>
       <xs:choice minOccurs="1" maxOccurs="1">
-        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
         <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
       </xs:choice>
     </xs:sequence>
   </xs:complexType>

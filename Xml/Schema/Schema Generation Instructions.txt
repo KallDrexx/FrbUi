@@ -1,0 +1,2 @@
+﻿1) xsd.exe FrbUi.dll /outputdir:$(ProjectDir)\Xml /type:FrbUi.Xml.Models.AssetCollection 
+2) Manually fixed required clauses

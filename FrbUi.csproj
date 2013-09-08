@@ -98,14 +98,17 @@
     <Compile Include="Xml\UserInterfacePackage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Xml\schema.xsd">
+    <None Include="Xml\Schema\schema.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Xml\Schema\Schema Generation Instructions.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\xsd.exe" $(TargetPath) /outputdir:$(ProjectDir)\Xml /type:FrbUi.Xml.Models.AssetCollection 
-Move /y $(ProjectDir)\Xml\schema0.xsd $(Projectdir)\Xml\schema.xsd</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

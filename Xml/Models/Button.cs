@@ -10,10 +10,31 @@ namespace FrbUi.Xml.Models
 {
     public class Button : SelectableAssetBase
     {
-        [XmlAttribute] public string AchxFile { get; set; }
-        [XmlAttribute] public string DisabledAnimationChainName { get; set; }
-        [XmlAttribute] public string Text { get; set; }
-        [XmlAttribute] public bool IgnoreCursorEvents { get; set; }
+        #region XML
+
+        [XmlAttribute]
+        public string AchxFile { get; set; }
+
+        [XmlAttribute]
+        public string DisabledAnimationChainName { get; set; }
+
+        [XmlAttribute]
+        public string Text { get; set; }
+
+        [XmlIgnore]
+        public bool? IgnoreCursorEvents { get; set; }
+
+        [XmlIgnore]
+        public bool IgnoreCursorEventsValueSpecified { get { return IgnoreCursorEvents.HasValue; } }
+
+        [XmlAttribute("IgnoreCursorEvents")]
+        public bool IgnoreCursorEventsValue
+        {
+            get { return IgnoreCursorEvents ?? default(bool);}
+            set { IgnoreCursorEvents = value; }
+        }
+
+        #endregion
 
         public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
         {
@@ -27,7 +48,7 @@ namespace FrbUi.Xml.Models
                 button.DisabledAnimationChainName = DisabledAnimationChainName;
 
             button.Text = Text;
-            button.IgnoreCursorEvents = IgnoreCursorEvents;
+            button.IgnoreCursorEvents = IgnoreCursorEvents ?? false;
             return button;
         }
     }

@@ -10,13 +10,68 @@ namespace FrbUi.Xml.Models
 {
     public class BoxLayout : SelectableAssetBase
     {
-        [XmlAttribute] public float Spacing { get; set; }
-        [XmlAttribute] public float Margin { get; set; }
-        [XmlAttribute] public LayoutDirection CurrentDirection { get; set; }
-        [XmlAttribute] public float BackgroundAlpha { get; set; }
-        [XmlAttribute] public string BackgroundAchxFile { get; set; }
+        #region XML
 
-        [XmlArray] public List<BoxLayoutChild> Children { get; set; }
+        [XmlIgnore]
+        public float? Spacing { get; set; }
+
+        [XmlIgnore]
+        public bool SpacingValueSpecified { get { return Spacing.HasValue; } }
+
+        [XmlAttribute("Spacing")]
+        public float SpacingValue
+        {
+            get { return Spacing ?? default(float); }
+            set { Spacing = value; }
+        }
+
+        [XmlIgnore]
+        public float? Margin { get; set; }
+
+        [XmlIgnore]
+        public bool MarginValueSpecified { get { return Margin.HasValue; } }
+
+        [XmlAttribute("Margin")]
+        public float MarginValue
+        {
+            get { return Margin ?? default(float); }
+            set { Margin = value; }
+        }
+
+        [XmlIgnore]
+        public LayoutDirection? CurrentDirection { get; set; }
+
+        [XmlIgnore]
+        public bool CurrentDirectionValueSpecified { get { return CurrentDirection.HasValue; } }
+
+        [XmlAttribute("CurrentDirection")]
+        public LayoutDirection CurrentDirectionValue
+        {
+            get { return CurrentDirection ?? default(LayoutDirection); }
+            set { CurrentDirection = value; }
+        }
+
+        [XmlIgnore]
+        public float? BackgroundAlpha { get; set; }
+
+        [XmlIgnore]
+        public bool BackgroundAlphaValueSpecified { get { return BackgroundAlpha.HasValue; } }
+
+        [XmlAttribute("BackgroundAlpha")]
+        public float BackgroundAlphaValue
+        {
+            get { return BackgroundAlpha ?? default(float); }
+            set { BackgroundAlpha = value; }
+        }
+
+        [XmlAttribute]
+        public string BackgroundAchxFile { get; set; }
+
+        [XmlArray]
+        public List<BoxLayoutChild> Children { get; set; }
+
+        #endregion
+
 
         public enum LayoutDirection
         {
@@ -35,9 +90,9 @@ namespace FrbUi.Xml.Models
         {
             var layout = UiControlManager.Instance.CreateControl<Layouts.BoxLayout>();
             SetBaseILayoutableProperties(layout, namedControls);
-            layout.Spacing = Spacing;
-            layout.Margin = Margin;
-            layout.BackgroundAlpha = BackgroundAlpha;
+            layout.Spacing = Spacing ?? 0f;
+            layout.Margin = Margin ?? 0f;
+            layout.BackgroundAlpha = BackgroundAlpha ?? 1f;
             layout.BackgroundAnimationChains = FlatRedBallServices.Load<AnimationChainList>(BackgroundAchxFile, contentManagerName);
             SetupSelectableProperties(layout);
 

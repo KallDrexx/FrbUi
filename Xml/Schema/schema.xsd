@@ -15,7 +15,7 @@
   <xs:complexType name="Button">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableAssetBase">
-        <xs:attribute name="AchxFile" type="xs:string" use="required" />
+        <xs:attribute name="AchxFile" type="xs:string" />
         <xs:attribute name="DisabledAnimationChainName" type="xs:string" />
         <xs:attribute name="Text" type="xs:string" />
         <xs:attribute name="IgnoreCursorEvents" type="xs:boolean" />
@@ -25,7 +25,7 @@
   <xs:complexType name="SelectableAssetBase" abstract="true">
     <xs:complexContent mixed="false">
       <xs:extension base="AssetBase">
-        <xs:attribute name="StandardAnimationChainName" type="xs:string" use="required" />
+        <xs:attribute name="StandardAnimationChainName" type="xs:string" />
         <xs:attribute name="FocusedAnimationChainName" type="xs:string" />
         <xs:attribute name="PushedAnimationChainName" type="xs:string" />
         <xs:attribute name="PushedWithFocus" type="xs:boolean" />
@@ -51,7 +51,7 @@
         <xs:attribute name="Margin" type="xs:float" />
         <xs:attribute name="CurrentDirection" type="LayoutDirection" />
         <xs:attribute name="BackgroundAlpha" type="xs:float" />
-        <xs:attribute name="BackgroundAchxFile" type="xs:string" use="required" />
+        <xs:attribute name="BackgroundAchxFile" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

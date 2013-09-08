@@ -8,8 +8,18 @@ namespace FrbUi.Xml.Models
 {
     public class BoxLayoutChild : LayoutableChildBase
     {
-        [XmlAttribute]
-        public Alignment ItemAlignment { get; set; }
+        [XmlIgnore]
+        public Alignment? ItemAlignment { get; set; }
+
+        [XmlIgnore]
+        public bool ItemAlignmentValueSpecified { get { return ItemAlignment.HasValue; } }
+
+        [XmlAttribute("ItemAlignment")]
+        public Alignment ItemAlignmentValue
+        {
+            get { return ItemAlignment ?? default(Alignment); }
+            set { ItemAlignment = value; }
+        }
 
         public enum Alignment
         {

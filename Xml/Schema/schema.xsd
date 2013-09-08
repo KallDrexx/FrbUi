@@ -15,31 +15,31 @@
   <xs:complexType name="Button">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableAssetBase">
-        <xs:attribute name="AchxFile" type="xs:string" />
+        <xs:attribute name="AchxFile" type="xs:string" use="required" />
         <xs:attribute name="DisabledAnimationChainName" type="xs:string" />
         <xs:attribute name="Text" type="xs:string" />
-        <xs:attribute name="IgnoreCursorEvents" type="xs:boolean" use="required" />
+        <xs:attribute name="IgnoreCursorEvents" type="xs:boolean" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="SelectableAssetBase" abstract="true">
     <xs:complexContent mixed="false">
       <xs:extension base="AssetBase">
-        <xs:attribute name="StandardAnimationChainName" type="xs:string" />
+        <xs:attribute name="StandardAnimationChainName" type="xs:string" use="required" />
         <xs:attribute name="FocusedAnimationChainName" type="xs:string" />
         <xs:attribute name="PushedAnimationChainName" type="xs:string" />
-        <xs:attribute name="PushedWithFocus" type="xs:boolean" use="required" />
+        <xs:attribute name="PushedWithFocus" type="xs:boolean" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="AssetBase" abstract="true">
     <xs:attribute name="Name" type="xs:string" />
-    <xs:attribute name="ScaleX" type="xs:float" use="required" />
-    <xs:attribute name="ScaleY" type="xs:float" use="required" />
-    <xs:attribute name="Visible" type="xs:boolean" use="required" />
-    <xs:attribute name="RelativeX" type="xs:float" use="required" />
-    <xs:attribute name="RelativeY" type="xs:float" use="required" />
-    <xs:attribute name="RelativeZ" type="xs:float" use="required" />
+    <xs:attribute name="ScaleX" type="xs:float" />
+    <xs:attribute name="ScaleY" type="xs:float" />
+    <xs:attribute name="Visible" type="xs:boolean" />
+    <xs:attribute name="RelativeX" type="xs:float" />
+    <xs:attribute name="RelativeY" type="xs:float" />
+    <xs:attribute name="RelativeZ" type="xs:float" />
   </xs:complexType>
   <xs:complexType name="BoxLayout">
     <xs:complexContent mixed="false">
@@ -47,11 +47,11 @@
         <xs:sequence>
           <xs:element minOccurs="0" maxOccurs="1" name="Children" type="ArrayOfBoxLayoutChild" />
         </xs:sequence>
-        <xs:attribute name="Spacing" type="xs:float" use="required" />
-        <xs:attribute name="Margin" type="xs:float" use="required" />
-        <xs:attribute name="CurrentDirection" type="LayoutDirection" use="required" />
-        <xs:attribute name="BackgroundAlpha" type="xs:float" use="required" />
-        <xs:attribute name="BackgroundAchxFile" type="xs:string" />
+        <xs:attribute name="Spacing" type="xs:float" />
+        <xs:attribute name="Margin" type="xs:float" />
+        <xs:attribute name="CurrentDirection" type="LayoutDirection" />
+        <xs:attribute name="BackgroundAlpha" type="xs:float" />
+        <xs:attribute name="BackgroundAchxFile" type="xs:string" use="required" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -63,7 +63,7 @@
   <xs:complexType name="BoxLayoutChild">
     <xs:complexContent mixed="false">
       <xs:extension base="LayoutableChildBase">
-        <xs:attribute name="ItemAlignment" type="Alignment" use="required" />
+        <xs:attribute name="ItemAlignment" type="Alignment" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

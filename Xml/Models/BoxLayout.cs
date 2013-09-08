@@ -41,6 +41,25 @@ namespace FrbUi.Xml.Models
             layout.BackgroundAnimationChains = FlatRedBallServices.Load<AnimationChainList>(BackgroundAchxFile, contentManagerName);
             SetupSelectableProperties(layout);
 
+            switch (CurrentDirection)
+            {
+                case LayoutDirection.Up:
+                    layout.CurrentDirection = Layouts.BoxLayout.Direction.Up;
+                    break;
+
+                case LayoutDirection.Down:
+                    layout.CurrentDirection = Layouts.BoxLayout.Direction.Down;
+                    break;
+
+                case LayoutDirection.Left:
+                    layout.CurrentDirection = Layouts.BoxLayout.Direction.Left;
+                    break;
+
+                case LayoutDirection.Right:
+                    layout.CurrentDirection = Layouts.BoxLayout.Direction.Right;
+                    break;
+            }
+
             foreach (var child in Children)
             {
                 Layouts.BoxLayout.Alignment childAlignment;

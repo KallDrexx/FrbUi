@@ -23,7 +23,9 @@ namespace FrbUi.Xml.Models
             button.AnimationChains = FlatRedBallServices.Load<AnimationChainList>(AchxFile, contentManagerName);
             SetupSelectableProperties(button);
 
-            button.DisabledAnimationChainName = DisabledAnimationChainName;
+            if (!string.IsNullOrWhiteSpace(DisabledAnimationChainName))
+                button.DisabledAnimationChainName = DisabledAnimationChainName;
+
             button.Text = Text;
             button.IgnoreCursorEvents = IgnoreCursorEvents;
             return button;

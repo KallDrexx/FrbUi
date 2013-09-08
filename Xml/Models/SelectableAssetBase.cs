@@ -19,10 +19,18 @@ namespace FrbUi.Xml.Models
                 throw new ArgumentNullException("selectable");
 
             selectable.PushedWithFocus = PushedWithFocus;
-            selectable.PushedAnimationChainName = PushedAnimationChainName;
-            selectable.FocusedAnimationChainName = FocusedAnimationChainName;
-            selectable.StandardAnimationChainName = StandardAnimationChainName;
-            selectable.CurrentAnimationChainName = StandardAnimationChainName;
+
+            if (!string.IsNullOrWhiteSpace(PushedAnimationChainName))
+                selectable.PushedAnimationChainName = PushedAnimationChainName;
+
+            if (!string.IsNullOrWhiteSpace(FocusedAnimationChainName))
+                selectable.FocusedAnimationChainName = FocusedAnimationChainName;
+
+            if (!string.IsNullOrWhiteSpace(StandardAnimationChainName))
+            {
+                selectable.StandardAnimationChainName = StandardAnimationChainName;
+                selectable.CurrentAnimationChainName = StandardAnimationChainName;
+            }
         }
     }
 }

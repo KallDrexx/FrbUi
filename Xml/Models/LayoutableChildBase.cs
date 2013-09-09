@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Serialization;
 using FrbUi.Xml.Models.Controls;
 using FrbUi.Xml.Models.Layouts;
+using FrbUi.Xml.Models.SelectableGroupings;
 
 namespace FrbUi.Xml.Models
 {
@@ -13,5 +14,8 @@ namespace FrbUi.Xml.Models
         [XmlElement("BoxLayout", typeof(BoxLayout))]
         [XmlElement("Button", typeof(Button))]
         public AssetBase Item { get; set; }
+
+        [XmlArray]
+        public List<SelectableGroup> SelectableGroups { get; set; } 
     }
 }

@@ -95,6 +95,10 @@
     <Compile Include="Xml\Models\Controls\Button.cs" />
     <Compile Include="Xml\Models\LayoutableChildBase.cs" />
     <Compile Include="Xml\Models\SelectableAssetBase.cs" />
+    <Compile Include="Xml\Models\SelectableGroupings\GridSelectableGroupItem.cs" />
+    <Compile Include="Xml\Models\SelectableGroupings\SelectableGroup.cs" />
+    <Compile Include="Xml\Models\SelectableGroupings\SelectableGroupItemBase.cs" />
+    <Compile Include="Xml\Models\SelectableGroupings\SequentialGroupItem.cs" />
     <Compile Include="Xml\UserInterfacePackage.cs" />
   </ItemGroup>
   <ItemGroup>

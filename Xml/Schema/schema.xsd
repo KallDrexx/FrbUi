@@ -3,10 +3,11 @@
   <xs:element name="UserInterfacePackage" nillable="true" type="AssetCollection" />
   <xs:complexType name="AssetCollection">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice1" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice2" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SelectableGroups" type="ArrayOfSelectableGroup" />
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="ArrayOfChoice1">
+  <xs:complexType name="ArrayOfChoice2">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element minOccurs="1" maxOccurs="1" name="Button" nillable="true" type="Button" />
       <xs:element minOccurs="1" maxOccurs="1" name="BoxLayout" nillable="true" type="BoxLayout" />
@@ -70,11 +71,52 @@
   <xs:complexType name="LayoutableChildBase" abstract="true">
     <xs:sequence>
       <xs:choice minOccurs="1" maxOccurs="1">
-        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
         <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
+        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
       </xs:choice>
+      <xs:element minOccurs="0" maxOccurs="1" name="SelectableGroups" type="ArrayOfSelectableGroup" />
     </xs:sequence>
   </xs:complexType>
+  <xs:complexType name="ArrayOfSelectableGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SelectableGroup" nillable="true" type="SelectableGroup" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SelectableGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice1" />
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" />
+    <xs:attribute name="SelectableGroupType" type="GroupType" use="required" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfChoice1">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element minOccurs="1" maxOccurs="1" name="GridSelectableGroupItem" nillable="true" type="GridSelectableGroupItem" />
+      <xs:element minOccurs="1" maxOccurs="1" name="SequentialSelectableGroupItem" nillable="true" type="SequentialGroupItem" />
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="GridSelectableGroupItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="SelectableGroupItemBase">
+        <xs:attribute name="RowIndex" type="xs:int" use="required" />
+        <xs:attribute name="ColumnIndex" type="xs:int" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SelectableGroupItemBase" abstract="true">
+    <xs:attribute name="ControlName" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="SequentialGroupItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="SelectableGroupItemBase" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="GroupType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Sequential" />
+      <xs:enumeration value="Grid" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="Alignment">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Default" />

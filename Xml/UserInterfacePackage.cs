@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
-using FlatRedBall;
 using FlatRedBall.IO;
 using FrbUi.Xml.Models;
 
@@ -12,18 +8,29 @@ namespace FrbUi.Xml
 {
     public class UserInterfacePackage
     {
-        private readonly Dictionary<string, ILayoutable> _namedControls; 
+        private readonly Dictionary<string, ILayoutable> _namedControls;
+        private readonly Dictionary<string, ISelectableControlGroup> _namedSelectableGroups;
 
         public UserInterfacePackage(string xmlFile, string contentManagerName)
         {
             _namedControls = new Dictionary<string, ILayoutable>();
+            _namedSelectableGroups = new Dictionary<string, ISelectableControlGroup>();
             LoadUserInterfacePackage(xmlFile, contentManagerName);
         }
 
-        public T GetNamedControl<T>(string name) where T : class
+        public T GetNamedControl<T>(string name) where T : class, ILayoutable
         {
             ILayoutable control;
             if (!_namedControls.TryGetValue(name, out control))
+                return null;
+
+            return control as T;
+        }
+
+        public T GetNamedSelectableGroup<T>(string name) where T : class, ISelectableControlGroup
+        {
+            ISelectableControlGroup control;
+            if (!_namedSelectableGroups.TryGetValue(name, out control))
                 return null;
 
             return control as T;
@@ -47,6 +54,9 @@ namespace FrbUi.Xml
                     // Instantiate the layoutable controls, and save the named controls
                     foreach (var asset in assetCollection.Controls)
                         asset.GenerateILayoutable(contentManagerName, _namedControls);
+
+                    foreach (var selectableGroup in assetCollection.SelectableGroups)
+                        selectableGroup.GenerateSelectableControlGroup(_namedControls, _namedSelectableGroups);
                 }
             }
             finally

@@ -3,23 +3,28 @@
   <xs:element name="UserInterfacePackage" nillable="true" type="AssetCollection" />
   <xs:complexType name="AssetCollection">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice2" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice1" />
       <xs:element minOccurs="0" maxOccurs="1" name="SelectableGroups" type="ArrayOfSelectableGroup" />
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="ArrayOfChoice2">
+  <xs:complexType name="ArrayOfChoice1">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element minOccurs="1" maxOccurs="1" name="Button" nillable="true" type="Button" />
       <xs:element minOccurs="1" maxOccurs="1" name="BoxLayout" nillable="true" type="BoxLayout" />
+      <xs:element minOccurs="1" maxOccurs="1" name="GridLayout" nillable="true" type="GridLayout" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Button" nillable="true" type="Button" />
     </xs:choice>
   </xs:complexType>
-  <xs:complexType name="Button">
+  <xs:complexType name="BoxLayout">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableAssetBase">
-        <xs:attribute name="AchxFile" type="xs:string" />
-        <xs:attribute name="DisabledAnimationChainName" type="xs:string" />
-        <xs:attribute name="Text" type="xs:string" />
-        <xs:attribute name="IgnoreCursorEvents" type="xs:boolean" />
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Children" type="ArrayOfBoxLayoutChild" />
+        </xs:sequence>
+        <xs:attribute name="Spacing" type="xs:float" />
+        <xs:attribute name="Margin" type="xs:float" />
+        <xs:attribute name="CurrentDirection" type="LayoutDirection" />
+        <xs:attribute name="BackgroundAlpha" type="xs:float" />
+        <xs:attribute name="BackgroundAchxFile" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -42,23 +47,51 @@
     <xs:attribute name="RelativeY" type="xs:float" />
     <xs:attribute name="RelativeZ" type="xs:float" />
   </xs:complexType>
-  <xs:complexType name="BoxLayout">
+  <xs:complexType name="Button">
+    <xs:complexContent mixed="false">
+      <xs:extension base="SelectableAssetBase">
+        <xs:attribute name="AchxFile" type="xs:string" />
+        <xs:attribute name="DisabledAnimationChainName" type="xs:string" />
+        <xs:attribute name="Text" type="xs:string" />
+        <xs:attribute name="IgnoreCursorEvents" type="xs:boolean" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="GridLayout">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableAssetBase">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="1" name="Children" type="ArrayOfBoxLayoutChild" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Children" type="ArrayOfGridLayoutChild" />
         </xs:sequence>
         <xs:attribute name="Spacing" type="xs:float" />
         <xs:attribute name="Margin" type="xs:float" />
-        <xs:attribute name="CurrentDirection" type="LayoutDirection" />
-        <xs:attribute name="BackgroundAlpha" type="xs:float" />
+        <xs:attribute name="Alpha" type="xs:float" />
         <xs:attribute name="BackgroundAchxFile" type="xs:string" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="ArrayOfBoxLayoutChild">
+  <xs:complexType name="ArrayOfGridLayoutChild">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="BoxLayoutChild" nillable="true" type="BoxLayoutChild" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GridLayoutChild" nillable="true" type="GridLayoutChild" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="GridLayoutChild">
+    <xs:complexContent mixed="false">
+      <xs:extension base="LayoutableChildBase">
+        <xs:attribute name="RowIndex" type="xs:int" use="required" />
+        <xs:attribute name="ColumnIndex" type="xs:int" use="required" />
+        <xs:attribute name="HorizontalAlignment" type="HorizontalAlignments" />
+        <xs:attribute name="VerticalAlignment" type="VerticalAlignments" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LayoutableChildBase" abstract="true">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
+        <xs:element minOccurs="0" maxOccurs="1" name="GridLayout" type="GridLayout" />
+      </xs:choice>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="BoxLayoutChild">
@@ -68,15 +101,40 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="LayoutableChildBase" abstract="true">
+  <xs:simpleType name="Alignment">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Inverse" />
+      <xs:enumeration value="Centered" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="HorizontalAlignments">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Center" />
+      <xs:enumeration value="Right" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VerticalAlignments">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Top" />
+      <xs:enumeration value="Center" />
+      <xs:enumeration value="Bottom" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="ArrayOfBoxLayoutChild">
     <xs:sequence>
-      <xs:choice minOccurs="1" maxOccurs="1">
-        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
-        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
-      </xs:choice>
-      <xs:element minOccurs="0" maxOccurs="1" name="SelectableGroups" type="ArrayOfSelectableGroup" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BoxLayoutChild" nillable="true" type="BoxLayoutChild" />
     </xs:sequence>
   </xs:complexType>
+  <xs:simpleType name="LayoutDirection">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Up" />
+      <xs:enumeration value="Down" />
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="ArrayOfSelectableGroup">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="SelectableGroup" nillable="true" type="SelectableGroup" />
@@ -84,16 +142,24 @@
   </xs:complexType>
   <xs:complexType name="SelectableGroup">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice1" />
+      <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice2" />
     </xs:sequence>
     <xs:attribute name="Name" type="xs:string" />
     <xs:attribute name="SelectableGroupType" type="GroupType" use="required" />
   </xs:complexType>
-  <xs:complexType name="ArrayOfChoice1">
+  <xs:complexType name="ArrayOfChoice2">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element minOccurs="1" maxOccurs="1" name="GridSelectableGroupItem" nillable="true" type="GridSelectableGroupItem" />
       <xs:element minOccurs="1" maxOccurs="1" name="SequentialSelectableGroupItem" nillable="true" type="SequentialGroupItem" />
+      <xs:element minOccurs="1" maxOccurs="1" name="GridSelectableGroupItem" nillable="true" type="GridSelectableGroupItem" />
     </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="SequentialGroupItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="SelectableGroupItemBase" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SelectableGroupItemBase" abstract="true">
+    <xs:attribute name="ControlName" type="xs:string" />
   </xs:complexType>
   <xs:complexType name="GridSelectableGroupItem">
     <xs:complexContent mixed="false">
@@ -103,33 +169,10 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="SelectableGroupItemBase" abstract="true">
-    <xs:attribute name="ControlName" type="xs:string" />
-  </xs:complexType>
-  <xs:complexType name="SequentialGroupItem">
-    <xs:complexContent mixed="false">
-      <xs:extension base="SelectableGroupItemBase" />
-    </xs:complexContent>
-  </xs:complexType>
   <xs:simpleType name="GroupType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Sequential" />
       <xs:enumeration value="Grid" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="Alignment">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Default" />
-      <xs:enumeration value="Inverse" />
-      <xs:enumeration value="Centered" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="LayoutDirection">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Up" />
-      <xs:enumeration value="Down" />
-      <xs:enumeration value="Left" />
-      <xs:enumeration value="Right" />
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>

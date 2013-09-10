@@ -12,10 +12,8 @@ namespace FrbUi.Xml.Models
     public abstract class LayoutableChildBase
     {
         [XmlElement("BoxLayout", typeof(BoxLayout))]
+        [XmlElement("GridLayout", typeof(GridLayout))]
         [XmlElement("Button", typeof(Button))]
         public AssetBase Item { get; set; }
-
-        [XmlArray]
-        public List<SelectableGroup> SelectableGroups { get; set; } 
     }
 }

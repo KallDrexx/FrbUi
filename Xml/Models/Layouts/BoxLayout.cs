@@ -90,7 +90,10 @@ namespace FrbUi.Xml.Models.Layouts
             layout.Spacing = Spacing ?? 0f;
             layout.Margin = Margin ?? 0f;
             layout.BackgroundAlpha = BackgroundAlpha ?? 1f;
-            layout.BackgroundAnimationChains = FlatRedBallServices.Load<AnimationChainList>(BackgroundAchxFile, contentManagerName);
+
+            if (!string.IsNullOrWhiteSpace(BackgroundAchxFile))
+                layout.BackgroundAnimationChains = FlatRedBallServices.Load<AnimationChainList>(BackgroundAchxFile, contentManagerName);
+
             SetupSelectableProperties(layout);
 
             switch (CurrentDirection)

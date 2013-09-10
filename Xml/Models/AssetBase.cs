@@ -15,6 +15,9 @@ namespace FrbUi.Xml.Models
         [XmlAttribute]
         public string Name { get; set; }
 
+        [XmlAttribute]
+        public string Tag { get; set; }
+
         [XmlIgnore]
         public float? ScaleX { get; set; }
 
@@ -116,6 +119,7 @@ namespace FrbUi.Xml.Models
             layoutable.RelativeX = RelativeX ?? 0f;
             layoutable.RelativeY = RelativeY ?? 0f;
             layoutable.RelativeZ = RelativeZ ?? 0f;
+            layoutable.Tag = Tag;
 
             if (!string.IsNullOrWhiteSpace(Name))
             {

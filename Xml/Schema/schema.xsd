@@ -40,6 +40,7 @@
   </xs:complexType>
   <xs:complexType name="AssetBase" abstract="true">
     <xs:attribute name="Name" type="xs:string" />
+    <xs:attribute name="Tag" type="xs:string" />
     <xs:attribute name="ScaleX" type="xs:float" />
     <xs:attribute name="ScaleY" type="xs:float" />
     <xs:attribute name="Visible" type="xs:boolean" />
@@ -88,9 +89,9 @@
   <xs:complexType name="LayoutableChildBase" abstract="true">
     <xs:sequence>
       <xs:choice minOccurs="1" maxOccurs="1">
-        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
         <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
         <xs:element minOccurs="0" maxOccurs="1" name="GridLayout" type="GridLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
       </xs:choice>
     </xs:sequence>
   </xs:complexType>
@@ -149,17 +150,9 @@
   </xs:complexType>
   <xs:complexType name="ArrayOfChoice2">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element minOccurs="1" maxOccurs="1" name="SequentialSelectableGroupItem" nillable="true" type="SequentialGroupItem" />
       <xs:element minOccurs="1" maxOccurs="1" name="GridSelectableGroupItem" nillable="true" type="GridSelectableGroupItem" />
+      <xs:element minOccurs="1" maxOccurs="1" name="SequentialSelectableGroupItem" nillable="true" type="SequentialGroupItem" />
     </xs:choice>
-  </xs:complexType>
-  <xs:complexType name="SequentialGroupItem">
-    <xs:complexContent mixed="false">
-      <xs:extension base="SelectableGroupItemBase" />
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="SelectableGroupItemBase" abstract="true">
-    <xs:attribute name="ControlName" type="xs:string" />
   </xs:complexType>
   <xs:complexType name="GridSelectableGroupItem">
     <xs:complexContent mixed="false">
@@ -167,6 +160,14 @@
         <xs:attribute name="RowIndex" type="xs:int" use="required" />
         <xs:attribute name="ColumnIndex" type="xs:int" use="required" />
       </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SelectableGroupItemBase" abstract="true">
+    <xs:attribute name="ControlName" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="SequentialGroupItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="SelectableGroupItemBase" />
     </xs:complexContent>
   </xs:complexType>
   <xs:simpleType name="GroupType">

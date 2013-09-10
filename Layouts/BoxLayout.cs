@@ -45,6 +45,7 @@ namespace FrbUi.Layouts
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public SelectableState CurrentSelectableState { get; set; }
         public ILayoutable ParentLayout { get; set; }
+        public string Tag { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }

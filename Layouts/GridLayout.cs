@@ -45,6 +45,7 @@ namespace FrbUi.Layouts
         public int ColumnCount { get; protected set; }
         public int RowCount { get; protected set; }
         public ILayoutable ParentLayout { get; set; }
+        public string Tag { get; set; }
 
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }

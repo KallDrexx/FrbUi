@@ -21,6 +21,7 @@ namespace FrbUi.Layouts
         #region Properties
 
         public ILayoutable ParentLayout { get; set; }
+        public string Tag { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }

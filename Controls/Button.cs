@@ -48,6 +48,7 @@ namespace FrbUi.Controls
 
         public bool PushedWithFocus { get; set; }
         public ILayoutable ParentLayout { get; set; }
+        public string Tag { get; set; }
         public SelectableState CurrentSelectableState { get; set; }
         public AnimationChainList AnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }

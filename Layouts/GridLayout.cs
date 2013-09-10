@@ -7,6 +7,7 @@ using FlatRedBall.Graphics.Animation;
 using FlatRedBall.ManagedSpriteGroups;
 using FlatRedBall.Math.Geometry;
 using FrbUi.Data;
+using FrbUi.SelectableGroupings;
 
 namespace FrbUi.Layouts
 {
@@ -45,7 +46,6 @@ namespace FrbUi.Layouts
         public int RowCount { get; protected set; }
         public ILayoutable ParentLayout { get; set; }
 
-        public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
         public float RelativeY { get { return _backgroundSprite.RelativeY; } set { _backgroundSprite.RelativeY = value; } }
@@ -340,6 +340,23 @@ namespace FrbUi.Layouts
         public ILayoutable GetItemAt(int rowIndex, int colIndex)
         {
             return _items[rowIndex, colIndex];
+        }
+
+        public GridSelectableGroup GenerateGridSelectableGroup()
+        {
+            var group = new GridSelectableGroup();
+            foreach (var item in Items)
+            {
+                var selectable = item as ISelectable;
+                if (selectable == null)
+                    continue;
+
+                int row, column;
+                _items.ItemPosition(item, out row, out column);
+                group.AddItem(selectable,row, column);
+            }
+
+            return group;
         }
 
         public void UpdateDependencies(double currentTime)

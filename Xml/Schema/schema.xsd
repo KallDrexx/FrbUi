@@ -99,7 +99,7 @@
         </xs:sequence>
         <xs:attribute name="Spacing" type="xs:float" />
         <xs:attribute name="Margin" type="xs:float" />
-        <xs:attribute name="CurrentDirection" type="LayoutDirection" />
+        <xs:attribute name="Direction" type="LayoutDirection" />
         <xs:attribute name="BackgroundAlpha" type="xs:float" />
         <xs:attribute name="BackgroundAchxFile" type="xs:string" />
       </xs:extension>

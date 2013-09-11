@@ -36,16 +36,16 @@ namespace FrbUi.Xml.Models.Layouts
         }
 
         [XmlIgnore]
-        public LayoutDirection? CurrentDirection { get; set; }
+        public LayoutDirection? Direction { get; set; }
 
         [XmlIgnore]
-        public bool CurrentDirectionValueSpecified { get { return CurrentDirection.HasValue; } }
+        public bool DirectionValueSpecified { get { return Direction.HasValue; } }
 
-        [XmlAttribute("CurrentDirection")]
-        public LayoutDirection CurrentDirectionValue
+        [XmlAttribute("Direction")]
+        public LayoutDirection DirectionValue
         {
-            get { return CurrentDirection ?? default(LayoutDirection); }
-            set { CurrentDirection = value; }
+            get { return Direction ?? default(LayoutDirection); }
+            set { Direction = value; }
         }
 
         [XmlIgnore]
@@ -96,7 +96,7 @@ namespace FrbUi.Xml.Models.Layouts
 
             SetupSelectableProperties(layout);
 
-            switch (CurrentDirection)
+            switch (Direction)
             {
                 case LayoutDirection.Up:
                     layout.CurrentDirection = FrbUi.Layouts.BoxLayout.Direction.Up;

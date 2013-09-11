@@ -17,6 +17,7 @@ namespace FrbUi.Layouts
         private bool _isFullScreen;
 
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
 
         #region Properties
 
@@ -222,6 +223,9 @@ namespace FrbUi.Layouts
             item.AttachTo(_backgroundSprite, true);
             item.RelativeZ = 0.1f;
             item.ParentLayout = this;
+
+            if (item.OnAddedToLayout != null)
+                item.OnAddedToLayout(this);
 
             PositionItem(item, horizontalPosition, verticalPosition, layoutFrom);
 

@@ -25,6 +25,7 @@ namespace FrbUi.Controls
         #region Events
 
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
         public LayoutableEvent OnFocused { get; set; }
         public LayoutableEvent OnFocusLost { get; set; }
         public LayoutableEvent OnPushed { get; set; }

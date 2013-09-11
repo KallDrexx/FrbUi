@@ -9,6 +9,7 @@ namespace FrbUi
     public interface ILayoutable : IVisible, IScalable, IPositionable
     {
         LayoutableEvent OnSizeChangeHandler { get; set; }
+        LayoutableEvent OnAddedToLayout { get; set; }
 
         float RelativeX { get; set; }
         float RelativeY { get; set; }

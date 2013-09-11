@@ -36,6 +36,7 @@ namespace FrbUi.Layouts
         #region Properties
 
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
         public LayoutableEvent OnFocused { get; set; }
         public LayoutableEvent OnFocusLost { get; set; }
         public LayoutableEvent OnPushed { get; set; }
@@ -305,6 +306,10 @@ namespace FrbUi.Layouts
             item.Alpha = _alpha;
             item.ParentLayout = this;
             _recalculateLayout = true;
+
+            if (item.OnAddedToLayout != null)
+                item.OnAddedToLayout(this);
+
             PerformLayout();
 
             item.OnSizeChangeHandler = sender =>

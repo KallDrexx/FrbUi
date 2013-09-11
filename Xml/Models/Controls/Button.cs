@@ -38,7 +38,9 @@ namespace FrbUi.Xml.Models.Controls
             var button = UiControlManager.Instance.CreateControl<FrbUi.Controls.Button>();
             SetBaseILayoutableProperties(button, namedControls);
 
-            button.AnimationChains = FlatRedBallServices.Load<AnimationChainList>(AchxFile, contentManagerName);
+            if (!string.IsNullOrWhiteSpace(AchxFile))
+                button.AnimationChains = FlatRedBallServices.Load<AnimationChainList>(AchxFile, contentManagerName);
+
             SetupSelectableProperties(button);
 
             if (!string.IsNullOrWhiteSpace(DisabledAnimationChainName))

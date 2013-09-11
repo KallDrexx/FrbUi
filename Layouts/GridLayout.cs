@@ -38,6 +38,7 @@ namespace FrbUi.Layouts
         public LayoutableEvent OnClicked { get; set; }
         public SelectableState CurrentSelectableState { get; set; }        
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
 
         public bool PushedWithFocus { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Items; } }
@@ -305,6 +306,10 @@ namespace FrbUi.Layouts
             item.RelativeZ = 0.1f;
             item.Alpha = _alpha;
             item.ParentLayout = this;
+
+            if (item.OnAddedToLayout != null)
+                item.OnAddedToLayout(this);
+
             _recalculateLayout = true;
 
             item.OnSizeChangeHandler = sender => _recalculateLayout = true;

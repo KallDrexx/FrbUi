@@ -35,6 +35,7 @@ namespace FrbUi.Layouts
         }
 
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
 
         #region Properties
 
@@ -252,6 +253,9 @@ namespace FrbUi.Layouts
                 item.RelativeZ = 0.1f;
                 item.Alpha = _alpha;
                 item.ParentLayout = this;
+
+                if (item.OnAddedToLayout != null)
+                    item.OnAddedToLayout(this);
             }
 
             // Calculate the item's position

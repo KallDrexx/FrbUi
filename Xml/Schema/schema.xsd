@@ -10,6 +10,7 @@
   <xs:complexType name="ArrayOfChoice1">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element minOccurs="1" maxOccurs="1" name="BoxLayout" nillable="true" type="BoxLayout" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LayoutableSprite" nillable="true" type="LayoutableSprite" />
       <xs:element minOccurs="1" maxOccurs="1" name="GridLayout" nillable="true" type="GridLayout" />
       <xs:element minOccurs="1" maxOccurs="1" name="Button" nillable="true" type="Button" />
     </xs:choice>
@@ -47,6 +48,15 @@
     <xs:attribute name="RelativeX" type="xs:float" />
     <xs:attribute name="RelativeY" type="xs:float" />
     <xs:attribute name="RelativeZ" type="xs:float" />
+  </xs:complexType>
+  <xs:complexType name="LayoutableSprite">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AssetBase">
+        <xs:attribute name="AchxName" type="xs:string" />
+        <xs:attribute name="InitialAnimationChainName" type="xs:string" />
+        <xs:attribute name="RelativeRotationZDegrees" type="xs:float" />
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:complexType name="Button">
     <xs:complexContent mixed="false">
@@ -89,9 +99,10 @@
   <xs:complexType name="LayoutableChildBase" abstract="true">
     <xs:sequence>
       <xs:choice minOccurs="1" maxOccurs="1">
-        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
-        <xs:element minOccurs="0" maxOccurs="1" name="GridLayout" type="GridLayout" />
         <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="GridLayout" type="GridLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
+        <xs:element minOccurs="0" maxOccurs="1" name="LayoutableSprite" type="LayoutableSprite" />
       </xs:choice>
     </xs:sequence>
   </xs:complexType>

@@ -91,6 +91,7 @@
     <Compile Include="Xml\Models\AssetBase.cs" />
     <Compile Include="Xml\Models\AssetCollection.cs" />
     <Compile Include="Xml\Models\Controls\LayoutableSprite.cs" />
+    <Compile Include="Xml\Models\Controls\LayoutableText.cs" />
     <Compile Include="Xml\Models\Layouts\BoxLayout.cs" />
     <Compile Include="Xml\Models\Layouts\BoxLayoutChild.cs" />
     <Compile Include="Xml\Models\Controls\Button.cs" />

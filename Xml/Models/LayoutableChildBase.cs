@@ -15,6 +15,7 @@ namespace FrbUi.Xml.Models
         [XmlElement("GridLayout", typeof(GridLayout))]
         [XmlElement("Button", typeof(Button))]
         [XmlElement("LayoutableSprite", typeof(LayoutableSprite))]
+        [XmlElement("LayoutableText", typeof(LayoutableText))]
         public AssetBase Item { get; set; }
     }
 }

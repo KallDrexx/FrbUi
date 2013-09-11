@@ -14,6 +14,7 @@ namespace FrbUi.Xml.Models
         [XmlArrayItem("GridLayout", typeof(GridLayout))]
         [XmlArrayItem("Button", typeof(Button))]
         [XmlArrayItem("LayoutableSprite", typeof(LayoutableSprite))]
+        [XmlArrayItem("LayoutableText", typeof(LayoutableText))]
         public List<AssetBase> Controls { get; set; }
 
         [XmlArray]

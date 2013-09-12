@@ -12,6 +12,7 @@ namespace FrbUi.Xml.Models
         [XmlArray]
         [XmlArrayItem("BoxLayout", typeof(BoxLayout))]
         [XmlArrayItem("GridLayout", typeof(GridLayout))]
+        [XmlArrayItem("CircularLayout", typeof(CircularLayout))]
         [XmlArrayItem("Button", typeof(Button))]
         [XmlArrayItem("LayoutableSprite", typeof(LayoutableSprite))]
         [XmlArrayItem("LayoutableText", typeof(LayoutableText))]

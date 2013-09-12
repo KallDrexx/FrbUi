@@ -96,6 +96,8 @@
     <Compile Include="Xml\Models\Layouts\BoxLayoutChild.cs" />
     <Compile Include="Xml\Models\Controls\Button.cs" />
     <Compile Include="Xml\Models\LayoutableChildBase.cs" />
+    <Compile Include="Xml\Models\Layouts\CircularLayout.cs" />
+    <Compile Include="Xml\Models\Layouts\CircularLayoutChild.cs" />
     <Compile Include="Xml\Models\Layouts\GridLayout.cs" />
     <Compile Include="Xml\Models\Layouts\GridLayoutChild.cs" />
     <Compile Include="Xml\Models\SelectableAssetBase.cs" />

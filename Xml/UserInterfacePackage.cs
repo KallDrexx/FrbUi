@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 using FlatRedBall.IO;
 using FrbUi.Xml.Models;
@@ -27,6 +29,11 @@ namespace FrbUi.Xml
             return control as T;
         }
 
+        public IEnumerable<KeyValuePair<string, Type>> GetNamedControls()
+        {
+            return _namedControls.Select(x => new KeyValuePair<string, Type>(x.Key, x.Value.GetType()));
+        }
+
         public T GetNamedSelectableGroup<T>(string name) where T : class, ISelectableControlGroup
         {
             ISelectableControlGroup control;
@@ -34,6 +41,11 @@ namespace FrbUi.Xml
                 return null;
 
             return control as T;
+        }
+
+        public IEnumerable<KeyValuePair<string, Type>> GetNamedSelectableGroups()
+        {
+            return _namedSelectableGroups.Select(x => new KeyValuePair<string, Type>(x.Key, x.Value.GetType()));
         }
 
         private void LoadUserInterfacePackage(string xmlFile, string contentManagerName)

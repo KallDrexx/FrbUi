@@ -100,6 +100,8 @@
     <Compile Include="Xml\Models\Layouts\CircularLayoutChild.cs" />
     <Compile Include="Xml\Models\Layouts\GridLayout.cs" />
     <Compile Include="Xml\Models\Layouts\GridLayoutChild.cs" />
+    <Compile Include="Xml\Models\Layouts\SimpleLayout.cs" />
+    <Compile Include="Xml\Models\Layouts\SimpleLayoutChild.cs" />
     <Compile Include="Xml\Models\SelectableAssetBase.cs" />
     <Compile Include="Xml\Models\SelectableGroupings\GridSelectableGroupItem.cs" />
     <Compile Include="Xml\Models\SelectableGroupings\SelectableGroup.cs" />

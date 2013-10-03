@@ -17,10 +17,12 @@ namespace FrbUi.Layouts
         private bool _isFullScreen;
 
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
 
         #region Properties
 
         public ILayoutable ParentLayout { get; set; }
+        public string Tag { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }
@@ -221,6 +223,9 @@ namespace FrbUi.Layouts
             item.AttachTo(_backgroundSprite, true);
             item.RelativeZ = 0.1f;
             item.ParentLayout = this;
+
+            if (item.OnAddedToLayout != null)
+                item.OnAddedToLayout(this);
 
             PositionItem(item, horizontalPosition, verticalPosition, layoutFrom);
 

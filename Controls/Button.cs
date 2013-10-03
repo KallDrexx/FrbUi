@@ -25,6 +25,7 @@ namespace FrbUi.Controls
         #region Events
 
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
         public LayoutableEvent OnFocused { get; set; }
         public LayoutableEvent OnFocusLost { get; set; }
         public LayoutableEvent OnPushed { get; set; }
@@ -48,6 +49,7 @@ namespace FrbUi.Controls
 
         public bool PushedWithFocus { get; set; }
         public ILayoutable ParentLayout { get; set; }
+        public string Tag { get; set; }
         public SelectableState CurrentSelectableState { get; set; }
         public AnimationChainList AnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
         public float RelativeX { get { return _backgroundSprite.RelativeX; } set { _backgroundSprite.RelativeX = value; } }

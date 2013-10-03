@@ -35,10 +35,12 @@ namespace FrbUi.Layouts
         }
 
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
 
         #region Properties
 
         public ILayoutable ParentLayout { get; set; }
+        public string Tag { get; set; }
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
@@ -251,6 +253,9 @@ namespace FrbUi.Layouts
                 item.RelativeZ = 0.1f;
                 item.Alpha = _alpha;
                 item.ParentLayout = this;
+
+                if (item.OnAddedToLayout != null)
+                    item.OnAddedToLayout(this);
             }
 
             // Calculate the item's position

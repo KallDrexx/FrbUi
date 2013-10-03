@@ -10,8 +10,11 @@ namespace FrbUi.Controls
         #region Properties
 
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
+
         public Layer Layer { get; private set; }
         public ILayoutable ParentLayout { get; set; }
+        public string Tag { get; set; }
 
         public string DisplayText
         {

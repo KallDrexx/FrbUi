@@ -36,6 +36,7 @@ namespace FrbUi.Layouts
         #region Properties
 
         public LayoutableEvent OnSizeChangeHandler { get; set; }
+        public LayoutableEvent OnAddedToLayout { get; set; }
         public LayoutableEvent OnFocused { get; set; }
         public LayoutableEvent OnFocusLost { get; set; }
         public LayoutableEvent OnPushed { get; set; }
@@ -45,6 +46,7 @@ namespace FrbUi.Layouts
         public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
         public SelectableState CurrentSelectableState { get; set; }
         public ILayoutable ParentLayout { get; set; }
+        public string Tag { get; set; }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }
@@ -304,6 +306,10 @@ namespace FrbUi.Layouts
             item.Alpha = _alpha;
             item.ParentLayout = this;
             _recalculateLayout = true;
+
+            if (item.OnAddedToLayout != null)
+                item.OnAddedToLayout(this);
+
             PerformLayout();
 
             item.OnSizeChangeHandler = sender =>

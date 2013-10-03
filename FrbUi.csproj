@@ -88,8 +88,37 @@
     <Compile Include="SelectableGroupings\GridSelectableGroup.cs" />
     <Compile Include="SelectableGroupings\SequentialSelectableGroup.cs" />
     <Compile Include="UiControlManager.cs" />
+    <Compile Include="Xml\Models\AssetBase.cs" />
+    <Compile Include="Xml\Models\AssetCollection.cs" />
+    <Compile Include="Xml\Models\Controls\LayoutableSprite.cs" />
+    <Compile Include="Xml\Models\Controls\LayoutableText.cs" />
+    <Compile Include="Xml\Models\Layouts\BoxLayout.cs" />
+    <Compile Include="Xml\Models\Layouts\BoxLayoutChild.cs" />
+    <Compile Include="Xml\Models\Controls\Button.cs" />
+    <Compile Include="Xml\Models\LayoutableChildBase.cs" />
+    <Compile Include="Xml\Models\Layouts\CircularLayout.cs" />
+    <Compile Include="Xml\Models\Layouts\CircularLayoutChild.cs" />
+    <Compile Include="Xml\Models\Layouts\GridLayout.cs" />
+    <Compile Include="Xml\Models\Layouts\GridLayoutChild.cs" />
+    <Compile Include="Xml\Models\Layouts\SimpleLayout.cs" />
+    <Compile Include="Xml\Models\Layouts\SimpleLayoutChild.cs" />
+    <Compile Include="Xml\Models\SelectableAssetBase.cs" />
+    <Compile Include="Xml\Models\SelectableGroupings\GridSelectableGroupItem.cs" />
+    <Compile Include="Xml\Models\SelectableGroupings\SelectableGroup.cs" />
+    <Compile Include="Xml\Models\SelectableGroupings\SelectableGroupItemBase.cs" />
+    <Compile Include="Xml\Models\SelectableGroupings\SequentialGroupItem.cs" />
+    <Compile Include="Xml\UserInterfacePackage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Xml\Schema\schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\xsd.exe" $(TargetPath) /outputdir:$(ProjectDir)\Xml /type:FrbUi.Xml.Models.AssetCollection 
+Move /y $(ProjectDir)\Xml\schema0.xsd $(Projectdir)\Xml\Schema\schema.xsd</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

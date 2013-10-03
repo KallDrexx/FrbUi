@@ -70,6 +70,7 @@
     <Compile Include="Controls\LayoutableSprite.cs" />
     <Compile Include="Controls\LayoutableText.cs" />
     <Compile Include="Data\DataGrid.cs" />
+    <Compile Include="FrbUiSettings.cs" />
     <Compile Include="IDisableable.cs" />
     <Compile Include="ILayoutable.cs" />
     <Compile Include="ILayoutManager.cs" />

@@ -321,6 +321,38 @@ namespace FrbUi.Layouts
                 ShapeManager.Remove(_border);
         }
 
+        public ILayoutable Clone()
+        {
+            var clonedLayout = UiControlManager.Instance.CreateControl<CircularLayout>();
+            clonedLayout.Alpha = Alpha;
+            clonedLayout.BackgroundAnimationChains = BackgroundAnimationChains;
+            clonedLayout.CurrentAnimationChainName = CurrentAnimationChainName;
+            clonedLayout.CurrentArrangementMode = CurrentArrangementMode;
+            clonedLayout.BackgroundAlpha = BackgroundAlpha;
+            clonedLayout.IgnoresParentVisibility = IgnoresParentVisibility;
+            clonedLayout.Layer = Layer;
+            clonedLayout.Margin = Margin;
+            clonedLayout.MinDegreeOffset = MinDegreeOffset;
+            clonedLayout.OnAddedToLayout = OnAddedToLayout;
+            clonedLayout.OnSizeChangeHandler = OnSizeChangeHandler;
+            clonedLayout.Radius = Radius;
+            clonedLayout.ScaleX = ScaleX;
+            clonedLayout.ScaleY = ScaleY;
+            clonedLayout.ShowBorder = ShowBorder;
+            clonedLayout.StartingDegrees = StartingDegrees;
+            clonedLayout.Tag = Tag;
+
+            foreach (var itemData in _items)
+            {
+                var clonedItem = itemData.Key.Clone();
+                var radius = itemData.Value.RadiusOffset;
+                var degrees = MathHelper.ToDegrees(itemData.Value.RadianOffset);
+                clonedLayout.AddItem(clonedItem, radius, degrees);
+            }
+
+            return clonedLayout;
+        }
+
         private void PositionItem(ILayoutable item, ILayoutable lastItem = null)
         {
             var position = _items[item];

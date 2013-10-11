@@ -212,12 +212,43 @@ namespace FrbUi.Layouts
             _items.Clear();
         }
 
+        public ILayoutable Clone()
+        {
+            var clonedLayout = UiControlManager.Instance.CreateControl<SimpleLayout>();
+            clonedLayout.Alpha = Alpha;
+            clonedLayout.BackgroundAlpha = BackgroundAlpha;
+            clonedLayout.FullScreen = FullScreen;
+            clonedLayout.IgnoresParentVisibility = IgnoresParentVisibility;
+            clonedLayout.Layer = Layer;
+            clonedLayout.OnAddedToLayout = OnAddedToLayout;
+            clonedLayout.OnSizeChangeHandler = OnSizeChangeHandler;
+            clonedLayout.CurrentAnimationChainName = CurrentAnimationChainName;
+            clonedLayout.ScaleX = ScaleX;
+            clonedLayout.ScaleY = ScaleY;
+            clonedLayout.Tag = Tag;
+            clonedLayout.Visible = Visible;
+
+            foreach (var item in _items)
+            {
+                var clonedItem = item.Key.Clone();
+                clonedLayout.AddItem(clonedItem, item.Value.HorizontalPosition, item.Value.VerticalPosition, item.Value.LayoutOrigin);
+            }
+
+            return clonedLayout;
+        }
+
         public void AddItem(ILayoutable item, HorizontalPosition horizontalPosition, VerticalPosition verticalPosition, LayoutOrigin layoutFrom = LayoutOrigin.Center)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            var position = new OverallPosition { HorizontalPosition = horizontalPosition, VerticalPosition = verticalPosition };
+            var position = new OverallPosition
+            {
+                HorizontalPosition = horizontalPosition, 
+                VerticalPosition = verticalPosition,
+                LayoutOrigin = layoutFrom
+            };
+
             _items.Add(item, position);
             item.Alpha = _alpha;
             item.AttachTo(_backgroundSprite, true);

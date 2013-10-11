@@ -240,6 +240,25 @@ namespace FrbUi.Controls
             SpriteManager.RemoveSprite(_sprite);
         }
 
+        public ILayoutable Clone()
+        {
+            var clonedItem = UiControlManager.Instance.CreateControl<LayoutableSprite>();
+            clonedItem.Alpha = Alpha;
+            clonedItem.AnimationChains = AnimationChains;
+            clonedItem.CurrentAnimationChainName = CurrentAnimationChainName;
+            clonedItem.IgnoresParentVisibility = IgnoresParentVisibility;
+            clonedItem.Layer = Layer;
+            clonedItem.OnAddedToLayout = OnAddedToLayout;
+            clonedItem.OnSizeChangeHandler = OnSizeChangeHandler;
+            clonedItem.PixelSize = PixelSize;
+            clonedItem.ScaleX = ScaleX;
+            clonedItem.ScaleY = ScaleY;
+            clonedItem.Tag = Tag;
+            clonedItem.Visible = Visible;
+
+            return clonedItem;
+        }
+
         #endregion
     }
 }

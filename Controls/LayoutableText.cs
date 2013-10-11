@@ -19,8 +19,8 @@ namespace FrbUi.Controls
         public string DisplayText
         {
             get { return _text.DisplayText; }
-            set 
-            { 
+            set
+            {
                 _text.DisplayText = value;
                 if (OnSizeChangeHandler != null)
                     OnSizeChangeHandler(this);
@@ -243,6 +243,26 @@ namespace FrbUi.Controls
         public void Destroy()
         {
             TextManager.RemoveText(_text);
+        }
+
+        public ILayoutable Clone()
+        {
+            var clonedItem = UiControlManager.Instance.CreateControl<LayoutableText>();
+            clonedItem.Alpha = Alpha;
+            clonedItem.Blue = Blue;
+            clonedItem.Green = Green;
+            clonedItem.Red = Red;
+            clonedItem.DisplayText = DisplayText;
+            clonedItem.IgnoresParentVisibility = IgnoresParentVisibility;
+            clonedItem.Layer = Layer;
+            clonedItem.OnAddedToLayout = OnAddedToLayout;
+            clonedItem.OnSizeChangeHandler = OnSizeChangeHandler;
+            clonedItem.ScaleX = ScaleX;
+            clonedItem.ScaleY = ScaleY;
+            clonedItem.Tag = Tag;
+            clonedItem.Visible = Visible;
+
+            return clonedItem;
         }
 
         #endregion

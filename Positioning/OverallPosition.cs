@@ -9,5 +9,6 @@ namespace FrbUi.Positioning
     {
         public HorizontalPosition HorizontalPosition { get; set; }
         public VerticalPosition VerticalPosition { get; set; }
+        public LayoutOrigin LayoutOrigin { get; set; }
     }
 }

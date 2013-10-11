@@ -36,7 +36,7 @@ namespace FrbUi.Xml.Models.Controls
 
             // Since rotation value is relative, we need to set this in the after added event
             control.OnAddedToLayout += delegate {
-                control.RelativeRotationZ = (float)(Math.PI * (RelativeRotationZDegrees / 180));
+                control.RelativeRotationZ = (float)(Math.PI * ((RelativeRotationZDegrees ?? 0) / 180));
                 control.OnAddedToLayout = null;
             };   
 

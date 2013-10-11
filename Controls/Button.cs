@@ -321,6 +321,39 @@ namespace FrbUi.Controls
             GuiManager.RemoveWindow(this);
         }
 
+        public ILayoutable Clone()
+        {
+            var clonedItem = UiControlManager.Instance.CreateControl<Button>();
+            clonedItem.AnimationChains = AnimationChains;
+            clonedItem.StandardAnimationChainName = StandardAnimationChainName;
+            clonedItem.PushedAnimationChainName = PushedAnimationChainName;
+            clonedItem.FocusedAnimationChainName = FocusedAnimationChainName;
+            clonedItem.DisabledAnimationChainName = DisabledAnimationChainName;
+            clonedItem.CurrentAnimationChainName = CurrentAnimationChainName;
+            clonedItem.Alpha = Alpha;
+            clonedItem.Border = Border;
+            clonedItem.Enabled = Enabled;
+            clonedItem.CurrentSelectableState = CurrentSelectableState;
+            clonedItem.IgnoreCursorEvents = IgnoreCursorEvents;
+            clonedItem.IgnoreCursorFocus = IgnoreCursorFocus;
+            clonedItem.Layer = Layer;
+            clonedItem.OnAddedToLayout = OnAddedToLayout;
+            clonedItem.OnClicked = OnClicked;
+            clonedItem.OnFocusLost = OnFocusLost;
+            clonedItem.OnFocused = OnFocused;
+            clonedItem.OnPushReleased = OnPushReleased;
+            clonedItem.OnPushed = OnPushed;
+            clonedItem.OnSizeChangeHandler = OnSizeChangeHandler;
+            clonedItem.IgnoresParentVisibility = IgnoresParentVisibility;
+            clonedItem.ScaleX = ScaleX;
+            clonedItem.ScaleY = ScaleY;
+            clonedItem.Tag = Tag;
+            clonedItem.Text = Text;
+            clonedItem.Visible = Visible;
+
+            return clonedItem;
+        }
+
         #endregion
 
         #region IWindow Implementation

@@ -374,6 +374,45 @@ namespace FrbUi.Layouts
                 ShapeManager.Remove(_border);
         }
 
+        public ILayoutable Clone()
+        {
+            var clonedLayout = UiControlManager.Instance.CreateControl<BoxLayout>();
+            clonedLayout.Alpha = Alpha;
+            clonedLayout.BackgroundAnimationChains = BackgroundAnimationChains;
+            clonedLayout.CurrentAnimationChainName = CurrentAnimationChainName;
+            clonedLayout.FocusedAnimationChainName = FocusedAnimationChainName;
+            clonedLayout.StandardAnimationChainName = StandardAnimationChainName;
+            clonedLayout.PushedAnimationChainName = PushedAnimationChainName;
+            clonedLayout.BackgroundAlpha = BackgroundAlpha;
+            clonedLayout.CurrentDirection = CurrentDirection;
+            clonedLayout.CurrentSelectableState = CurrentSelectableState;
+            clonedLayout.IgnoresParentVisibility = IgnoresParentVisibility;
+            clonedLayout.Layer = Layer;
+            clonedLayout.Margin = Margin;
+            clonedLayout.OnAddedToLayout = OnAddedToLayout;
+            clonedLayout.OnClicked = OnClicked;
+            clonedLayout.OnFocusLost = OnFocusLost;
+            clonedLayout.OnFocused = OnFocused;
+            clonedLayout.OnPushReleased = OnPushReleased;
+            clonedLayout.OnPushed = OnPushed;
+            clonedLayout.OnSizeChangeHandler = OnSizeChangeHandler;
+            clonedLayout.ScaleX = ScaleX;
+            clonedLayout.ScaleY = ScaleY;
+            clonedLayout.ShowBorder = ShowBorder;
+            clonedLayout.Spacing = Spacing;
+            clonedLayout.Tag = Tag;
+            clonedLayout.Visible = Visible;
+            clonedLayout.PushedWithFocus = PushedWithFocus;
+
+            foreach (var itemData in _items)
+            {
+                var clonedItem = itemData.Key.Clone();
+                clonedLayout.AddItem(clonedItem, itemData.Value);
+            }
+
+            return clonedLayout;
+        }
+
         protected virtual void PerformLayout()
         {
             // Remove any items that this is no longer the parent of

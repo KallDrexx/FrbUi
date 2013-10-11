@@ -45,10 +45,76 @@
     <xs:attribute name="RelativeY" type="xs:float" />
     <xs:attribute name="RelativeZ" type="xs:float" />
   </xs:complexType>
+  <xs:complexType name="SimpleLayout">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AssetBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Children" type="ArrayOfSimpleLayoutChild" />
+        </xs:sequence>
+        <xs:attribute name="IsFullScreen" type="xs:boolean" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfSimpleLayoutChild">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SimpleLayoutChild" nillable="true" type="SimpleLayoutChild" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SimpleLayoutChild">
+    <xs:complexContent mixed="false">
+      <xs:extension base="LayoutableChildBase">
+        <xs:attribute name="Origin" type="LayoutOrigin" />
+        <xs:attribute name="HorizontalPercentFromLeft" type="xs:float" />
+        <xs:attribute name="HorizontalPercentFromCenter" type="xs:float" />
+        <xs:attribute name="HorizontalPercentFromRight" type="xs:float" />
+        <xs:attribute name="HorizontalOffsetFromLeft" type="xs:float" />
+        <xs:attribute name="HorizontalOffsetFromCenter" type="xs:float" />
+        <xs:attribute name="HorizontalOffsetFromRight" type="xs:float" />
+        <xs:attribute name="VerticalPercentFromTop" type="xs:float" />
+        <xs:attribute name="VerticalPercentFromCenter" type="xs:float" />
+        <xs:attribute name="VerticalPercentFromBottom" type="xs:float" />
+        <xs:attribute name="VerticalOffsetFromTop" type="xs:float" />
+        <xs:attribute name="VerticalOffsetFromCenter" type="xs:float" />
+        <xs:attribute name="VerticalOffsetFromBottom" type="xs:float" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="LayoutableChildBase" abstract="true">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="1">
+        <xs:element minOccurs="0" maxOccurs="1" name="LayoutableSprite" type="LayoutableSprite" />
+        <xs:element minOccurs="0" maxOccurs="1" name="LayoutableText" type="LayoutableText" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
+        <xs:element minOccurs="0" maxOccurs="1" name="SimpleLayout" type="SimpleLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="GridLayout" type="GridLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="CircularLayout" type="CircularLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LayoutableSprite">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AssetBase">
+        <xs:attribute name="AchxName" type="xs:string" />
+        <xs:attribute name="InitialAnimationChainName" type="xs:string" />
+        <xs:attribute name="RelativeRotationZDegrees" type="xs:float" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="LayoutableText">
     <xs:complexContent mixed="false">
       <xs:extension base="AssetBase">
         <xs:attribute name="Text" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Button">
+    <xs:complexContent mixed="false">
+      <xs:extension base="SelectableAssetBase">
+        <xs:attribute name="AchxFile" type="xs:string" />
+        <xs:attribute name="DisabledAnimationChainName" type="xs:string" />
+        <xs:attribute name="Text" type="xs:string" />
+        <xs:attribute name="IgnoreCursorEvents" type="xs:boolean" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -88,81 +154,21 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="LayoutableChildBase" abstract="true">
-    <xs:sequence>
-      <xs:choice minOccurs="1" maxOccurs="1">
-        <xs:element minOccurs="0" maxOccurs="1" name="LayoutableSprite" type="LayoutableSprite" />
-        <xs:element minOccurs="0" maxOccurs="1" name="SimpleLayout" type="SimpleLayout" />
-        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
-        <xs:element minOccurs="0" maxOccurs="1" name="LayoutableText" type="LayoutableText" />
-        <xs:element minOccurs="0" maxOccurs="1" name="GridLayout" type="GridLayout" />
-        <xs:element minOccurs="0" maxOccurs="1" name="CircularLayout" type="CircularLayout" />
-        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
-      </xs:choice>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="LayoutableSprite">
-    <xs:complexContent mixed="false">
-      <xs:extension base="AssetBase">
-        <xs:attribute name="AchxName" type="xs:string" />
-        <xs:attribute name="InitialAnimationChainName" type="xs:string" />
-        <xs:attribute name="RelativeRotationZDegrees" type="xs:float" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="SimpleLayout">
-    <xs:complexContent mixed="false">
-      <xs:extension base="AssetBase">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="1" name="Children" type="ArrayOfSimpleLayoutChild" />
-        </xs:sequence>
-        <xs:attribute name="IsFullScreen" type="xs:boolean" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="ArrayOfSimpleLayoutChild">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="SimpleLayoutChild" nillable="true" type="SimpleLayoutChild" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="SimpleLayoutChild">
-    <xs:complexContent mixed="false">
-      <xs:extension base="LayoutableChildBase">
-        <xs:attribute name="Origin" type="LayoutOrigin" />
-        <xs:attribute name="HorizontalPercentFromLeft" type="xs:float" />
-        <xs:attribute name="HorizontalPercentFromCenter" type="xs:float" />
-        <xs:attribute name="HorizontalPercentFromRight" type="xs:float" />
-        <xs:attribute name="HorizontalOffsetFromLeft" type="xs:float" />
-        <xs:attribute name="HorizontalOffsetFromCenter" type="xs:float" />
-        <xs:attribute name="HorizontalOffsetFromRight" type="xs:float" />
-        <xs:attribute name="VerticalPercentFromTop" type="xs:float" />
-        <xs:attribute name="VerticalPercentFromCenter" type="xs:float" />
-        <xs:attribute name="VerticalPercentFromBottom" type="xs:float" />
-        <xs:attribute name="VerticalOffsetFromTop" type="xs:float" />
-        <xs:attribute name="VerticalOffsetFromCenter" type="xs:float" />
-        <xs:attribute name="VerticalOffsetFromBottom" type="xs:float" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:simpleType name="LayoutOrigin">
+  <xs:simpleType name="Alignment">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Center" />
-      <xs:enumeration value="TopLeft" />
-      <xs:enumeration value="TopRight" />
-      <xs:enumeration value="BottomLeft" />
-      <xs:enumeration value="BottomRight" />
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Inverse" />
+      <xs:enumeration value="Centered" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="Button">
-    <xs:complexContent mixed="false">
-      <xs:extension base="SelectableAssetBase">
-        <xs:attribute name="AchxFile" type="xs:string" />
-        <xs:attribute name="DisabledAnimationChainName" type="xs:string" />
-        <xs:attribute name="Text" type="xs:string" />
-        <xs:attribute name="IgnoreCursorEvents" type="xs:boolean" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+  <xs:simpleType name="LayoutDirection">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Up" />
+      <xs:enumeration value="Down" />
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="GridLayout">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableAssetBase">
@@ -213,19 +219,13 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:simpleType name="Alignment">
+  <xs:simpleType name="LayoutOrigin">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Default" />
-      <xs:enumeration value="Inverse" />
-      <xs:enumeration value="Centered" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="LayoutDirection">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Up" />
-      <xs:enumeration value="Down" />
-      <xs:enumeration value="Left" />
-      <xs:enumeration value="Right" />
+      <xs:enumeration value="Center" />
+      <xs:enumeration value="TopLeft" />
+      <xs:enumeration value="TopRight" />
+      <xs:enumeration value="BottomLeft" />
+      <xs:enumeration value="BottomRight" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="ArrayOfCircularLayoutChild">
@@ -255,9 +255,17 @@
   </xs:complexType>
   <xs:complexType name="ArrayOfChoice2">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element minOccurs="1" maxOccurs="1" name="GridSelectableGroupItem" nillable="true" type="GridSelectableGroupItem" />
       <xs:element minOccurs="1" maxOccurs="1" name="SequentialSelectableGroupItem" nillable="true" type="SequentialGroupItem" />
+      <xs:element minOccurs="1" maxOccurs="1" name="GridSelectableGroupItem" nillable="true" type="GridSelectableGroupItem" />
     </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="SequentialGroupItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="SelectableGroupItemBase" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SelectableGroupItemBase" abstract="true">
+    <xs:attribute name="ControlName" type="xs:string" />
   </xs:complexType>
   <xs:complexType name="GridSelectableGroupItem">
     <xs:complexContent mixed="false">
@@ -265,14 +273,6 @@
         <xs:attribute name="RowIndex" type="xs:int" use="required" />
         <xs:attribute name="ColumnIndex" type="xs:int" use="required" />
       </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="SelectableGroupItemBase" abstract="true">
-    <xs:attribute name="ControlName" type="xs:string" />
-  </xs:complexType>
-  <xs:complexType name="SequentialGroupItem">
-    <xs:complexContent mixed="false">
-      <xs:extension base="SelectableGroupItemBase" />
     </xs:complexContent>
   </xs:complexType>
   <xs:simpleType name="GroupType">

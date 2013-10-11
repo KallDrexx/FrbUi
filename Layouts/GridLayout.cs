@@ -406,6 +406,48 @@ namespace FrbUi.Layouts
                 ShapeManager.Remove(_border);
         }
 
+        public ILayoutable Clone()
+        {
+            var clonedLayout = UiControlManager.Instance.CreateControl<GridLayout>();
+            clonedLayout.Alpha = Alpha;
+            clonedLayout.BackgroundAnimationChains = BackgroundAnimationChains;
+            clonedLayout.CurrentAnimationChainName = CurrentAnimationChainName;
+            clonedLayout.FocusedAnimationChainName = FocusedAnimationChainName;
+            clonedLayout.PushedAnimationChainName = PushedAnimationChainName;
+            clonedLayout.StandardAnimationChainName = StandardAnimationChainName;
+            clonedLayout.CurrentSelectableState = CurrentSelectableState;
+            clonedLayout.ColumnCount = ColumnCount;
+            clonedLayout.IgnoresParentVisibility = IgnoresParentVisibility;
+            clonedLayout.Layer = Layer;
+            clonedLayout.Margin = Margin;
+            clonedLayout.OnAddedToLayout = OnAddedToLayout;
+            clonedLayout.OnSizeChangeHandler = OnSizeChangeHandler;
+            clonedLayout.OnClicked = OnClicked;
+            clonedLayout.OnFocusLost = OnFocusLost;
+            clonedLayout.OnFocused = OnFocused;
+            clonedLayout.OnPushReleased = OnPushReleased;
+            clonedLayout.OnPushed = OnPushed;
+            clonedLayout.PushedWithFocus = PushedWithFocus;
+            clonedLayout.RowCount = RowCount;
+            clonedLayout.ScaleX = ScaleX;
+            clonedLayout.ScaleY = ScaleY;
+            clonedLayout.ShowBorder = ShowBorder;
+            clonedLayout.Spacing = Spacing;
+            clonedLayout.Tag = Tag;
+            clonedLayout.Visible = Visible;
+
+            foreach (var item in _items.Items)
+            {
+                int rowIndex, columnIndex;
+                _items.ItemPosition(item, out rowIndex, out columnIndex);
+
+                var clonedItem = item.Clone();
+                clonedLayout.AddItem(clonedItem, rowIndex, columnIndex);
+            }
+
+            return clonedLayout;
+        }
+
         protected virtual void PerformLayout()
         {
             // Remove any items that this is no longer the parent of

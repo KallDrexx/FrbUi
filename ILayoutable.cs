@@ -34,5 +34,6 @@ namespace FrbUi
         void UpdateDependencies(double currentTime);
         void ForceUpdateDependencies();
         void Destroy();
+        ILayoutable Clone();
     }
 }

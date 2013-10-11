@@ -133,7 +133,7 @@ namespace FrbUi.Controls
 
         public float YAcceleration
         {
-            get { return YAcceleration; }
+            get { return _sprite.YAcceleration; }
             set { _sprite.YAcceleration = value; }
         }
 

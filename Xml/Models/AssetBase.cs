@@ -113,13 +113,17 @@ namespace FrbUi.Xml.Models
             if (namedControls == null)
                 throw new ArgumentNullException("namedControls");
 
-            layoutable.ScaleX = ScaleX ?? 0f;
-            layoutable.ScaleY = ScaleY ?? 0f;
             layoutable.Visible = Visible ?? false;
             layoutable.RelativeX = RelativeX ?? 0f;
             layoutable.RelativeY = RelativeY ?? 0f;
             layoutable.RelativeZ = RelativeZ ?? 0f;
             layoutable.Tag = Tag;
+
+            if (ScaleX != null)
+                layoutable.ScaleX = ScaleX.Value;
+
+            if (ScaleY != null)
+                layoutable.ScaleY = ScaleY.Value;
 
             if (!string.IsNullOrWhiteSpace(Name))
             {

@@ -32,7 +32,6 @@ namespace FrbUi.Xml.Models.Controls
         public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
         {
             var control = UiControlManager.Instance.CreateControl<FrbUi.Controls.LayoutableSprite>();
-            SetBaseILayoutableProperties(control, namedControls);
 
             // Since rotation value is relative, we need to set this in the after added event
             control.OnAddedToLayout += delegate {
@@ -45,6 +44,8 @@ namespace FrbUi.Xml.Models.Controls
 
             if (!string.IsNullOrWhiteSpace(InitialAnimationChainName))
                 control.CurrentAnimationChainName = InitialAnimationChainName;
+
+            SetBaseILayoutableProperties(control, namedControls);
 
             return control;
         }

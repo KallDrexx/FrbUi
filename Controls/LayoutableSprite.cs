@@ -139,7 +139,7 @@ namespace FrbUi.Controls
 
         public float YVelocity
         {
-            get { return YVelocity; }
+            get { return _sprite.YVelocity; }
             set { _sprite.YVelocity = value; }
         }
 

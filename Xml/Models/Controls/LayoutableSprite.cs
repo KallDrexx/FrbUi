@@ -29,6 +29,19 @@ namespace FrbUi.Xml.Models.Controls
             set { RelativeRotationZDegrees = value; }
         }
 
+        [XmlIgnore]
+        public float? PixelSize { get; set; }
+
+        [XmlIgnore]
+        public bool PixelSizeValueSpecified { get { return PixelSize.HasValue; } }
+
+        [XmlAttribute("PixelSize")]
+        public float PixelSizeValue
+        {
+            get { return PixelSize ?? default(float); }
+            set { PixelSize = value; }
+        }
+
         public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
         {
             var control = UiControlManager.Instance.CreateControl<FrbUi.Controls.LayoutableSprite>();
@@ -46,6 +59,8 @@ namespace FrbUi.Xml.Models.Controls
                 control.CurrentAnimationChainName = InitialAnimationChainName;
 
             SetBaseILayoutableProperties(control, namedControls);
+            if (PixelSize != null)
+                control.PixelSize = PixelSize.Value;
 
             return control;
         }

@@ -226,6 +226,8 @@
       <xs:enumeration value="TopRight" />
       <xs:enumeration value="BottomLeft" />
       <xs:enumeration value="BottomRight" />
+      <xs:enumeration value="BottomCenter" />
+      <xs:enumeration value="TopCenter" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="ArrayOfCircularLayoutChild">

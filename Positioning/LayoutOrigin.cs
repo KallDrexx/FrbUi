@@ -11,6 +11,8 @@ namespace FrbUi.Positioning
         TopLeft,
         TopRight,
         BottomLeft,
-        BottomRight
+        BottomRight,
+        BottomCenter,
+        TopCenter
     }
 }

@@ -69,6 +69,15 @@ namespace FrbUi.Xml.Models.Layouts
                         origin = LayoutOrigin.BottomRight;
                         break;
 
+                    case SimpleLayoutChild.LayoutOrigin.BottomCenter:
+                        origin = LayoutOrigin.BottomCenter;
+                        break;
+
+                    case SimpleLayoutChild.LayoutOrigin.TopCenter:
+                        origin = LayoutOrigin.TopCenter;
+                        break;
+
+                    case SimpleLayoutChild.LayoutOrigin.Center:
                     default:
                         origin = LayoutOrigin.Center;
                         break;

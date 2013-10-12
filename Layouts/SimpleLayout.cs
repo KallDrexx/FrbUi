@@ -346,29 +346,51 @@ namespace FrbUi.Layouts
             switch (layoutFrom)
             {
                 case LayoutOrigin.TopLeft:
+                {
                     posX += item.ScaleX;
                     posY -= item.ScaleY;
                     break;
+                }
 
                 case LayoutOrigin.TopRight:
+                {
                     posX -= item.ScaleX;
                     posY -= item.ScaleY;
                     break;
+                }
 
                 case LayoutOrigin.BottomLeft:
+                {
                     posX += item.ScaleX;
                     posY += item.ScaleY;
                     break;
+                }
 
                 case LayoutOrigin.BottomRight:
+                {
                     posX -= item.ScaleX;
                     posY += item.ScaleY;
                     break;
+                }
+
+                case LayoutOrigin.BottomCenter:
+                {
+                    posY += item.ScaleY;
+                    break;
+                }
+
+                case LayoutOrigin.TopCenter:
+                {
+                    posY -= item.ScaleY;
+                    break;
+                }
 
                 case LayoutOrigin.Center:
                 default:
+                {
                     // PosX and PosY remain at center
                     break;
+                }
             }
 
             // Set the item's position to the calculated spot

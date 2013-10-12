@@ -8,7 +8,7 @@ namespace FrbUi.Xml.Models.Layouts
 {
     public class SimpleLayoutChild : LayoutableChildBase
     {
-        public enum LayoutOrigin { Center, TopLeft, TopRight, BottomLeft, BottomRight };
+        public enum LayoutOrigin { Center, TopLeft, TopRight, BottomLeft, BottomRight, BottomCenter, TopCenter };
 
         #region Values
 

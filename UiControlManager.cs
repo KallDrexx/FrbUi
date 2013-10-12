@@ -117,8 +117,8 @@ namespace FrbUi
             Layer.LayerCameraSettings = new LayerCameraSettings
             {
                 Orthogonal = true,
-                OrthogonalWidth = SpriteManager.Camera.DestinationRectangle.Width,
-                OrthogonalHeight = SpriteManager.Camera.DestinationRectangle.Height
+                OrthogonalWidth = SpriteManager.Camera.OrthogonalWidth,
+                OrthogonalHeight = SpriteManager.Camera.OrthogonalHeight
             };
         }
 

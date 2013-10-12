@@ -42,6 +42,19 @@ namespace FrbUi.Xml.Models.Controls
             set { PixelSize = value; }
         }
 
+        [XmlIgnore]
+        public float? TextureScale { get; set; }
+
+        [XmlIgnore]
+        public bool TextureScaleValueSpecified { get { return TextureScale.HasValue; } }
+
+        [XmlAttribute("TextureScale")]
+        public float TextureScaleValue
+        {
+            get { return TextureScale ?? default(float); }
+            set { TextureScale = value; }
+        }
+
         public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
         {
             var control = UiControlManager.Instance.CreateControl<FrbUi.Controls.LayoutableSprite>();
@@ -61,6 +74,9 @@ namespace FrbUi.Xml.Models.Controls
             SetBaseILayoutableProperties(control, namedControls);
             if (PixelSize != null)
                 control.PixelSize = PixelSize.Value;
+
+            if (TextureScale != null)
+                control.TextureScale = TextureScale.Value;
 
             return control;
         }

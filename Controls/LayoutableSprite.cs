@@ -39,6 +39,12 @@ namespace FrbUi.Controls
             set { _sprite.PixelSize = value; }
         }
 
+        public float TextureScale
+        {
+            get { return _sprite.TextureScale; }
+            set { _sprite.TextureScale = value; }
+        }
+
         public float RelativeX
         {
             get { return _sprite.RelativeX; }

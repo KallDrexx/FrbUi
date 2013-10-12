@@ -17,7 +17,7 @@ namespace FrbUi.Layouts
         #region Variables
 
         private readonly SpriteFrame _backgroundSprite;
-        private readonly Dictionary<ILayoutable, Alignment> _items;
+        private readonly List<KeyValuePair<ILayoutable, Alignment>> _items;
         private Layer _layer;
         private bool _recalculateLayout;
         private float _margin;
@@ -43,7 +43,7 @@ namespace FrbUi.Layouts
         public LayoutableEvent OnPushReleased { get; set; }
         public LayoutableEvent OnClicked { get; set; }
 
-        public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
+        public IEnumerable<ILayoutable> Items { get { return _items.Select(x => x.Key); } }
         public SelectableState CurrentSelectableState { get; set; }
         public ILayoutable ParentLayout { get; set; }
         public string Tag { get; set; }
@@ -134,8 +134,8 @@ namespace FrbUi.Layouts
                     BackgroundAlpha = value;
 
                 // Update the alpha values of all child objects
-                foreach (var item in _items.Keys)
-                    item.Alpha = value;
+                foreach (var item in _items)
+                    item.Key.Alpha = value;
             }
         }
 
@@ -251,7 +251,7 @@ namespace FrbUi.Layouts
         {
             _alpha = 1;
 
-            _items = new Dictionary<ILayoutable, Alignment>();
+            _items = new List<KeyValuePair<ILayoutable, Alignment>>();
             _backgroundSprite = new SpriteFrame();
             _backgroundSprite.TextureBorderWidth = 0.5f;
             _backgroundSprite.PixelSize = 0.5f;
@@ -297,10 +297,11 @@ namespace FrbUi.Layouts
 
         public void AddItem(ILayoutable item, Alignment alignment = Alignment.Default)
         {
-            if (_items.ContainsKey(item))
-                return;
+            foreach (var pair in _items)
+                if (pair.Key == item)
+                    return; // already part of this layout
 
-            _items.Add(item, alignment);
+            _items.Add(new KeyValuePair<ILayoutable, Alignment>(item, alignment));
             item.AttachTo(_backgroundSprite, true);
             item.RelativeZ = 0.1f;
             item.Alpha = _alpha;
@@ -324,10 +325,20 @@ namespace FrbUi.Layouts
 
         public void RemoveItem(ILayoutable item)
         {
-            if (!_items.ContainsKey(item))
-                return;
+            int index = 0;
+            bool found = false;
+            for (int x = 0; x < _items.Count; x++)
+            {
+                index = x;
+                found = _items[x].Key == item;
+                if (found)
+                    break;
+            }
 
-            _items.Remove(item);
+            if (!found)
+                return; // Nothing to remove
+
+            _items.RemoveAt(index);
 
             // Only detach it if the item is still attached to this
             if (item.Parent == _backgroundSprite)
@@ -362,10 +373,10 @@ namespace FrbUi.Layouts
             _backgroundSprite.Detach();
             SpriteManager.RemoveSpriteFrame(_backgroundSprite);
 
-            foreach (var item in _items.Keys)
+            foreach (var pair in _items)
             {
-                if (item.Parent == _backgroundSprite)
-                    item.Destroy();
+                if (pair.Key.Parent == _backgroundSprite)
+                    pair.Key.Destroy();
             }
 
             _items.Clear();
@@ -418,8 +429,8 @@ namespace FrbUi.Layouts
             // Remove any items that this is no longer the parent of
             for (int x = _items.Count - 1; x >= 0; x--)
             {
-                var item = _items.Keys.ElementAt(x);
-                if (item.Parent != _backgroundSprite)
+                var item = _items[x];
+                if (item.Key.Parent != _backgroundSprite)
                 {
                     _items.Remove(item);
                     _recalculateLayout = true;
@@ -461,11 +472,11 @@ namespace FrbUi.Layouts
             float width = 0;
             float height = 0;
 
-            foreach (var item in _items.Keys)
+            foreach (var pair in _items)
             {
-                height += (item.ScaleY);
-                if (item.ScaleX > width)
-                    width = item.ScaleX;
+                height += (pair.Key.ScaleY);
+                if (pair.Key.ScaleX > width)
+                    width = pair.Key.ScaleX;
             }
 
             // Add the margins and spacings
@@ -493,7 +504,7 @@ namespace FrbUi.Layouts
             }
 
             bool firstItem = true;
-            foreach (var item in _items.Keys)
+            foreach (var pair in _items)
             {
                 if (!firstItem)
                 {
@@ -506,39 +517,39 @@ namespace FrbUi.Layouts
                 // Since the x/y position will point to the center, we need to account for that
                 if (increasing)
                 {
-                    switch (_items[item])
+                    switch (pair.Value)
                     {
                         case Alignment.Inverse:
-                            item.RelativeX = (currentX * -1) - item.ScaleX;
+                            pair.Key.RelativeX = (currentX * -1) - pair.Key.ScaleX;
                             break;
                         case Alignment.Centered:
-                            item.RelativeX = 0;
+                            pair.Key.RelativeX = 0;
                             break;
                         default:
-                            item.RelativeX = currentX + item.ScaleX;
+                            pair.Key.RelativeX = currentX + pair.Key.ScaleX;
                             break;
                     }
 
-                    item.RelativeY = currentY + item.ScaleY;
-                    currentY += (item.ScaleY * 2);
+                    pair.Key.RelativeY = currentY + pair.Key.ScaleY;
+                    currentY += (pair.Key.ScaleY * 2);
                 }
                 else
                 {
-                    switch (_items[item])
+                    switch (pair.Value)
                     {
                         case Alignment.Inverse:
-                            item.RelativeX = (currentX * -1) - item.ScaleX;
+                            pair.Key.RelativeX = (currentX * -1) - pair.Key.ScaleX;
                             break;
                         case Alignment.Centered:
-                            item.RelativeX = 0;
+                            pair.Key.RelativeX = 0;
                             break;
                         default:
-                            item.RelativeX = currentX + item.ScaleX;
+                            pair.Key.RelativeX = currentX + pair.Key.ScaleX;
                             break;
                     }
 
-                    item.RelativeY = currentY - item.ScaleY;
-                    currentY -= (item.ScaleY * 2);
+                    pair.Key.RelativeY = currentY - pair.Key.ScaleY;
+                    currentY -= (pair.Key.ScaleY * 2);
                 }
 
                 firstItem = false;
@@ -550,11 +561,11 @@ namespace FrbUi.Layouts
             // Calculate the width and height
             float halfWidth = 0;
             float halfHeight = 0;
-            foreach (var item in _items.Keys)
+            foreach (var pair in _items)
             {
-                halfWidth += (item.ScaleX);
-                if (item.ScaleY > halfHeight)
-                    halfHeight = item.ScaleY;
+                halfWidth += (pair.Key.ScaleX);
+                if (pair.Key.ScaleY > halfHeight)
+                    halfHeight = pair.Key.ScaleY;
             }
 
             // Add the margins
@@ -582,7 +593,7 @@ namespace FrbUi.Layouts
             }
 
             bool firstItem = true;
-            foreach (var item in _items.Keys)
+            foreach (var pair in _items)
             {
                 if (!firstItem)
                 {
@@ -595,43 +606,43 @@ namespace FrbUi.Layouts
                 // Since the x/y position will point to the center, we need to account for that
                 if (increasing)
                 {
-                    switch (_items[item])
+                    switch (pair.Value)
                     {
                         case Alignment.Inverse:
-                            item.RelativeY = (currentY * -1) + item.ScaleY;
+                            pair.Key.RelativeY = (currentY * -1) + pair.Key.ScaleY;
                             break;
 
                         case Alignment.Centered:
-                            item.RelativeY = 0;
+                            pair.Key.RelativeY = 0;
                             break;
 
                         default:
-                            item.RelativeY = currentY - item.ScaleY;
+                            pair.Key.RelativeY = currentY - pair.Key.ScaleY;
                             break;
                     }
 
-                    item.RelativeX = currentX + item.ScaleX;
-                    currentX += (item.ScaleX * 2);
+                    pair.Key.RelativeX = currentX + pair.Key.ScaleX;
+                    currentX += (pair.Key.ScaleX * 2);
                 }
                 else
                 {
-                    switch (_items[item])
+                    switch (pair.Value)
                     {
                         case Alignment.Inverse:
-                            item.RelativeY = (currentY * -1) + item.ScaleY;
+                            pair.Key.RelativeY = (currentY * -1) + pair.Key.ScaleY;
                             break;
 
                         case Alignment.Centered:
-                            item.RelativeY = 0;
+                            pair.Key.RelativeY = 0;
                             break;
 
                         default:
-                            item.RelativeY = currentY - item.ScaleY;
+                            pair.Key.RelativeY = currentY - pair.Key.ScaleY;
                             break;
                     }
 
-                    item.RelativeX = currentX - item.ScaleX;
-                    currentX -= (item.ScaleX * 2);
+                    pair.Key.RelativeX = currentX - pair.Key.ScaleX;
+                    currentX -= (pair.Key.ScaleX * 2);
                 }
 
                 firstItem = false;

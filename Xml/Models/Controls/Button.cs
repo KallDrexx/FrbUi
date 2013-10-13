@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 using FlatRedBall;
 using FlatRedBall.Graphics;
@@ -18,6 +19,9 @@ namespace FrbUi.Xml.Models.Controls
 
         [XmlAttribute]
         public string Text { get; set; }
+
+        [XmlAttribute]
+        public string FontName { get; set; }
 
         [XmlIgnore]
         public bool? IgnoreCursorEvents { get; set; }
@@ -49,6 +53,19 @@ namespace FrbUi.Xml.Models.Controls
 
             button.Text = Text;
             button.IgnoreCursorEvents = IgnoreCursorEvents ?? false;
+
+            if (!string.IsNullOrWhiteSpace(FontName))
+            {
+                BitmapFont font;
+                if (!namedFonts.TryGetValue(FontName, out font))
+                {
+                    throw new InvalidOperationException(
+                        string.Format("Button tried to use font {0} which is not setup in the UI xml", FontName));
+                }
+
+                button.TextFont = font;
+            }
+
             return button;
         }
     }

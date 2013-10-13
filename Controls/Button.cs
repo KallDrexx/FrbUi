@@ -95,6 +95,12 @@ namespace FrbUi.Controls
             }
         }
 
+        public BitmapFont TextFont
+        {
+            get { return _label.Font; }
+            set { _label.Font = value; }
+        }
+
         public Layer Layer
         {
             get { return _layer; }

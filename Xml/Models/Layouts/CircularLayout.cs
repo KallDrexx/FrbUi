@@ -103,7 +103,7 @@ namespace FrbUi.Xml.Models.Layouts
             set { _initialAnimationChainName = value; }
         }
 
-        [XmlArray]
+        [XmlElement("Child")]
         public List<CircularLayoutChild> Children
         {
             get { return _children; }

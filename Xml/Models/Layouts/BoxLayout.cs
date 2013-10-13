@@ -65,7 +65,7 @@ namespace FrbUi.Xml.Models.Layouts
         [XmlAttribute]
         public string BackgroundAchxFile { get; set; }
 
-        [XmlArray]
+        [XmlElement("Child")]
         public List<BoxLayoutChild> Children { get; set; }
 
         #endregion

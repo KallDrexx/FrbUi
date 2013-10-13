@@ -55,7 +55,7 @@ namespace FrbUi.Xml.Models.Layouts
         [XmlAttribute]
         public string BackgroundAchxFile { get; set; }
 
-        [XmlArray]
+        [XmlElement("Child")]
         public List<GridLayoutChild> Children { get; set; } 
 
         #endregion

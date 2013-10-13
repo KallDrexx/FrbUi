@@ -29,7 +29,7 @@ namespace FrbUi.Xml.Models.Layouts
             set { _isFullScreen = value; }
         }
 
-        [XmlArray]
+        [XmlElement("Child")]
         public List<SimpleLayoutChild> Children
         {
             get { return _children; }

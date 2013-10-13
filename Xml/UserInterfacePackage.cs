@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using FlatRedBall.Graphics;
 using FlatRedBall.IO;
 using FrbUi.Xml.Models;
 
@@ -12,11 +13,13 @@ namespace FrbUi.Xml
     {
         private readonly Dictionary<string, ILayoutable> _namedControls;
         private readonly Dictionary<string, ISelectableControlGroup> _namedSelectableGroups;
+        private readonly Dictionary<string, BitmapFont> _namedFonts; 
 
         public UserInterfacePackage(string xmlFile, string contentManagerName)
         {
             _namedControls = new Dictionary<string, ILayoutable>();
             _namedSelectableGroups = new Dictionary<string, ISelectableControlGroup>();
+            _namedFonts = new Dictionary<string, BitmapFont>();
             LoadUserInterfacePackage(xmlFile, contentManagerName);
         }
 
@@ -48,6 +51,15 @@ namespace FrbUi.Xml
             return _namedSelectableGroups.Select(x => new KeyValuePair<string, Type>(x.Key, x.Value.GetType()));
         }
 
+        public BitmapFont GetNamedFont(string name)
+        {
+            BitmapFont font;
+            if (!_namedFonts.TryGetValue(name, out font))
+                return null;
+
+            return font;
+        }
+
         private void LoadUserInterfacePackage(string xmlFile, string contentManagerName)
         {
             // Set the relative path to the same path as the xml file
@@ -63,9 +75,17 @@ namespace FrbUi.Xml
                 {
                     var assetCollection = (AssetCollection) serializer.Deserialize(reader);
 
+                    // Fonts must be retrieved first, so they are available when LayoutableText objects
+                    // are instantiated
+                    foreach (var fontXml in assetCollection.BitmapFonts)
+                    {
+                        var font = fontXml.GenerateFont(contentManagerName);
+                        _namedFonts[fontXml.Name] = font;
+                    }
+
                     // Instantiate the layoutable controls, and save the named controls
                     foreach (var asset in assetCollection.Controls)
-                        asset.GenerateILayoutable(contentManagerName, _namedControls);
+                        asset.GenerateILayoutable(contentManagerName, _namedControls, _namedFonts);
 
                     foreach (var selectableGroup in assetCollection.SelectableGroups)
                         selectableGroup.GenerateSelectableControlGroup(_namedControls, _namedSelectableGroups);

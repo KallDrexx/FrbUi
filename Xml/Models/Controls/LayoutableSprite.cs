@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using FlatRedBall;
+using FlatRedBall.Graphics;
 using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models.Controls
@@ -55,7 +56,7 @@ namespace FrbUi.Xml.Models.Controls
             set { TextureScale = value; }
         }
 
-        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
+        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls, Dictionary<string, BitmapFont> namedFonts)
         {
             var control = UiControlManager.Instance.CreateControl<FrbUi.Controls.LayoutableSprite>();
 

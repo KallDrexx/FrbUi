@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using FlatRedBall;
+using FlatRedBall.Graphics;
 using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models.Layouts
@@ -83,7 +84,7 @@ namespace FrbUi.Xml.Models.Layouts
             BackgroundAlpha = 1f;
         }
 
-        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
+        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls, Dictionary<string, BitmapFont> namedFonts)
         {
             var layout = UiControlManager.Instance.CreateControl<FrbUi.Layouts.BoxLayout>();
             SetBaseILayoutableProperties(layout, namedControls);
@@ -133,7 +134,7 @@ namespace FrbUi.Xml.Models.Layouts
                         break;
                 }
 
-                var childLayoutable = child.Item.GenerateILayoutable(contentManagerName, namedControls);
+                var childLayoutable = child.Item.GenerateILayoutable(contentManagerName, namedControls, namedFonts);
                 layout.AddItem(childLayoutable, childAlignment);
             }
 

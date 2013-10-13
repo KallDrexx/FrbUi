@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using FlatRedBall.Graphics;
 using FrbUi.Positioning;
 
 namespace FrbUi.Xml.Models.Layouts
@@ -37,7 +38,7 @@ namespace FrbUi.Xml.Models.Layouts
 
         #endregion
 
-        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
+        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls, Dictionary<string, BitmapFont> namedFonts)
         {
             var layout = UiControlManager.Instance.CreateControl<FrbUi.Layouts.SimpleLayout>();
             SetBaseILayoutableProperties(layout, namedControls);
@@ -45,7 +46,7 @@ namespace FrbUi.Xml.Models.Layouts
 
             foreach (var child in _children)
             {
-                var item = child.Item.GenerateILayoutable(contentManagerName, namedControls);
+                var item = child.Item.GenerateILayoutable(contentManagerName, namedControls, namedFonts);
                 HorizontalPosition horizontalPosition;
                 VerticalPosition verticalPosition;
                 LayoutOrigin origin;

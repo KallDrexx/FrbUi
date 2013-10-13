@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using FlatRedBall;
+using FlatRedBall.Graphics;
 using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models.Layouts
@@ -59,7 +60,7 @@ namespace FrbUi.Xml.Models.Layouts
 
         #endregion
 
-        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
+        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls, Dictionary<string, BitmapFont> namedFonts)
         {
             var layout = UiControlManager.Instance.CreateControl<FrbUi.Layouts.GridLayout>();
             SetBaseILayoutableProperties(layout, namedControls);
@@ -107,7 +108,7 @@ namespace FrbUi.Xml.Models.Layouts
                         break;
                 }
 
-                var item = child.Item.GenerateILayoutable(contentManagerName, namedControls);
+                var item = child.Item.GenerateILayoutable(contentManagerName, namedControls, namedFonts);
                 layout.AddItem(item, child.RowIndex, child.ColumnIndex, horizontalAlignment, verticalAlignment);
             }
 

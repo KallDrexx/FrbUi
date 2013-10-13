@@ -184,6 +184,12 @@ namespace FrbUi.Controls
             set { _text.Blue = value; }
         }
 
+        public BitmapFont Font
+        {
+            get { return _text.Font; }
+            set { _text.Font = value; }
+        }
+
         #endregion
 
         #region Methods

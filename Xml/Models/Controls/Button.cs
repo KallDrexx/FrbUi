@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using FlatRedBall;
+using FlatRedBall.Graphics;
 using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models.Controls
@@ -33,7 +34,7 @@ namespace FrbUi.Xml.Models.Controls
 
         #endregion
 
-        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls)
+        public override ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls, Dictionary<string, BitmapFont> namedFonts)
         {
             var button = UiControlManager.Instance.CreateControl<FrbUi.Controls.Button>();
             SetBaseILayoutableProperties(button, namedControls);

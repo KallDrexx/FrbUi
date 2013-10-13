@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using FlatRedBall.Graphics;
 
 namespace FrbUi.Xml.Models
 {
@@ -103,7 +104,7 @@ namespace FrbUi.Xml.Models
             Visible = true;
         }
 
-        public abstract ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls);
+        public abstract ILayoutable GenerateILayoutable(string contentManagerName, Dictionary<string, ILayoutable> namedControls, Dictionary<string, BitmapFont> namedFonts);
 
         protected void SetBaseILayoutableProperties(ILayoutable layoutable, Dictionary<string, ILayoutable> namedControls)
         {

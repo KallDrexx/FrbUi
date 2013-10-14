@@ -41,7 +41,7 @@ namespace FrbUi.Layouts
         public LayoutableEvent OnAddedToLayout { get; set; }
 
         public bool PushedWithFocus { get; set; }
-        public IEnumerable<ILayoutable> Items { get { return _items.Items; } }
+        public IEnumerable<ILayoutable> Items { get { return _items.Items.ToArray(); } }
 
         public int ColumnCount { get; protected set; }
         public int RowCount { get; protected set; }

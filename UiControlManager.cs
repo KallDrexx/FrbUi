@@ -106,7 +106,10 @@ namespace FrbUi
 
             // Update all ui controls that do not have a parent
             //  Layout managers *should* cascade the updates downward
-            foreach (var item in _items.Where(x => x.ParentLayout == null))
+            var items = _items.Where(x => x.ParentLayout == null)
+                              .ToArray();
+
+            foreach (var item in items)
                 item.UpdateDependencies(TimeManager.CurrentTime);
         }
 

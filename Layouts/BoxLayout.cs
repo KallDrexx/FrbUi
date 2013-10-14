@@ -43,7 +43,7 @@ namespace FrbUi.Layouts
         public LayoutableEvent OnPushReleased { get; set; }
         public LayoutableEvent OnClicked { get; set; }
 
-        public IEnumerable<ILayoutable> Items { get { return _items.Select(x => x.Key); } }
+        public IEnumerable<ILayoutable> Items { get { return _items.Select(x => x.Key).ToArray(); } }
         public SelectableState CurrentSelectableState { get; set; }
         public ILayoutable ParentLayout { get; set; }
         public string Tag { get; set; }

@@ -41,7 +41,7 @@ namespace FrbUi.Layouts
 
         public ILayoutable ParentLayout { get; set; }
         public string Tag { get; set; }
-        public IEnumerable<ILayoutable> Items { get { return _items.Keys.AsEnumerable(); } }
+        public IEnumerable<ILayoutable> Items { get { return _items.Keys.ToArray(); } }
 
         public float BackgroundAlpha { get { return _backgroundSprite.Alpha; } set { _backgroundSprite.Alpha = value; } }
         public AnimationChainList BackgroundAnimationChains { get { return _backgroundSprite.AnimationChains; } set { _backgroundSprite.AnimationChains = value; } }

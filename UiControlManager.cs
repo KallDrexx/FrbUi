@@ -117,12 +117,27 @@ namespace FrbUi
         {
             // Create the 2d layer
             Layer = SpriteManager.AddLayer();
-            Layer.LayerCameraSettings = new LayerCameraSettings
+
+            if (SpriteManager.Camera.Orthogonal)
             {
-                Orthogonal = true,
-                OrthogonalWidth = SpriteManager.Camera.OrthogonalWidth,
-                OrthogonalHeight = SpriteManager.Camera.OrthogonalHeight
-            };
+                // It's a 2d camera
+                Layer.LayerCameraSettings = new LayerCameraSettings
+                {
+                    Orthogonal = true,
+                    OrthogonalWidth = Camera.Main.OrthogonalWidth,
+                    OrthogonalHeight = Camera.Main.OrthogonalHeight
+                };
+            }
+            else
+            {
+                // 3d camera
+                Layer.LayerCameraSettings = new LayerCameraSettings
+                {
+                    Orthogonal = true,
+                    OrthogonalWidth = Camera.Main.DestinationRectangle.Width,
+                    OrthogonalHeight = Camera.Main.DestinationRectangle.Height
+                };
+            }
         }
 
         private void CheckCurrentScreen()

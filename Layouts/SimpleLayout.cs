@@ -182,11 +182,7 @@ namespace FrbUi.Layouts
 
         public void UpdateDependencies(double currentTime)
         {
-            // Update the dependencies on all children
-            foreach (var layoutable in Items)
-                layoutable.UpdateDependencies(currentTime);
-
-            _backgroundSprite.UpdateDependencies(currentTime);
+            ForceUpdateDependencies();
         }
 
         public void ForceUpdateDependencies()

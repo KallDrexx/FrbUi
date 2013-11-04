@@ -8,7 +8,7 @@ using FrbUi.SelectableGroupings;
 
 namespace FrbUi.Xml.Models.SelectableGroupings
 {
-    public class SequentialGroupItem : SelectableGroupItemBase
+    public class SequentialGroupItemXml : SelectableGroupItemBase
     {
         public override void AddToGroup(ISelectableControlGroup group, Dictionary<string, ILayoutable> namedControls)
         {

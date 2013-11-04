@@ -11,17 +11,18 @@ namespace FrbUi.Xml.Models
     public class AssetCollection
     {
         [XmlArray]
-        [XmlArrayItem("BoxLayout", typeof(BoxLayout))]
-        [XmlArrayItem("GridLayout", typeof(GridLayout))]
-        [XmlArrayItem("CircularLayout", typeof(CircularLayout))]
-        [XmlArrayItem("SimpleLayout", typeof(SimpleLayout))]
-        [XmlArrayItem("Button", typeof(Button))]
-        [XmlArrayItem("LayoutableSprite", typeof(LayoutableSprite))]
-        [XmlArrayItem("LayoutableText", typeof(LayoutableText))]
-        public List<AssetBase> Controls { get; set; }
+        [XmlArrayItem("BoxLayout", typeof(BoxLayoutXml))]
+        [XmlArrayItem("GridLayout", typeof(GridLayoutXml))]
+        [XmlArrayItem("CircularLayout", typeof(CircularLayoutXml))]
+        [XmlArrayItem("SimpleLayout", typeof(SimpleLayoutXml))]
+        [XmlArrayItem("Button", typeof(ButtonXml))]
+        [XmlArrayItem("LayoutableSprite", typeof(LayoutableSpriteXml))]
+        [XmlArrayItem("LayoutableText", typeof(LayoutableTextXml))]
+        public List<AssetXmlBase> Controls { get; set; }
 
         [XmlArray]
-        public List<SelectableGroup> SelectableGroups { get; set; }
+        [XmlArrayItem("SelectableGroup", typeof(SelectableGroupXml))]
+        public List<SelectableGroupXml> SelectableGroups { get; set; }
 
         [XmlArray]
         [XmlArrayItem("BitmapFont", typeof(BitmapFontXml))]

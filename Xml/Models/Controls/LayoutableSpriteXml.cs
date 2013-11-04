@@ -9,7 +9,7 @@ using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models.Controls
 {
-    public class LayoutableSprite : AssetBase
+    public class LayoutableSpriteXml : AssetXmlBase
     {
         [XmlAttribute]
         public string AchxName { get; set; }

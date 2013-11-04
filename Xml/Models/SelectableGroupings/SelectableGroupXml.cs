@@ -7,7 +7,7 @@ using FrbUi.SelectableGroupings;
 
 namespace FrbUi.Xml.Models.SelectableGroupings
 {
-    public class SelectableGroup
+    public class SelectableGroupXml
     {
         public enum GroupType { Sequential, Grid }
 
@@ -20,8 +20,8 @@ namespace FrbUi.Xml.Models.SelectableGroupings
         public GroupType SelectableGroupType { get; set; }
 
         [XmlArray]
-        [XmlArrayItem("SequentialSelectableGroupItem", typeof(SequentialGroupItem))]
-        [XmlArrayItem("GridSelectableGroupItem", typeof(GridSelectableGroupItem))]
+        [XmlArrayItem("SequentialSelectableGroupItem", typeof(SequentialGroupItemXml))]
+        [XmlArrayItem("GridSelectableGroupItem", typeof(GridSelectableGroupItemXml))]
         public List<SelectableGroupItemBase> Controls { get; set; }
 
         #endregion

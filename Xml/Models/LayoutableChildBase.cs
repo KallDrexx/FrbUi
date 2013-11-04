@@ -11,13 +11,13 @@ namespace FrbUi.Xml.Models
 {
     public abstract class LayoutableChildBase
     {
-        [XmlElement("BoxLayout", typeof(BoxLayout))]
-        [XmlElement("GridLayout", typeof(GridLayout))]
-        [XmlElement("CircularLayout", typeof(CircularLayout))]
-        [XmlElement("SimpleLayout", typeof(SimpleLayout))]
-        [XmlElement("Button", typeof(Button))]
-        [XmlElement("LayoutableSprite", typeof(LayoutableSprite))]
-        [XmlElement("LayoutableText", typeof(LayoutableText))]
-        public AssetBase Item { get; set; }
+        [XmlElement("BoxLayout", typeof(BoxLayoutXml))]
+        [XmlElement("GridLayout", typeof(GridLayoutXml))]
+        [XmlElement("CircularLayout", typeof(CircularLayoutXml))]
+        [XmlElement("SimpleLayout", typeof(SimpleLayoutXml))]
+        [XmlElement("Button", typeof(ButtonXml))]
+        [XmlElement("LayoutableSprite", typeof(LayoutableSpriteXml))]
+        [XmlElement("LayoutableText", typeof(LayoutableTextXml))]
+        public AssetXmlBase Item { get; set; }
     }
 }

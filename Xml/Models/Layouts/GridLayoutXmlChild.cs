@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace FrbUi.Xml.Models.Layouts
 {
-    public class GridLayoutChild : LayoutableChildBase
+    public class GridLayoutXmlChild : LayoutableChildBase
     {
         public enum HorizontalAlignments { Left, Center, Right }
         public enum VerticalAlignments { Top, Center, Bottom }

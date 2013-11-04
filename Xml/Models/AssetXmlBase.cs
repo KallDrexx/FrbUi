@@ -9,7 +9,7 @@ using FlatRedBall.Graphics;
 
 namespace FrbUi.Xml.Models
 {
-    public abstract class AssetBase
+    public abstract class AssetXmlBase
     {
         #region XML
 
@@ -99,7 +99,7 @@ namespace FrbUi.Xml.Models
 
         #endregion
         
-        protected AssetBase()
+        protected AssetXmlBase()
         {
             Visible = true;
         }

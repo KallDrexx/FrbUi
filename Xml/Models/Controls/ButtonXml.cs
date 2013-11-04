@@ -7,7 +7,7 @@ using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models.Controls
 {
-    public class Button : SelectableAssetBase
+    public class ButtonXml : SelectableAssetBase
     {
         #region XML
 

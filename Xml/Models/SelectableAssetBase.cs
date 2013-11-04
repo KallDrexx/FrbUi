@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace FrbUi.Xml.Models
 {
-    public abstract class SelectableAssetBase : AssetBase
+    public abstract class SelectableAssetBase : AssetXmlBase
     {
         #region XML
 

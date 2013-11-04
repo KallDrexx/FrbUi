@@ -6,7 +6,7 @@ using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models.Layouts
 {
-    public class BoxLayout : SelectableAssetBase
+    public class BoxLayoutXml : SelectableAssetBase
     {
         #region XML
 
@@ -66,7 +66,7 @@ namespace FrbUi.Xml.Models.Layouts
         public string BackgroundAchxFile { get; set; }
 
         [XmlElement("Child")]
-        public List<BoxLayoutChild> Children { get; set; }
+        public List<BoxLayoutXmlChild> Children { get; set; }
 
         #endregion
 
@@ -79,7 +79,7 @@ namespace FrbUi.Xml.Models.Layouts
             [XmlEnum] Right
         }
 
-        public BoxLayout()
+        public BoxLayoutXml()
         {
             BackgroundAlpha = 1f;
         }
@@ -121,11 +121,11 @@ namespace FrbUi.Xml.Models.Layouts
                 FrbUi.Layouts.BoxLayout.Alignment childAlignment;
                 switch (child.ItemAlignment)
                 {
-                    case BoxLayoutChild.Alignment.Centered:
+                    case BoxLayoutXmlChild.Alignment.Centered:
                         childAlignment = FrbUi.Layouts.BoxLayout.Alignment.Centered;
                         break;
 
-                    case BoxLayoutChild.Alignment.Inverse:
+                    case BoxLayoutXmlChild.Alignment.Inverse:
                         childAlignment = FrbUi.Layouts.BoxLayout.Alignment.Inverse;
                         break;
 

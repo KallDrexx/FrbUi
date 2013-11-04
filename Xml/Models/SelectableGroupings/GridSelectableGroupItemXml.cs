@@ -5,7 +5,7 @@ using FrbUi.SelectableGroupings;
 
 namespace FrbUi.Xml.Models.SelectableGroupings
 {
-    public class GridSelectableGroupItem : SelectableGroupItemBase
+    public class GridSelectableGroupItemXml : SelectableGroupItemBase
     {
         [XmlAttribute]
         public int RowIndex { get; set; }

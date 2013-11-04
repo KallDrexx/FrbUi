@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace FrbUi.Xml.Models.Layouts
 {
-    public class CircularLayoutChild : LayoutableChildBase
+    public class CircularLayoutXmlChild : LayoutableChildBase
     {
         private float? _radiusOffset;
         private float? _degreeOffset;

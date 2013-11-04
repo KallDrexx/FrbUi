@@ -2,7 +2,7 @@
 
 namespace FrbUi.Xml.Models.Layouts
 {
-    public class BoxLayoutChild : LayoutableChildBase
+    public class BoxLayoutXmlChild : LayoutableChildBase
     {
         [XmlIgnore]
         public Alignment? ItemAlignment { get; set; }

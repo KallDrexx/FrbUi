@@ -4,26 +4,26 @@
   <xs:complexType name="AssetCollection">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice1" />
-      <xs:element minOccurs="0" maxOccurs="1" name="SelectableGroups" type="ArrayOfSelectableGroup" />
+      <xs:element minOccurs="0" maxOccurs="1" name="SelectableGroups" type="ArrayOfSelectableGroupXml" />
       <xs:element minOccurs="0" maxOccurs="1" name="BitmapFonts" type="ArrayOfBitmapFontXml" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="ArrayOfChoice1">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element minOccurs="1" maxOccurs="1" name="CircularLayout" nillable="true" type="CircularLayout" />
-      <xs:element minOccurs="1" maxOccurs="1" name="LayoutableText" nillable="true" type="LayoutableText" />
-      <xs:element minOccurs="1" maxOccurs="1" name="BoxLayout" nillable="true" type="BoxLayout" />
-      <xs:element minOccurs="1" maxOccurs="1" name="LayoutableSprite" nillable="true" type="LayoutableSprite" />
-      <xs:element minOccurs="1" maxOccurs="1" name="Button" nillable="true" type="Button" />
-      <xs:element minOccurs="1" maxOccurs="1" name="SimpleLayout" nillable="true" type="SimpleLayout" />
-      <xs:element minOccurs="1" maxOccurs="1" name="GridLayout" nillable="true" type="GridLayout" />
+      <xs:element minOccurs="1" maxOccurs="1" name="CircularLayout" nillable="true" type="CircularLayoutXml" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LayoutableText" nillable="true" type="LayoutableTextXml" />
+      <xs:element minOccurs="1" maxOccurs="1" name="BoxLayout" nillable="true" type="BoxLayoutXml" />
+      <xs:element minOccurs="1" maxOccurs="1" name="LayoutableSprite" nillable="true" type="LayoutableSpriteXml" />
+      <xs:element minOccurs="1" maxOccurs="1" name="Button" nillable="true" type="ButtonXml" />
+      <xs:element minOccurs="1" maxOccurs="1" name="SimpleLayout" nillable="true" type="SimpleLayoutXml" />
+      <xs:element minOccurs="1" maxOccurs="1" name="GridLayout" nillable="true" type="GridLayoutXml" />
     </xs:choice>
   </xs:complexType>
-  <xs:complexType name="CircularLayout">
+  <xs:complexType name="CircularLayoutXml">
     <xs:complexContent mixed="false">
-      <xs:extension base="AssetBase">
+      <xs:extension base="AssetXmlBase">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Child" type="CircularLayoutChild" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Child" type="CircularLayoutXmlChild" />
         </xs:sequence>
         <xs:attribute name="MinDegreeOffset" type="xs:float" />
         <xs:attribute name="StartingDegrees" type="xs:float" />
@@ -36,7 +36,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="AssetBase" abstract="true">
+  <xs:complexType name="AssetXmlBase" abstract="true">
     <xs:attribute name="Name" type="xs:string" />
     <xs:attribute name="Tag" type="xs:string" />
     <xs:attribute name="ScaleX" type="xs:float" />
@@ -46,28 +46,17 @@
     <xs:attribute name="RelativeY" type="xs:float" />
     <xs:attribute name="RelativeZ" type="xs:float" />
   </xs:complexType>
-  <xs:complexType name="LayoutableSprite">
+  <xs:complexType name="SimpleLayoutXml">
     <xs:complexContent mixed="false">
-      <xs:extension base="AssetBase">
-        <xs:attribute name="AchxName" type="xs:string" />
-        <xs:attribute name="InitialAnimationChainName" type="xs:string" />
-        <xs:attribute name="RelativeRotationZDegrees" type="xs:float" />
-        <xs:attribute name="PixelSize" type="xs:float" />
-        <xs:attribute name="TextureScale" type="xs:float" />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:complexType name="SimpleLayout">
-    <xs:complexContent mixed="false">
-      <xs:extension base="AssetBase">
+      <xs:extension base="AssetXmlBase">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Child" type="SimpleLayoutChild" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Child" type="SimpleLayoutXmlChild" />
         </xs:sequence>
         <xs:attribute name="IsFullScreen" type="xs:boolean" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="SimpleLayoutChild">
+  <xs:complexType name="SimpleLayoutXmlChild">
     <xs:complexContent mixed="false">
       <xs:extension base="LayoutableChildBase">
         <xs:attribute name="Origin" type="LayoutOrigin" />
@@ -89,29 +78,32 @@
   <xs:complexType name="LayoutableChildBase" abstract="true">
     <xs:sequence>
       <xs:choice minOccurs="1" maxOccurs="1">
-        <xs:element minOccurs="0" maxOccurs="1" name="SimpleLayout" type="SimpleLayout" />
-        <xs:element minOccurs="0" maxOccurs="1" name="LayoutableSprite" type="LayoutableSprite" />
-        <xs:element minOccurs="0" maxOccurs="1" name="LayoutableText" type="LayoutableText" />
-        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayout" />
-        <xs:element minOccurs="0" maxOccurs="1" name="GridLayout" type="GridLayout" />
-        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="Button" />
-        <xs:element minOccurs="0" maxOccurs="1" name="CircularLayout" type="CircularLayout" />
+        <xs:element minOccurs="0" maxOccurs="1" name="CircularLayout" type="CircularLayoutXml" />
+        <xs:element minOccurs="0" maxOccurs="1" name="LayoutableSprite" type="LayoutableSpriteXml" />
+        <xs:element minOccurs="0" maxOccurs="1" name="BoxLayout" type="BoxLayoutXml" />
+        <xs:element minOccurs="0" maxOccurs="1" name="GridLayout" type="GridLayoutXml" />
+        <xs:element minOccurs="0" maxOccurs="1" name="LayoutableText" type="LayoutableTextXml" />
+        <xs:element minOccurs="0" maxOccurs="1" name="SimpleLayout" type="SimpleLayoutXml" />
+        <xs:element minOccurs="0" maxOccurs="1" name="Button" type="ButtonXml" />
       </xs:choice>
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="LayoutableText">
+  <xs:complexType name="LayoutableSpriteXml">
     <xs:complexContent mixed="false">
-      <xs:extension base="AssetBase">
-        <xs:attribute name="Text" type="xs:string" />
-        <xs:attribute name="FontName" type="xs:string" />
+      <xs:extension base="AssetXmlBase">
+        <xs:attribute name="AchxName" type="xs:string" />
+        <xs:attribute name="InitialAnimationChainName" type="xs:string" />
+        <xs:attribute name="RelativeRotationZDegrees" type="xs:float" />
+        <xs:attribute name="PixelSize" type="xs:float" />
+        <xs:attribute name="TextureScale" type="xs:float" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="BoxLayout">
+  <xs:complexType name="BoxLayoutXml">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableAssetBase">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Child" type="BoxLayoutChild" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Child" type="BoxLayoutXmlChild" />
         </xs:sequence>
         <xs:attribute name="Spacing" type="xs:float" />
         <xs:attribute name="Margin" type="xs:float" />
@@ -123,7 +115,7 @@
   </xs:complexType>
   <xs:complexType name="SelectableAssetBase" abstract="true">
     <xs:complexContent mixed="false">
-      <xs:extension base="AssetBase">
+      <xs:extension base="AssetXmlBase">
         <xs:attribute name="StandardAnimationChainName" type="xs:string" />
         <xs:attribute name="FocusedAnimationChainName" type="xs:string" />
         <xs:attribute name="PushedAnimationChainName" type="xs:string" />
@@ -131,7 +123,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="Button">
+  <xs:complexType name="ButtonXml">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableAssetBase">
         <xs:attribute name="AchxFile" type="xs:string" />
@@ -142,11 +134,11 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="GridLayout">
+  <xs:complexType name="GridLayoutXml">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableAssetBase">
         <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Child" type="GridLayoutChild" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Child" type="GridLayoutXmlChild" />
         </xs:sequence>
         <xs:attribute name="Spacing" type="xs:float" />
         <xs:attribute name="Margin" type="xs:float" />
@@ -155,7 +147,7 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="GridLayoutChild">
+  <xs:complexType name="GridLayoutXmlChild">
     <xs:complexContent mixed="false">
       <xs:extension base="LayoutableChildBase">
         <xs:attribute name="RowIndex" type="xs:int" use="required" />
@@ -179,7 +171,7 @@
       <xs:enumeration value="Bottom" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="BoxLayoutChild">
+  <xs:complexType name="BoxLayoutXmlChild">
     <xs:complexContent mixed="false">
       <xs:extension base="LayoutableChildBase">
         <xs:attribute name="ItemAlignment" type="Alignment" />
@@ -201,7 +193,15 @@
       <xs:enumeration value="Right" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="CircularLayoutChild">
+  <xs:complexType name="LayoutableTextXml">
+    <xs:complexContent mixed="false">
+      <xs:extension base="AssetXmlBase">
+        <xs:attribute name="Text" type="xs:string" />
+        <xs:attribute name="FontName" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="CircularLayoutXmlChild">
     <xs:complexContent mixed="false">
       <xs:extension base="LayoutableChildBase">
         <xs:attribute name="RadiusOffset" type="xs:float" />
@@ -228,12 +228,12 @@
       <xs:enumeration value="CounterClockwise" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="ArrayOfSelectableGroup">
+  <xs:complexType name="ArrayOfSelectableGroupXml">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="SelectableGroup" nillable="true" type="SelectableGroup" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SelectableGroup" nillable="true" type="SelectableGroupXml" />
     </xs:sequence>
   </xs:complexType>
-  <xs:complexType name="SelectableGroup">
+  <xs:complexType name="SelectableGroupXml">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="1" name="Controls" type="ArrayOfChoice2" />
     </xs:sequence>
@@ -242,11 +242,11 @@
   </xs:complexType>
   <xs:complexType name="ArrayOfChoice2">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element minOccurs="1" maxOccurs="1" name="GridSelectableGroupItem" nillable="true" type="GridSelectableGroupItem" />
-      <xs:element minOccurs="1" maxOccurs="1" name="SequentialSelectableGroupItem" nillable="true" type="SequentialGroupItem" />
+      <xs:element minOccurs="1" maxOccurs="1" name="GridSelectableGroupItem" nillable="true" type="GridSelectableGroupItemXml" />
+      <xs:element minOccurs="1" maxOccurs="1" name="SequentialSelectableGroupItem" nillable="true" type="SequentialGroupItemXml" />
     </xs:choice>
   </xs:complexType>
-  <xs:complexType name="GridSelectableGroupItem">
+  <xs:complexType name="GridSelectableGroupItemXml">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableGroupItemBase">
         <xs:attribute name="RowIndex" type="xs:int" use="required" />
@@ -257,7 +257,7 @@
   <xs:complexType name="SelectableGroupItemBase" abstract="true">
     <xs:attribute name="ControlName" type="xs:string" />
   </xs:complexType>
-  <xs:complexType name="SequentialGroupItem">
+  <xs:complexType name="SequentialGroupItemXml">
     <xs:complexContent mixed="false">
       <xs:extension base="SelectableGroupItemBase" />
     </xs:complexContent>

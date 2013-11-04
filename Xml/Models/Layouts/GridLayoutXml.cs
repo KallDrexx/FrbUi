@@ -9,7 +9,7 @@ using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models.Layouts
 {
-    public class GridLayout : SelectableAssetBase
+    public class GridLayoutXml : SelectableAssetBase
     {
         #region XML
 
@@ -56,7 +56,7 @@ namespace FrbUi.Xml.Models.Layouts
         public string BackgroundAchxFile { get; set; }
 
         [XmlElement("Child")]
-        public List<GridLayoutChild> Children { get; set; } 
+        public List<GridLayoutXmlChild> Children { get; set; } 
 
         #endregion
 
@@ -80,11 +80,11 @@ namespace FrbUi.Xml.Models.Layouts
 
                 switch (child.HorizontalAlignment)
                 {
-                    case GridLayoutChild.HorizontalAlignments.Center:
+                    case GridLayoutXmlChild.HorizontalAlignments.Center:
                         horizontalAlignment = FrbUi.Layouts.GridLayout.HorizontalAlignment.Center;
                         break;
 
-                    case GridLayoutChild.HorizontalAlignments.Right:
+                    case GridLayoutXmlChild.HorizontalAlignments.Right:
                         horizontalAlignment = FrbUi.Layouts.GridLayout.HorizontalAlignment.Right;
                         break;
 
@@ -95,11 +95,11 @@ namespace FrbUi.Xml.Models.Layouts
 
                 switch (child.VerticalAlignment)
                 {
-                    case GridLayoutChild.VerticalAlignments.Center:
+                    case GridLayoutXmlChild.VerticalAlignments.Center:
                         verticalAlignment = FrbUi.Layouts.GridLayout.VerticalAlignment.Center;
                         break;
 
-                    case GridLayoutChild.VerticalAlignments.Bottom:
+                    case GridLayoutXmlChild.VerticalAlignments.Bottom:
                         verticalAlignment = FrbUi.Layouts.GridLayout.VerticalAlignment.Bottom;
                         break;
 

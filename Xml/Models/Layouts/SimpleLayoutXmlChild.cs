@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace FrbUi.Xml.Models.Layouts
 {
-    public class SimpleLayoutChild : LayoutableChildBase
+    public class SimpleLayoutXmlChild : LayoutableChildBase
     {
         public enum LayoutOrigin { Center, TopLeft, TopRight, BottomLeft, BottomRight, BottomCenter, TopCenter };
 

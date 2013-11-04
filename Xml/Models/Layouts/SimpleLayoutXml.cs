@@ -8,12 +8,12 @@ using FrbUi.Positioning;
 
 namespace FrbUi.Xml.Models.Layouts
 {
-    public class SimpleLayout : AssetBase
+    public class SimpleLayoutXml : AssetXmlBase
     {
         #region Values
 
         private bool? _isFullScreen;
-        private List<SimpleLayoutChild> _children;
+        private List<SimpleLayoutXmlChild> _children;
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace FrbUi.Xml.Models.Layouts
         }
 
         [XmlElement("Child")]
-        public List<SimpleLayoutChild> Children
+        public List<SimpleLayoutXmlChild> Children
         {
             get { return _children; }
             set { _children = value; }
@@ -54,31 +54,31 @@ namespace FrbUi.Xml.Models.Layouts
                 // Figure out the origin
                 switch (child.OriginValue)
                 {
-                    case SimpleLayoutChild.LayoutOrigin.TopLeft:
+                    case SimpleLayoutXmlChild.LayoutOrigin.TopLeft:
                         origin = LayoutOrigin.TopLeft;
                         break;
 
-                    case SimpleLayoutChild.LayoutOrigin.TopRight:
+                    case SimpleLayoutXmlChild.LayoutOrigin.TopRight:
                         origin = LayoutOrigin.TopRight;
                         break;
 
-                    case SimpleLayoutChild.LayoutOrigin.BottomLeft:
+                    case SimpleLayoutXmlChild.LayoutOrigin.BottomLeft:
                         origin = LayoutOrigin.BottomLeft;
                         break;
 
-                    case SimpleLayoutChild.LayoutOrigin.BottomRight:
+                    case SimpleLayoutXmlChild.LayoutOrigin.BottomRight:
                         origin = LayoutOrigin.BottomRight;
                         break;
 
-                    case SimpleLayoutChild.LayoutOrigin.BottomCenter:
+                    case SimpleLayoutXmlChild.LayoutOrigin.BottomCenter:
                         origin = LayoutOrigin.BottomCenter;
                         break;
 
-                    case SimpleLayoutChild.LayoutOrigin.TopCenter:
+                    case SimpleLayoutXmlChild.LayoutOrigin.TopCenter:
                         origin = LayoutOrigin.TopCenter;
                         break;
 
-                    case SimpleLayoutChild.LayoutOrigin.Center:
+                    case SimpleLayoutXmlChild.LayoutOrigin.Center:
                     default:
                         origin = LayoutOrigin.Center;
                         break;

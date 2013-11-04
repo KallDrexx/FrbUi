@@ -7,7 +7,7 @@ using FlatRedBall.Graphics;
 
 namespace FrbUi.Xml.Models.Controls
 {
-    public class LayoutableText : AssetBase
+    public class LayoutableTextXml : AssetXmlBase
     {
         [XmlAttribute]
         public string Text { get; set; }

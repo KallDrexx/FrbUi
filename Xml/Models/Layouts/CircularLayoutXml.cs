@@ -9,7 +9,7 @@ using FlatRedBall.Graphics.Animation;
 
 namespace FrbUi.Xml.Models.Layouts
 {
-    public class CircularLayout : AssetBase
+    public class CircularLayoutXml : AssetXmlBase
     {
         public enum ArrangementMode { Clockwise, EvenlySpaced, Manual, CounterClockwise }
 
@@ -23,7 +23,7 @@ namespace FrbUi.Xml.Models.Layouts
         private string _animationChainFile;
         private string _initialAnimationChainName;
         private ArrangementMode? _arrangementMode;
-        private List<CircularLayoutChild> _children;
+        private List<CircularLayoutXmlChild> _children;
 
         #endregion
 
@@ -104,7 +104,7 @@ namespace FrbUi.Xml.Models.Layouts
         }
 
         [XmlElement("Child")]
-        public List<CircularLayoutChild> Children
+        public List<CircularLayoutXmlChild> Children
         {
             get { return _children; }
             set { _children = value; }

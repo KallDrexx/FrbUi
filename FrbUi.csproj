@@ -118,8 +118,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\xsd.exe" $(TargetPath) /outputdir:$(ProjectDir)\Xml /type:FrbUi.Xml.Models.AssetCollection 
-Move /y $(ProjectDir)\Xml\schema0.xsd $(Projectdir)\Xml\Schema\schema.xsd</PostBuildEvent>
+    <PostBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\xsd.exe" "$(TargetPath)" /outputdir:"$(ProjectDir)\Xml" /type:FrbUi.Xml.Models.AssetCollection 
+Move /y "$(ProjectDir)\Xml\schema0.xsd" "$(Projectdir)\Xml\Schema\schema.xsd"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

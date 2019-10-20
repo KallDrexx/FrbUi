@@ -7,4 +7,4 @@ For documentation, see the [wiki](https://github.com/KallDrexx/FrbUi/wiki).
 
 ## Example
 
-[![Demonstration Video](https://i.imgur.com/v4XxOeR.png)](http://www.youtube.com/watch?v=skdWjU8JxF0 "Youtube Video")
+[![Demonstration Video](https://i.imgur.com/v4XxOeR.png)](https://youtu.be/g8UUAY6VXjo "Youtube Video")
